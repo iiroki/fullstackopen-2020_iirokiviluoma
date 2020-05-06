@@ -1,0 +1,24 @@
+title 0.6
+
+note over Selain:
+Käyttäjä luo uuden muistiinpanon
+ja painaa Save-nappia.
+end note
+
+note over Selain:
+spa.js löytyvä koodinpätkä lisää
+muistiinpanon ensin paikallisesti,
+minkä jälkeen lähettää sen palve-
+limelle (sendToServer(note)).
+end note
+
+Selain->Palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+
+Palvelin-->Selain: Vastauskoodi "201 Created" eli ei uudelleenohjausta.
+
+note over Selain:
+Tieto uudesta muistiinpanosta on nyt
+tallennettu paikallisesti ja palvelimelle
+ilman sivun uudelleen lataamista.
+end note
+
