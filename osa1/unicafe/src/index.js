@@ -6,12 +6,19 @@ import ReactDOM from 'react-dom'
 const StatisticLine = (props) => {
   if (props.percent === true) {
     return (
-      <p>{props.text}: {props.amount}%</p>
+      <tr>
+        <td>{props.text}:</td>
+        <td>{props.amount}%</td>
+      </tr>
     )
   }
 
   return (
-    <p>{props.text}: {props.amount}</p>
+    //<table> border="1"</table>
+    <tr>
+      <td>{props.text}:</td>
+      <td>{props.amount}</td>
+    </tr>
   )
 }
 
@@ -39,18 +46,24 @@ const Statistics = (props) => {
   })
 
   const average = total / props.all.length
-  const positive = pos_total / props.all.length
+  const positive = (pos_total / props.all.length) * 100 // Prosentteina
 
   // Palautetaan tilastot
   return (
     <div>
       <h2>Statistics</h2>
-      <StatisticLine text='Good' amount={props.good} percent={false}/>
-      <StatisticLine text='Neutral' amount={props.neutral} percent={false}/>
-      <StatisticLine text='Bad' amount={props.bad}/>
-      <StatisticLine text='Feedbacks' amount={props.all.length} percent={false}/>
-      <StatisticLine text='Average' amount={average} percent={false}/>
-      <StatisticLine text='Positive' amount={positive} percent={true}/>
+
+      {/*Taulukko*/}
+      <table cellPadding="3">
+        <tbody>
+          <StatisticLine text='Good' amount={props.good} percent={false}/>
+          <StatisticLine text='Neutral' amount={props.neutral} percent={false}/>
+          <StatisticLine text='Bad' amount={props.bad}/>
+          <StatisticLine text='Feedbacks' amount={props.all.length} percent={false}/>
+          <StatisticLine text='Average' amount={average.toFixed(1)} percent={false}/>
+          <StatisticLine text='Positive' amount={positive.toFixed(1)} percent={true}/>
+        </tbody>
+      </table>
     </div>
   )
 }
