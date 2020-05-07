@@ -4,6 +4,15 @@ import ReactDOM from 'react-dom'
 
 // Yhteenveto
 const Statistics = (props) => {
+  if (props.all.length === 0) {
+    return (
+      <div>
+        <h2>Statistics</h2>
+        No feedbacks given yet.
+      </div>
+    )
+  }
+
   // Lasketaan keskiarvo
   let total = 0
   let pos_total = 0
