@@ -6,4 +6,5 @@ osa0
 osa1
     kurssitiedot
     unicafe
+    anekdootit
 ```
