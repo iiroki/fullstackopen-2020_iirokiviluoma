@@ -2,6 +2,19 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+// Yksittäinen tilastorivi
+const StatisticLine = (props) => {
+  if (props.percent === true) {
+    return (
+      <p>{props.text}: {props.amount}%</p>
+    )
+  }
+
+  return (
+    <p>{props.text}: {props.amount}</p>
+  )
+}
+
 // Yhteenveto
 const Statistics = (props) => {
   if (props.all.length === 0) {
@@ -28,20 +41,21 @@ const Statistics = (props) => {
   const average = total / props.all.length
   const positive = pos_total / props.all.length
 
+  // Palautetaan tilastot
   return (
     <div>
       <h2>Statistics</h2>
-      <p>Good: {props.good}</p>
-      <p>Neutral: {props.neutral}</p>
-      <p>Bad: {props.bad}</p>
-      <p>Feedbacks: {props.all.length}</p>
-      <p>Average: {average}</p>
-      <p>Positive: {positive}%</p>
+      <StatisticLine text='Good' amount={props.good} percent={false}/>
+      <StatisticLine text='Neutral' amount={props.neutral} percent={false}/>
+      <StatisticLine text='Bad' amount={props.bad}/>
+      <StatisticLine text='Feedbacks' amount={props.all.length} percent={false}/>
+      <StatisticLine text='Average' amount={average} percent={false}/>
+      <StatisticLine text='Positive' amount={positive} percent={true}/>
     </div>
   )
 }
 
-// Nappi
+// Yksittäinen palautenappi
 const Button = (props) => {
   const {onClick, text} = props
 
