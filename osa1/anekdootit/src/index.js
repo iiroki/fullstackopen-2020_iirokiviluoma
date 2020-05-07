@@ -22,7 +22,6 @@ const App = (props) => {
     }
 
     console.log('Random index:', rand_int)
-    //debugger
     setSelected(rand_int)
   }
 
@@ -32,16 +31,21 @@ const App = (props) => {
     setVotes(new_votes)
   }
   
+  // Etsitään suosituimman anekdootin indeksi.
+  let max_index = votes.indexOf(Math.max(...votes))
 
   return (
     <div>
-      <h1>Anecdote</h1>
+      <h1>Anecdote of the day</h1>
       <p>{props.anecdotes[selected]}</p>
       <p>This anecdote has {votes[selected]} votes.</p>
       <p>
         <Button onClick={handleVoting} text="Vote"/>
-        <Button onClick={handleRandomAnecdote} text='Randomize'/>
+        <Button onClick={handleRandomAnecdote} text='Random anecdote'/>
       </p>
+      <h1>Anecdote with most votes</h1>
+      <p>{props.anecdotes[max_index]}</p>
+      <p>This anecdote has {votes[max_index]} votes.</p>
     </div>
   )
 }
