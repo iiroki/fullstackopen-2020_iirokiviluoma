@@ -27,8 +27,10 @@ const Part = ({name, exercises}) => {
 }
 
 const Total = ({parts}) => {
-  const add = (sum, p) => sum + p.exercises
-  const total = parts.reduce(add, 0)
+  const total = parts.reduce((sum, p) => {
+    //console.log('SUM:', sum, 'CURRENT:', p.exercises)
+    return sum + p.exercises
+  }, 0)
 
   return (
     <div>
