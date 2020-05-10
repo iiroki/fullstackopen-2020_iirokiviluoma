@@ -7,4 +7,6 @@ osa1
     kurssitiedot
     unicafe
     anekdootit
+osa2
+    kurssitiedot
 ```
