@@ -1,54 +1,8 @@
 // Full Stack Open 2020
-// osa1: kurssitiedot
 // iiroki
 import React from 'react'
 import ReactDOM from 'react-dom'
-
-const Header = ({course_name}) => {
-  return <h2>{course_name}</h2>
-}
-
-const Content = ({parts}) => {
-  //console.log(parts)
-  return (
-    <div>
-      {parts.map(p =>
-        <Part key={p.name} name={p.name} exercises={p.exercises}/>)}
-    </div>
-  )
-}
-
-const Part = ({name, exercises}) => {
-  return (
-    <p>
-      {name} {exercises}
-    </p>
-  )
-}
-
-const Total = ({parts}) => {
-  const total = parts.reduce((sum, p) => {
-    //console.log('SUM:', sum, 'CURRENT:', p.exercises)
-    return sum + p.exercises
-  }, 0)
-
-  return (
-    <div>
-      <b>Total of {total} exercises</b>
-    </div>
-  )
-}
-
-// Kurssi
-const Course = ({course}) => {
-  return (
-    <div>
-      <Header course_name={course.name}/>
-      <Content parts={course.parts}/>
-      <Total parts={course.parts}/>
-    </div>
-  )
-}
+import Course from './components/Course'
 
 const App = () => {
   const courses = [
