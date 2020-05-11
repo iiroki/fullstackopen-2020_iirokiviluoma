@@ -1,11 +1,17 @@
 import React, { useState } from 'react'
 
+const Person = (props) => {
+    return (
+        <li>{props.name}</li>
+    )
+}
+
 const Numbers = (props) => {
     return (
         <div>
             <h2>Numbers</h2>
             <ul>
-                {props.persons.map(p => <li>{p.name}</li>)}
+                {props.persons.map(p => <Person key={p.name} name={p.name}/>)}
             </ul>
         </div>
     )
@@ -21,7 +27,14 @@ const App = () => {
       event.preventDefault()
 
         if (newName.length === 0) {
-            console.log("addPerson: Can't submit empty field.")
+            console.log("Can't submit empty field.")
+            return
+        }
+
+        // Jos nimi löytyy jo puhelinluettelosta
+        if (persons.some(p => p.name === newName)) {
+            alert(`${newName} is already in the phonebook!`)
+            setNewName('')
             return
         }
 
@@ -31,7 +44,6 @@ const App = () => {
   }
 
   const handleNameChange = (event) => {
-      //console.log(event.target.value)
       setNewName(event.target.value)
   }
 
@@ -47,7 +59,6 @@ const App = () => {
         </div>
       </form>
       <Numbers persons={persons}/>
-      ...
     </div>
   )
 }
