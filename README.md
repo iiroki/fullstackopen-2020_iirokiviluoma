@@ -9,4 +9,5 @@ osa1
     anekdootit
 osa2
     kurssitiedot
+    puhelinluettelo
 ```
