@@ -1,21 +1,19 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 
 const Person = (props) => {
-    return (
-        <li>{props.name}: {props.number}</li>
-    )
+  return <li>{props.name}: {props.number}</li>
 }
 
-const Numbers = (props) => {
-    return (
-        <div>
-            <h2>Numbers</h2>
-            <ul>
-                {props.persons.map(p =>
-                  <Person key={p.name} name={p.name} number={p.number}/>)}
-            </ul>
-        </div>
-    )
+const Numbers = ({persons}) => {
+  return (
+    <div>
+      <h2>Numbers</h2>
+      <ul>
+        {persons.map(p =>
+          <Person key={p.name} name={p.name} number={p.number}/>)}
+      </ul>
+    </div>
+  )
 }
 
 const App = () => {
@@ -35,45 +33,45 @@ const App = () => {
   }
 
   const addPerson = (event) => {
+    // Ei uudelleenohjausta
     event.preventDefault()
 
-      if (newName.length === 0 || newNumber.length === 0) {
-          console.log("Can't submit empty field.")
-          return
-      }
+    // Tyhjiä kenttiä ei sallita
+    if (newName.length === 0 || newNumber.length === 0) {
+      console.log("Can't submit empty field.")
+      return
+    }
 
-      // Jos nimi löytyy jo puhelinluettelosta
-      if (persons.some(p => p.name === newName)) {
-          alert(`${newName} is already in the phonebook!`)
-          resetFields()
-          return
-      }
+    // Jos nimi löytyy jo puhelinluettelosta
+    if (persons.some(p => p.name === newName)) {
+      alert(`${newName} is already in the phonebook!`)
+      return
+    }
 
-      console.log('Added new person:', newName, 'Number', newNumber)
-      setPersons(persons.concat({name: newName, number: newNumber}))
-      resetFields()
+    setPersons(persons.concat({name: newName, number: newNumber}))
+    resetFields()
   }
 
   const handleNameChange = (event) => {
-      setNewName(event.target.value)
+    setNewName(event.target.value)
   }
 
   const handleNumberChange = (event) => {
-      setNewNumber(event.target.value)
+    setNewNumber(event.target.value)
   }
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
       <form onSubmit={addPerson}>
         <div>
-            Name: <input value={newName} onChange={handleNameChange}/>
+          Name: <input value={newName} onChange={handleNameChange}/>
         </div>
         <div>
-            Number: <input value={newNumber} onChange={handleNumberChange}/>
+          Number: <input value={newNumber} onChange={handleNumberChange}/>
         </div>
         <div>
-          <button type="submit">add</button>
+          <button type="submit">Add new number</button>
         </div>
       </form>
       <Numbers persons={persons}/>
