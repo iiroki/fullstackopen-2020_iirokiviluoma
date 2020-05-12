@@ -1,28 +1,25 @@
 import React, {useState} from 'react'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
-const Person = (props) => {
-  return <li>{props.name}: {props.number}</li>
-}
-
-const Numbers = ({persons}) => {
-  return (
-    <div>
-      <h2>Numbers</h2>
-      <ul>
-        {persons.map(p =>
-          <Person key={p.name} name={p.name} number={p.number}/>)}
-      </ul>
-    </div>
-  )
-}
+const data = [
+  {
+    name: 'Arto Hellas', number: '040-1231244'
+  },
+  {
+    name: 'Ada Lovelace', number: '39-44-5323523'
+  },
+  {
+    name: 'Dan Abramov', number: '12-43-234345'
+  },
+  {
+    name: 'Mary Poppendieck', number: '39-23-6423122'
+  }
+]
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    {
-      name: 'Arto Hellas', number: '040-1231244'
-    }
-  ]) 
-  
+  const [persons, setPersons] = useState(data) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
@@ -32,6 +29,7 @@ const App = () => {
     setNewNumber('')
   }
 
+  // Lisätään uusi numero osoitekirjaan.
   const addPerson = (event) => {
     // Ei uudelleenohjausta
     event.preventDefault()
@@ -64,39 +62,30 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+  // Valitaan, mitkä nimet näytetään osoitekirjassa hakukentän perusteella.
   const personsToShow = () => {
     if (filter === '') {
       return persons
     }
-    else {
-      // Palautetaan ainoastaan hakukentän mukaiset.
-      return persons.filter(
-        p => p.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1
-      )
-    }
+    // Palautetaan ainoastaan hakukentän mukaiset.
+    return persons.filter(
+      p => p.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1
+    )
   }
 
   return (
     <div>
       <h1>Phonebook</h1>
-      <form>
-        <div>
-        Search: <input value={filter} onChange={handleFilterChange}/>
-        </div>
-      </form>
-      <h2>Add new number</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          Name: <input value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>
-          Number: <input value={newNumber} onChange={handleNumberChange}/>
-        </div>
-        <div>
-          <button type="submit">Add new number</button>
-        </div>
-      </form>
-      <Numbers persons={personsToShow()}/>
+
+      <Filter filter={filter} handleChange={handleFilterChange}/>
+
+      <PersonForm
+        add={addPerson}
+        name={newName} handleNameChange={handleNameChange}
+        number={newNumber} handleNumberChange={handleNumberChange}
+      />
+
+      <Persons persons={personsToShow()}/>
     </div>
   )
 }
