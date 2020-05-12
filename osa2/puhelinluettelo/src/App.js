@@ -19,13 +19,13 @@ const Numbers = ({persons}) => {
 const App = () => {
   const [persons, setPersons] = useState([
     {
-      name: 'Arto Hellas',
-      number: '040-1231244'
+      name: 'Arto Hellas', number: '040-1231244'
     }
   ]) 
   
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [filter, setFilter] = useState('')
 
   const resetFields = () => {
     setNewName('')
@@ -60,9 +60,31 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value)
+  }
+
+  const personsToShow = () => {
+    if (filter === '') {
+      return persons
+    }
+    else {
+      // Palautetaan ainoastaan hakukentän mukaiset.
+      return persons.filter(
+        p => p.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1
+      )
+    }
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
+      <form>
+        <div>
+        Search: <input value={filter} onChange={handleFilterChange}/>
+        </div>
+      </form>
+      <h2>Add new number</h2>
       <form onSubmit={addPerson}>
         <div>
           Name: <input value={newName} onChange={handleNameChange}/>
@@ -74,7 +96,7 @@ const App = () => {
           <button type="submit">Add new number</button>
         </div>
       </form>
-      <Numbers persons={persons}/>
+      <Numbers persons={personsToShow()}/>
     </div>
   )
 }
