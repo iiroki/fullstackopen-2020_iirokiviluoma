@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 
+// Alkudata sovelluksen käynnistyessä.
 const data = [
   {
     name: 'Arto Hellas', number: '040-1231244'
@@ -19,11 +20,13 @@ const data = [
 ]
 
 const App = () => {
+  // Sovelluksen tilat
   const [persons, setPersons] = useState(data) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
 
+  // Nollataan lisäyskentät tarvittaessa.
   const resetFields = () => {
     setNewName('')
     setNewNumber('')
@@ -34,13 +37,13 @@ const App = () => {
     // Ei uudelleenohjausta
     event.preventDefault()
 
-    // Tyhjiä kenttiä ei sallita
+    // Tyhjiä kenttiä ei sallita!
     if (newName.length === 0 || newNumber.length === 0) {
-      console.log("Can't submit empty field.")
+      //console.log("Can't submit empty field.")
       return
     }
 
-    // Jos nimi löytyy jo puhelinluettelosta
+    // Jos nimi löytyy jo puhelinluettelosta.
     if (persons.some(p => p.name === newName)) {
       alert(`${newName} is already in the phonebook!`)
       return
