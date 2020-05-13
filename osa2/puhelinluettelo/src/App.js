@@ -3,25 +3,10 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 
-// Alkudata sovelluksen käynnistyessä.
-const data = [
-  {
-    name: 'Arto Hellas', number: '040-1231244'
-  },
-  {
-    name: 'Ada Lovelace', number: '39-44-5323523'
-  },
-  {
-    name: 'Dan Abramov', number: '12-43-234345'
-  },
-  {
-    name: 'Mary Poppendieck', number: '39-23-6423122'
-  }
-]
 
 const App = () => {
   // Sovelluksen tilat
-  const [persons, setPersons] = useState(data) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
