@@ -10,4 +10,5 @@ osa1
 osa2
     kurssitiedot
     puhelinluettelo
+    maiden tiedot
 ```
