@@ -1,23 +1,47 @@
 import React from 'react'
 
-const CountryInDetail = (props) => {
+const Flag = ({source}) => {
   return (
     <div>
-      CountryInDetail
+      <img src={source} alt="Flag"></img>
     </div>
   )
 }
 
-const Country = (props) => {
+const Language = ({name}) => <li>{name}</li>
+
+const Languages = ({languages}) => {
   return (
     <div>
-      {props.name}
+      <b>Languages</b>
+      <ul>
+          {languages.map(l =>
+            <Language key={l.name} name={l.name}/>)}
+      </ul>
+    </div>
+    
+  )
+}
+
+const CountryInDetail = ({country}) => {
+  return (
+    <div>
+      <h2>{country.name}</h2>
+
+      Capital: {country.capital}<br/>
+      Population: {country.population}<br/>
+      <br/>
+      <Languages languages={country.languages}/>
+
+      <Flag source={country.flag}/>
     </div>
   )
 }
+
+const Country = ({name}) => <div>{name}</div>
 
 const Countries = ({countries, filter}) => {
-  console.log(countries.length)
+  console.log(countries.length, 'found.')
   // Ei filtteriä -> ohjeistus
   if (filter === '') {
     return (
@@ -49,7 +73,7 @@ const Countries = ({countries, filter}) => {
   else if (countries.length === 1) {
     return (
       <div>
-
+        <CountryInDetail country={countries[0]}/>
       </div>
     )
   }
@@ -58,6 +82,7 @@ const Countries = ({countries, filter}) => {
   else {
     return (
     <div>
+      <b>Found:</b>
       {countries.map(c =>
           <Country key={c.name} name={c.name}/>)}
     </div>
