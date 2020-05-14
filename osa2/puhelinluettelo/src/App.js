@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios'
+import personService from './services/persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -14,10 +14,11 @@ const App = () => {
 
   // Haetaan tiedot palvelimelta.
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    // Haetaan kaikki palvelimen henkilöt
+    personService
+      .getAll()
+      .then(all => {
+        setPersons(all)
       })
   }, [])  // Aktivoidaan 1. renderöinnin jälkeen.
 
@@ -34,7 +35,6 @@ const App = () => {
 
     // Tyhjiä kenttiä ei sallita!
     if (newName.length === 0 || newNumber.length === 0) {
-      //console.log("Can't submit empty field.")
       return
     }
 
@@ -44,8 +44,13 @@ const App = () => {
       return
     }
 
-    setPersons(persons.concat({name: newName, number: newNumber}))
-    resetFields()
+    // Lisätään uusi henkilö palvelimelle
+    personService
+      .appendNew({name: newName, number: newNumber})
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        resetFields()
+      })
   }
 
   const handleNameChange = (event) => {
