@@ -54,7 +54,26 @@ const App = () => {
   }
 
   const deletePerson = (id) => {
-    console.log(`Person ${id} need to be removed.`)
+    const target = persons.find(p => p.id === id)
+
+    // Vahvistetaan poisto
+    if (!window.confirm(`Delete ${target.name}?`)) {
+      return
+    }
+
+    // Poistetaan kyseinen henkilö...
+    personService
+      .deletePerson(id)
+      .then(response => {
+        console.log(response)
+      })
+
+    //... ja asetetaan tila oikeaksi (poiston jälkeen)
+    personService
+      .getAll()
+      .then(all => {
+        setPersons(all)
+      })
   }
 
   const handleNameChange = (event) => {
@@ -92,7 +111,7 @@ const App = () => {
         number={newNumber} handleNumberChange={handleNumberChange}
       />
 
-      <Persons persons={personsToShow()} delPerson={deletePerson}/>
+      <Persons persons={personsToShow()} delHandler={deletePerson}/>
     </div>
   )
 }

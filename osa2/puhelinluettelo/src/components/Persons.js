@@ -1,15 +1,17 @@
 import React from 'react'
 
-const Person = (props) => {
+const Person = ({name, number, handleDel}) => {
   return (
     <li>
-      {props.name}: {props.number}
-      <button onClick={props.del}>Delete</button>
+      {name}: {number}
+      <button onClick={handleDel}>Delete</button>
     </li>
   )
 }
 
-const Persons = ({persons, delPerson}) => {
+// persons = Kaikki tulostettavat henkilöt
+// delHandler = Henkilön poiston tapahtumankäsittelijä
+const Persons = ({persons, delHandler}) => {
   //debugger
   return (
     <div>
@@ -17,7 +19,7 @@ const Persons = ({persons, delPerson}) => {
       <ul>
         {persons.map(p =>
           <Person key={p.name} name={p.name} number={p.number}
-            del={() => delPerson(p.id)}/>)}
+            handleDel={() => delHandler(p.id)}/>)}
       </ul>
     </div>
   )

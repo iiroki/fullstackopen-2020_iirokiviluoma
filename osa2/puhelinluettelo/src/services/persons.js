@@ -14,7 +14,7 @@ const appendNew = (newPerson) => {
 const deletePerson = (id) => {
   const url = `${baseUrl}/${id}`
   const request = axios.delete(url)
-  return request.then(response => response.data)
+  return request.then(response => response)
 }
 
 const modifyPerson = (id, newPerson) => {
