@@ -53,6 +53,10 @@ const App = () => {
       })
   }
 
+  const deletePerson = (id) => {
+    console.log(`Person ${id} need to be removed.`)
+  }
+
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
@@ -88,7 +92,7 @@ const App = () => {
         number={newNumber} handleNumberChange={handleNumberChange}
       />
 
-      <Persons persons={personsToShow()}/>
+      <Persons persons={personsToShow()} delPerson={deletePerson}/>
     </div>
   )
 }
