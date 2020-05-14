@@ -14,7 +14,7 @@ const App = () => {
 
   // Haetaan tiedot palvelimelta.
   useEffect(() => {
-    // Haetaan kaikki palvelimen henkilöt
+    // Haetaan kaikki palvelimen henkilöt.
     personService
       .getAll()
       .then(all => {
@@ -40,7 +40,25 @@ const App = () => {
 
     // Jos nimi löytyy jo puhelinluettelosta.
     if (persons.some(p => p.name === newName)) {
-      alert(`${newName} is already in the phonebook!`)
+      // Jos halutaan korvata vanha numero uudella.
+      if (!window.confirm(`${newName} is already in the phonebook!\nReplace the old number?`)) {
+        return
+      }
+
+      // Suoritetaan etsintä toisen kerran, mikä hieman turhaa.
+      const person = persons.find(p => p.name === newName)
+      const changedPerson = {...person, number: newNumber}
+
+      // Muokataan henkilön tietoja ja huolehditaan sovellukset tilasta.
+      personService
+        .modifyPerson(changedPerson.id, changedPerson)
+        .then(modifiedPerson => {
+          setPersons(persons.map(
+            p => p.id !== modifiedPerson.id ? p : modifiedPerson
+          ))
+        })
+      
+      resetFields()
       return
     }
 
