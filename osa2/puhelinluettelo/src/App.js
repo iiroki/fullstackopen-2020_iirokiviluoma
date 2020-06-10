@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react'
+import './index.css'
 import personService from './services/persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 
 
 const App = () => {
@@ -11,6 +13,9 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [notificationMsg, setNotificationMsg] = useState(null)
+
+  const notificationTime = 2500
 
   // Haetaan tiedot palvelimelta.
   useEffect(() => {
@@ -26,6 +31,14 @@ const App = () => {
   const resetFields = () => {
     setNewName('')
     setNewNumber('')
+  }
+
+  // Ilmoitus ja sen pyyhkiminen ajan myötä.
+  const showNotification = (msg) => {
+    setNotificationMsg(msg)
+      setTimeout(() => {
+        setNotificationMsg(null)
+      }, notificationTime)
   }
 
   // Lisätään uusi numero osoitekirjaan.
@@ -59,6 +72,7 @@ const App = () => {
         })
       
       resetFields()
+      showNotification(`Modified: ${changedPerson.name}`)
       return
     }
 
@@ -69,6 +83,8 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         resetFields()
       })
+
+    showNotification(`Added: ${newName}`)
   }
 
   const deletePerson = (id) => {
@@ -92,6 +108,8 @@ const App = () => {
       .then(all => {
         setPersons(all)
       })
+    
+    showNotification(`Deleted: ${target.name}`)
   }
 
   const handleNameChange = (event) => {
@@ -120,6 +138,8 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+
+      <Notification msg={notificationMsg}/>
 
       <Filter filter={filter} handleChange={handleFilterChange}/>
 

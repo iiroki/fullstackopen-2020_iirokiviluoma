@@ -41,7 +41,7 @@ const CountryInDetail = ({country}) => {
 const Country = ({name}) => <div>{name}</div>
 
 const Countries = ({countries, filter}) => {
-  console.log(countries.length, 'found.')
+  console.log(countries.length, 'countries found.')
   // Ei filtteriä -> ohjeistus
   if (filter === '') {
     return (

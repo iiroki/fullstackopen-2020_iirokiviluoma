@@ -7,6 +7,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1 {
+  color: green;
+  font-size: 40px;
+  text-decoration: underline;
+}
+
+.notification {
+  color: darkgreen;
+  background: lightgrey;
+  font-size: 24px;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: darkgreen;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
