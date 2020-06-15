@@ -1,5 +1,13 @@
 import React from 'react'
 
+const Weather = ({capital, weather}) => {
+  return (
+    <div>
+      <b>Weather in {capital}</b>
+    </div>
+  )
+}
+
 const Flag = ({source}) => {
   const flagStyle = {
     objectFit: 'cover',
@@ -29,7 +37,7 @@ const Languages = ({languages}) => {
   )
 }
 
-const CountryInDetail = ({country}) => {
+const CountryInDetail = ({country, weather}) => {
   return (
     <div>
       <h2>{country.name}</h2>
@@ -40,6 +48,8 @@ const CountryInDetail = ({country}) => {
       Population: {country.population}<br/>
       <br/>
       <Languages languages={country.languages}/>
+
+      <Weather capital={country.capital} weather={weather}/>
     </div>
   )
 }
@@ -53,7 +63,7 @@ const Country = ({name, countryButtonHandler}) => {
   )
 }
 
-const Countries = ({countries, filter, countryButtonHandler}) => {
+const Countries = ({countries, filter, countryButtonHandler, weather}) => {
   // Ei filtteriä -> ohjeistus
   if (filter === '') {
     return (
@@ -85,7 +95,7 @@ const Countries = ({countries, filter, countryButtonHandler}) => {
   else if (countries.length === 1) {
     return (
       <div>
-        <CountryInDetail country={countries[0]}/>
+        <CountryInDetail country={countries[0]} weather={weather}/>
       </div>
     )
   }
