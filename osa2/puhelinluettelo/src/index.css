@@ -13,13 +13,24 @@ h1 {
   text-decoration: underline;
 }
 
-.notification {
+.notification_good {
   color: darkgreen;
   background: lightgrey;
   font-size: 24px;
   border-style: solid;
   border-radius: 5px;
   border-color: darkgreen;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.notification_bad {
+  color: red;
+  background: lightgrey;
+  font-size: 24px;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: red;
   padding: 10px;
   margin-bottom: 20px;
 }

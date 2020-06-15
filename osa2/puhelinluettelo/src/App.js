@@ -4,7 +4,7 @@ import personService from './services/persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import Notification from './components/Notification'
+import {Notification, notificationTypes} from './components/Notification'
 
 
 const App = () => {
@@ -14,6 +14,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const [notificationMsg, setNotificationMsg] = useState(null)
+  const [notificationType, setNotificationType] = useState(notificationTypes.GOOD)
 
   const notificationTime = 2500
 
@@ -34,7 +35,9 @@ const App = () => {
   }
 
   // Ilmoitus ja sen pyyhkiminen ajan myötä.
-  const showNotification = (msg) => {
+  const showNotification = (msg, type) => {
+    setNotificationType(type)  // Oikeanlainen ilmoitus
+
     setNotificationMsg(msg)
       setTimeout(() => {
         setNotificationMsg(null)
@@ -72,7 +75,7 @@ const App = () => {
         })
       
       resetFields()
-      showNotification(`Modified: ${changedPerson.name}`)
+      showNotification(`Modified: ${changedPerson.name}`, notificationTypes.GOOD)
       return
     }
 
@@ -84,7 +87,7 @@ const App = () => {
         resetFields()
       })
 
-    showNotification(`Added: ${newName}`)
+    showNotification(`Added: ${newName}`, notificationTypes.GOOD)
   }
 
   const deletePerson = (id) => {
@@ -101,6 +104,11 @@ const App = () => {
       .then(response => {
         console.log(response)
       })
+      .catch(error => {
+        showNotification(`Error: ${target.name} is already deleted from server.`,
+          notificationTypes.BAD)
+        return
+      })
 
     //... ja asetetaan tila oikeaksi (poiston jälkeen)
     personService
@@ -109,7 +117,7 @@ const App = () => {
         setPersons(all)
       })
     
-    showNotification(`Deleted: ${target.name}`)
+    showNotification(`Deleted: ${target.name}`, notificationTypes.GOOD)
   }
 
   const handleNameChange = (event) => {
@@ -139,7 +147,7 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
 
-      <Notification msg={notificationMsg}/>
+      <Notification msg={notificationMsg} type={notificationType}/>
 
       <Filter filter={filter} handleChange={handleFilterChange}/>
 
