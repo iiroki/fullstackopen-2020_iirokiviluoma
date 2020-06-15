@@ -1,9 +1,15 @@
 import React from 'react'
 
 const Flag = ({source}) => {
+  const flagStyle = {
+    objectFit: 'cover',
+    width: '250px',
+    height: '100%'
+  }
+
   return (
     <div>
-      <img src={source} alt="Flag"></img>
+      <img style={flagStyle} src={source} alt="Flag"/>
     </div>
   )
 }
@@ -28,12 +34,12 @@ const CountryInDetail = ({country}) => {
     <div>
       <h2>{country.name}</h2>
 
+      <Flag source={country.flag}/>
+
       Capital: {country.capital}<br/>
       Population: {country.population}<br/>
       <br/>
       <Languages languages={country.languages}/>
-
-      <Flag source={country.flag}/>
     </div>
   )
 }
