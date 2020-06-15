@@ -21,6 +21,11 @@ function App() {
     setFilter(event.target.value)
   }
 
+  const setNewFilter = (newFilter) => {
+    console.log(newFilter)
+    setFilter(newFilter)
+  }
+
   const countriesToShow = () => {
     if (filter === '') return countries
 
@@ -35,7 +40,7 @@ function App() {
 
       <SearchForm filter={filter} handleChange={handleFilterChange}/>
 
-      <Countries countries={countriesToShow()} filter={filter}/>
+      <Countries countries={countriesToShow()} filter={filter} countryButtonHandler={setNewFilter}/>
     </div>
   );
 }

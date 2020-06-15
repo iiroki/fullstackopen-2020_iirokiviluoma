@@ -18,11 +18,13 @@ const Notification = ({msg, type}) => {
     )
   }
 
-  return (
-    <div className='notification_bad'>
-      {msg}
-    </div>
+  if (type === notificationTypes.BAD) {
+    return (
+      <div className='notification_bad'>
+        {msg}
+      </div>
     )
+  }
 }
 
 export {Notification, notificationTypes}

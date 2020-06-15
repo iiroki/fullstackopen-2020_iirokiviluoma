@@ -44,10 +44,16 @@ const CountryInDetail = ({country}) => {
   )
 }
 
-const Country = ({name}) => <div>{name}</div>
+const Country = ({name, countryButtonHandler}) => {
+  return (
+    <div>
+      {name}{' '}
+      <button onClick={() => countryButtonHandler(name)}>Show</button>
+    </div>
+  )
+}
 
-const Countries = ({countries, filter}) => {
-  console.log(countries.length, 'countries found.')
+const Countries = ({countries, filter, countryButtonHandler}) => {
   // Ei filtteriä -> ohjeistus
   if (filter === '') {
     return (
@@ -90,7 +96,7 @@ const Countries = ({countries, filter}) => {
     <div>
       <b>Found:</b>
       {countries.map(c =>
-          <Country key={c.name} name={c.name}/>)}
+          <Country key={c.name} name={c.name} countryButtonHandler={countryButtonHandler}/>)}
     </div>
     )
   }
