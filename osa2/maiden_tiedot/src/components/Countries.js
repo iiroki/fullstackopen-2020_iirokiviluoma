@@ -12,7 +12,9 @@ const Weather = ({capital, weather, weatherHandler}) => {
   if (weather === null) {
     weatherBlock =
     <div>
-      <button onClick={() => weatherHandler(capital)}>Load weather info</button>
+      <button onClick={() => weatherHandler(capital)}>
+        Load weather info
+      </button>
     </div>
   }
   else {
@@ -87,7 +89,11 @@ const CountryInDetail = ({country, weather, weatherHandler}) => {
       <br/>
       <Languages languages={country.languages}/>
 
-      <Weather capital={country.capital} weather={weather} weatherHandler={weatherHandler}/>
+      <Weather
+        capital={country.capital}
+        weather={weather}
+        weatherHandler={weatherHandler}/>
+
     </div>
   )
 }
@@ -133,7 +139,10 @@ const Countries = ({countries, filter, countryButtonHandler, weather, weatherHan
   else if (countries.length === 1) {
     return (
       <div>
-        <CountryInDetail country={countries[0]} weather={weather} weatherHandler={weatherHandler}/>
+        <CountryInDetail
+          country={countries[0]}
+          weather={weather}
+          weatherHandler={weatherHandler}/>
       </div>
     )
   }
@@ -144,7 +153,10 @@ const Countries = ({countries, filter, countryButtonHandler, weather, weatherHan
     <div>
       <b>Found:</b>
       {countries.map(c =>
-          <Country key={c.name} name={c.name} countryButtonHandler={countryButtonHandler}/>)}
+          <Country
+            key={c.name}
+            name={c.name}
+            countryButtonHandler={countryButtonHandler}/>)}
     </div>
     )
   }

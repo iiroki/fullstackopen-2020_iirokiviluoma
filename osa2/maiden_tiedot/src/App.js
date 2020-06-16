@@ -63,9 +63,18 @@ function App() {
     <div>
       <h1>FSO2020 - Maiden tiedot</h1>
 
-      <SearchForm filter={filter} handleChange={handleFilterChange} clearHandler={handleClear}/>
+      <SearchForm
+        filter={filter}
+        handleChange={handleFilterChange}
+        clearHandler={handleClear}/>
 
-      <Countries countries={countriesToShow()} filter={filter} countryButtonHandler={setNewFilter} weather={weather} weatherHandler={getWeatherInfo}/>
+      <Countries
+        countries={countriesToShow()}
+        filter={filter}
+        countryButtonHandler={setNewFilter}
+        weather={weather}
+        weatherHandler={getWeatherInfo}/>
+
     </div>
   )
 }
