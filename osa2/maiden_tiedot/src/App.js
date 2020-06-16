@@ -11,18 +11,24 @@ function App() {
   // Haetaan maiden tiedot
   useEffect(() => {
     countryService
-    .getCountries()
-    .then(all => {
-      setCountries(all)
-    })
+      .getCountries()
+      .then(all => {
+        setCountries(all)
+      })
   }, [])
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
   }
 
+  const handleClear = (event) => {
+    event.preventDefault()
+    setNewFilter('')
+    setWeather(null)
+  }
+
   const setNewFilter = (newFilter) => {
-    console.log(newFilter)
+    console.log('Filter set on:', newFilter)
     setFilter(newFilter)
   }
 
@@ -33,18 +39,35 @@ function App() {
       c => c.name.toLowerCase().indexOf(filter.toLowerCase()) !== -1
     )
 
+    if (showedCountries.length > 1) {
+      if (weather !== null) {
+        setWeather(null)
+      }
+    }
+
     return showedCountries
+  }
+
+  const getWeatherInfo = (city) => {
+    console.log('Requested weather:', city)
+    
+    countryService
+      .getWeather(city)
+      .then(weather => {
+        console.log('Promise fulfilled:', weather)
+        setWeather(weather)
+      })
   }
 
   return (
     <div>
       <h1>FSO2020 - Maiden tiedot</h1>
 
-      <SearchForm filter={filter} handleChange={handleFilterChange}/>
+      <SearchForm filter={filter} handleChange={handleFilterChange} clearHandler={handleClear}/>
 
-      <Countries countries={countriesToShow()} filter={filter} countryButtonHandler={setNewFilter} weather={weather}/>
+      <Countries countries={countriesToShow()} filter={filter} countryButtonHandler={setNewFilter} weather={weather} weatherHandler={getWeatherInfo}/>
     </div>
-  );
+  )
 }
 
 export default App

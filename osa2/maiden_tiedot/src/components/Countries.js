@@ -1,9 +1,47 @@
 import React from 'react'
 
-const Weather = ({capital, weather}) => {
+const Weather = ({capital, weather, weatherHandler}) => {
+  const weatherIconStyle = {
+    objectFit: 'cover',
+    width: '100px',
+    height: '100%'
+  }
+
+  let weatherBlock = null
+
+  if (weather === null) {
+    weatherBlock =
+    <div>
+      <button onClick={() => weatherHandler(capital)}>Load weather info</button>
+    </div>
+  }
+  else {
+    weatherBlock =
+    <div>
+      <b>Temperature:</b> {weather.current.temperature} Celcius
+      
+      <br/>
+
+      <b>Wind:</b> {weather.current.wind_speed} mph, 
+      direction {weather.current.wind_dir}
+      
+      <br/>
+
+      <img
+        style={weatherIconStyle}
+        src={weather.current.weather_icons[0]}
+        alt={weather.current.weather_descriptions[0]}/>
+
+      <br/>
+
+      <i>(weatherstack {weather.current.observation_time})</i>
+    </div>
+  }
+
   return (
     <div>
-      <b>Weather in {capital}</b>
+      <h3>Weather in {capital}</h3>
+      {weatherBlock}
     </div>
   )
 }
@@ -27,7 +65,7 @@ const Language = ({name}) => <li>{name}</li>
 const Languages = ({languages}) => {
   return (
     <div>
-      <b>Languages</b>
+      <h3>Languages</h3>
       <ul>
           {languages.map(l =>
             <Language key={l.name} name={l.name}/>)}
@@ -37,7 +75,7 @@ const Languages = ({languages}) => {
   )
 }
 
-const CountryInDetail = ({country, weather}) => {
+const CountryInDetail = ({country, weather, weatherHandler}) => {
   return (
     <div>
       <h2>{country.name}</h2>
@@ -49,7 +87,7 @@ const CountryInDetail = ({country, weather}) => {
       <br/>
       <Languages languages={country.languages}/>
 
-      <Weather capital={country.capital} weather={weather}/>
+      <Weather capital={country.capital} weather={weather} weatherHandler={weatherHandler}/>
     </div>
   )
 }
@@ -63,7 +101,7 @@ const Country = ({name, countryButtonHandler}) => {
   )
 }
 
-const Countries = ({countries, filter, countryButtonHandler, weather}) => {
+const Countries = ({countries, filter, countryButtonHandler, weather, weatherHandler}) => {
   // Ei filtteriä -> ohjeistus
   if (filter === '') {
     return (
@@ -95,7 +133,7 @@ const Countries = ({countries, filter, countryButtonHandler, weather}) => {
   else if (countries.length === 1) {
     return (
       <div>
-        <CountryInDetail country={countries[0]} weather={weather}/>
+        <CountryInDetail country={countries[0]} weather={weather} weatherHandler={weatherHandler}/>
       </div>
     )
   }
