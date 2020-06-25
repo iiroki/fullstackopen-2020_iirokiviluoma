@@ -16,7 +16,7 @@ const App = () => {
   const [notificationMsg, setNotificationMsg] = useState(null)
   const [notificationType, setNotificationType] = useState(notificationTypes.GOOD)
 
-  const notificationTime = 2500
+  const notificationTime = 3000
 
   // Haetaan tiedot palvelimelta.
   useEffect(() => {
