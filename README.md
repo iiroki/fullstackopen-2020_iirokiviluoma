@@ -11,6 +11,7 @@ osa2
     kurssitiedot
     puhelinluettelo
     maiden tiedot
-osa3 (omassa Git-repossa; linkki kansiossa)
-    puhelinluettelo backend
+osa3
+    puhelinluettelo backend (omassa Git-repossa; linkki kansiossa)
+    puhelinluettelo frontend
 ```

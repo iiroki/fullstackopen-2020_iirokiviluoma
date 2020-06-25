@@ -1,2 +1,2 @@
-### Tämän osan tehtäväsarja omassa Git-repossa:
-[Linkki osa3:n Git-repoon](https://github.com/iirokiviluoma/fullstackopen-2020_iirokiviluoma_osa3)
+### Tämän osan backend omassa Git-repossa:
+[Linkki osa3:n backend Git-repoon](https://github.com/iirokiviluoma/fullstackopen-2020_iirokiviluoma_osa3)
