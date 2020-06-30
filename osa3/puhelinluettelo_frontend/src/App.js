@@ -70,6 +70,9 @@ const App = () => {
           resetFields()
           showNotification(`Modified: ${changedPerson.name}`, notificationTypes.GOOD)
         })
+        .catch(error => {
+          showNotification(`Error: Name must be at least 3 characters and number 8 characters long!`, notificationTypes.BAD)
+        })
       
       return
     }
