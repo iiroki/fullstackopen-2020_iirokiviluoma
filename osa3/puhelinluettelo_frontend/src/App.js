@@ -49,11 +49,6 @@ const App = () => {
     // Ei uudelleenohjausta
     event.preventDefault()
 
-    // Tyhjiä kenttiä ei sallita!
-    if (newName.length === 0 || newNumber.length === 0) {
-      return
-    }
-
     // TODO: Olemassa olevan numeron muokkaus!
     if (persons.some(p => p.name === newName)) {
       // Jos halutaan korvata vanha numero uudella.
@@ -86,6 +81,9 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         resetFields()
         showNotification(`Added: ${newName}`, notificationTypes.GOOD)
+      })
+      .catch(error => {
+        showNotification(`Error: Name must be at least 3 characters and number 8 characters long!`, notificationTypes.BAD)
       })
   }
 
