@@ -55,7 +55,29 @@ const App = () => {
     }
 
     // TODO: Olemassa olevan numeron muokkaus!
-    // ...
+    if (persons.some(p => p.name === newName)) {
+      // Jos halutaan korvata vanha numero uudella.
+      if (!window.confirm(`${newName} is already in the phonebook!\nReplace the old number?`)) {
+        return
+      }
+
+      // Suoritetaan etsintä toisen kerran, mikä hieman turhaa.
+      const person = persons.find(p => p.name === newName)
+      const changedPerson = {...person, number: newNumber}
+
+      // Muokataan henkilön tietoja ja huolehditaan sovellukset tilasta.
+      personService
+        .modifyPerson(changedPerson.id, changedPerson)
+        .then(modifiedPerson => {
+          setPersons(persons.map(
+            p => p.id !== modifiedPerson.id ? p : modifiedPerson
+          ))
+          resetFields()
+          showNotification(`Modified: ${changedPerson.name}`, notificationTypes.GOOD)
+        })
+      
+      return
+    }
 
     // Lisätään uusi henkilö palvelimelle
     personService
@@ -63,9 +85,8 @@ const App = () => {
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
         resetFields()
+        showNotification(`Added: ${newName}`, notificationTypes.GOOD)
       })
-
-    showNotification(`Added: ${newName}`, notificationTypes.GOOD)
   }
 
   const deletePerson = (id) => {
@@ -80,7 +101,8 @@ const App = () => {
     personService
       .deletePerson(id)
       .then(response => {
-        console.log(response)
+        // Asetetaan tila oikeaksi (poiston jälkeen)
+        showNotification(`Deleted: ${target.name}`, notificationTypes.GOOD)    
       })
       .catch(error => {
         showNotification(`Error: ${target.name} is already deleted from server.`,
@@ -88,9 +110,7 @@ const App = () => {
         return
       })
 
-    //... ja asetetaan tila oikeaksi (poiston jälkeen)
-    setPersons(persons.filter(p => p.id !== id))
-    showNotification(`Deleted: ${target.name}`, notificationTypes.GOOD)
+      setPersons(persons.filter(p => p.id !== id))
   }
 
   const handleNameChange = (event) => {
