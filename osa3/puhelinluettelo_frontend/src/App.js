@@ -61,7 +61,6 @@ const App = () => {
     personService
       .appendNew({name: newName, number: newNumber})
       .then(returnedPerson => {
-        debugger
         setPersons(persons.concat(returnedPerson))
         resetFields()
       })
