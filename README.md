@@ -14,4 +14,6 @@ osa2
 osa3
     puhelinluettelo backend (omassa Git-repossa; linkki kansiossa)
     puhelinluettelo frontend
+osa4
+	blogilista
 ```
