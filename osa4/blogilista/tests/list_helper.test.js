@@ -47,7 +47,7 @@ const listMultipleBlogs = [
   {
     _id: '5a422ba71b54a676234d17fb',
     title: 'Testing for dummies',
-    author: 'Tuija Testinainen',
+    author: 'Heikki Testihenkilö',
     url: 'www.testiblogi5.com',
     likes: 18,
     __v: 0
@@ -66,11 +66,22 @@ const blogMostLikes =
   {
     _id: '5a422ba71b54a676234d17fb',
     title: 'Testing for dummies',
-    author: 'Tuija Testinainen',
+    author: 'Heikki Testihenkilö',
     url: 'www.testiblogi5.com',
     likes: 18,
     __v: 0
   }
+
+const blogMostLikesOneBlog =
+  {
+    author: "Teppo Testaaja",
+    blogs: 1
+  }
+
+const mostBlogs = {
+  author: "Heikki Testihenkilö",
+  blogs: 2
+}
 
 test('Dummy returns one', () => {
   const blogs = []
@@ -110,5 +121,22 @@ describe('Favorite blogs', () => {
   test('Favorite blog from multiple blogs is the one with most likes', () => {
     const result = listHelper.favoriteBlog(listMultipleBlogs)
     expect(result).toEqual(blogMostLikes)
+  })
+})
+
+describe('Most blogs', () => {
+  test('Most blogs from empty list', () => {
+    const result = listHelper.mostBlogs([])
+    expect(result).toEqual(0)
+  })
+
+  test('Most blogs from single blog list', () => {
+    const result = listHelper.mostBlogs(listOneBlog)
+    expect(result).toEqual(blogMostLikesOneBlog)
+  })
+
+  test('Most blogs from multiple blogs', () => {
+    const result = listHelper.mostBlogs(listMultipleBlogs)
+    expect(result).toEqual(mostBlogs)
   })
 })
