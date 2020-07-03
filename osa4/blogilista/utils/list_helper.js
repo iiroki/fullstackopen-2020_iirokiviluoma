@@ -21,21 +21,46 @@ const mostBlogs = (blogs) => {
   if (blogs.length === 0) return 0
 
   // Lasketaan kaikkien bloggaajien blogit
-  const test = collection.countBy(blogs, 'author')
+  const bloggerBlogs= collection.countBy(blogs, 'author')
   // Etsitään kenellä oli eniten blogeja
-  const reducer = (prev, cur) => test[cur] > test[prev] ? cur : prev
-  const key = Object.keys(test).reduce(reducer)
+  const reducer = (prev, cur) => bloggerBlogs[cur] > bloggerBlogs[prev] ? cur : prev
+  const key = Object.keys(bloggerBlogs).reduce(reducer)
 
   // Muotoillaan vastais nätisti
   return {
       author: key,
-      blogs: test[key]
+      blogs: bloggerBlogs[key]
   }
+}
+
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) return 0
+
+  const bloggerBlogs = collection.groupBy(blogs, 'author')
+  var bloggerLikes = []
+
+  collection.forEach(bloggerBlogs, (blogs, blogger) => {
+    var likes = 0
+    // Summataan kirjoittajan blogien tykkäykset
+    blogs.forEach(blog => {
+      likes = likes + blog.likes
+    })
+    // Tallennetaan kirjoittaja ja tykkäykset
+    bloggerLikes.push(
+      {
+        author: blogger,
+        likes: likes
+      })
+  })
+
+  const reducer = (prev, cur) => cur.likes > prev.likes ? cur : prev
+  return bloggerLikes.reduce(reducer)
 }
 
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }

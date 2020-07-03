@@ -72,15 +72,28 @@ const blogMostLikes =
     __v: 0
   }
 
-const blogMostLikesOneBlog =
+const mostBlogsOneBlog =
   {
     author: "Teppo Testaaja",
     blogs: 1
   }
 
-const mostBlogs = {
+const mostBlogs =
+{
   author: "Heikki Testihenkilö",
   blogs: 2
+}
+
+const bloggerMostLikes =
+{
+  author: 'Heikki Testihenkilö',
+  likes: 30
+}
+
+const bloggerMostLikesOneBlog =
+{
+  author: "Teppo Testaaja",
+  likes: 5
 }
 
 test('Dummy returns one', () => {
@@ -91,52 +104,54 @@ test('Dummy returns one', () => {
 })
 
 describe('Total likes', () => {
-  test('Empty list has total likes of zero', () => {
+  test('Empty list: Total likes equals zero', () => {
     const result = listHelper.totalLikes([])
     expect(result).toBe(0)
   })
 
-  test('One blog has total likes equal to its likes', () => {
+  test('One blog: Total likes = the only blog\'s likes', () => {
     const result = listHelper.totalLikes(listOneBlog)
     expect(result).toBe(listOneBlog[0].likes)
   })
 
-  test('Total likes of multiple blogs is calculated right', () => {
+  test('Multiple blogs: Total likes of the blogs is calculated correctly', () => {
     const result = listHelper.totalLikes(listMultipleBlogs)
     expect(result).toBe(47)
   })
 })
 
 describe('Favorite blogs', () => {
-  test('Empty list has no favorite blog', () => {
-    const result = listHelper.favoriteBlog([])
-    expect(result).toEqual(0)
-  })
-
-  test('One blog must be favorite blog', () => {
+  test('One blog: The only blog is favorite', () => {
     const result = listHelper.favoriteBlog(listOneBlog)
     expect(result).toEqual(listOneBlog[0])
   })
 
-  test('Favorite blog from multiple blogs is the one with most likes', () => {
+  test('Multiple blogs: Favorite blog is the one with most likes', () => {
     const result = listHelper.favoriteBlog(listMultipleBlogs)
     expect(result).toEqual(blogMostLikes)
   })
 })
 
 describe('Most blogs', () => {
-  test('Most blogs from empty list', () => {
-    const result = listHelper.mostBlogs([])
-    expect(result).toEqual(0)
-  })
-
-  test('Most blogs from single blog list', () => {
+  test('One blog: Blogger with the only blog has most blogs.', () => {
     const result = listHelper.mostBlogs(listOneBlog)
-    expect(result).toEqual(blogMostLikesOneBlog)
+    expect(result).toEqual(mostBlogsOneBlog)
   })
 
-  test('Most blogs from multiple blogs', () => {
+  test('Multiple blogs: Blogger with most blogs is returned correctly', () => {
     const result = listHelper.mostBlogs(listMultipleBlogs)
     expect(result).toEqual(mostBlogs)
+  })
+})
+
+describe('Most likes', () => {
+  test('One blog: Blogger with most likes is the only blogger', () => {
+    const result = listHelper.mostLikes(listOneBlog)
+    expect(result).toEqual(bloggerMostLikesOneBlog)
+  })
+
+  test('Multiple blogs: Blogger with most likes is returned correctly', () => {
+    const result = listHelper.mostLikes(listMultipleBlogs)
+    expect(result).toEqual(bloggerMostLikes)
   })
 })
