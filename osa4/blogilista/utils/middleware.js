@@ -8,6 +8,18 @@ const requestLogger = (request, response, next) => {
   next()
 }
 
+// Virheidenkäsittelijä
+const errorHandler = (error, request, respone, next) => {
+  logger.error(error.message)
+
+  if (error.name === 'CastError' && error.kind === 'ObjectId') {
+    return respone.status(400).send({ error: 'Bad id'})
+  }
+  else if (error.name === 'ValidationError') {
+    return respone.status(400).JSON({ error: error.message})
+  }
+}
+
 module.exports = {
   requestLogger
 }

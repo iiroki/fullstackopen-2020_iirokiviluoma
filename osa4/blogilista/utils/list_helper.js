@@ -26,7 +26,7 @@ const mostBlogs = (blogs) => {
   const reducer = (prev, cur) => bloggerBlogs[cur] > bloggerBlogs[prev] ? cur : prev
   const key = Object.keys(bloggerBlogs).reduce(reducer)
 
-  // Muotoillaan vastais nätisti
+  // Muotoillaan vastaus nätisti
   return {
       author: key,
       blogs: bloggerBlogs[key]
