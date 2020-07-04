@@ -9,11 +9,24 @@ blogsRouter.get('/', (request, response) => {
     })
 })
 
+blogsRouter.get('/:id', (request, response, next) => {
+  Blog.findById(request.params.id)
+    .then(blog => {
+      if (blog) {
+        response.json(blog)
+      }
+      else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
+})
+
 // Lisätään uusi blogi
 blogsRouter.post('/', (request, response, next) => {
-  const blog = new Blog(request.body)
+  const newBlog = new Blog(request.body)
 
-  blog.save()
+  newBlog.save()
     .then(result => {
       response.status(201).json(result)
     })

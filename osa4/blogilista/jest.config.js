@@ -1,3 +1,5 @@
 module.exports = {
-  testEnvironment: 'node'
+  testEnvironment: 'node',
+  verbose: true,
+  testPathIgnorePatterns: ["tests/list_helper.test.js"]
 }
