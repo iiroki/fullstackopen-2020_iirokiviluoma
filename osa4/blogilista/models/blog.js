@@ -14,7 +14,10 @@ const blogSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  likes: Number
+  likes: {
+    type: Number,
+    default: 0
+  }
 })
 
 module.exports = mongoose.model('Blog', blogSchema)
