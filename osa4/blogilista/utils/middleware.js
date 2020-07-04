@@ -16,10 +16,11 @@ const errorHandler = (error, request, respone, next) => {
     return respone.status(400).send({ error: 'Bad id'})
   }
   else if (error.name === 'ValidationError') {
-    return respone.status(400).JSON({ error: error.message})
+    return respone.status(400).json({ error: error.message})
   }
 }
 
 module.exports = {
-  requestLogger
+  requestLogger,
+  errorHandler
 }

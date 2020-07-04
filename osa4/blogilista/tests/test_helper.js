@@ -1,5 +1,6 @@
 const Blog = require('../models/blog')
 
+// Kovakoodatut blogit testejä varten
 const initialBlogs = [
   {
     title: 'Testiautomaatio',
@@ -39,6 +40,13 @@ const initialBlogs = [
   }
 ]
 
+// Kaikki tietokannan blogit JSON-muodossa
+const blogsInDb = async () => {
+  const blogs = await Blog.find({})
+  return blogs.map(blog => blog.toJSON())
+}
+
 module.exports = {
-  initialBlogs
+  initialBlogs,
+  blogsInDb
 }

@@ -27,4 +27,6 @@ app.use(middleware.requestLogger)
 // Käytetään omaa reittien käsittelijää
 app.use('/api/blogs', blogsRouter)
 
+app.use(middleware.errorHandler)
+
 module.exports = app
