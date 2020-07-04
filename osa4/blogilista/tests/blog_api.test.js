@@ -31,6 +31,11 @@ test('Specific blog is found within returned blogs', async () => {
   expect(titles).toContain(specificTitle)
 })
 
+test('Returned blogs have id-attribute (NOT _id)', async () => {
+  const response = await api.get('/api/blogs')
+  expect(response.body[0].id).toBeDefined()
+})
+
 afterAll(() => {
   // Suljetaan tietokantayhteys testien jälkeen
   mongoose.connection.close()
