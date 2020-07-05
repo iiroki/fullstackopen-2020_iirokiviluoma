@@ -1,9 +1,10 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 // Haetaan kaikki blogit
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({})
+  const blogs = await Blog.find({}).populate('user', { blogs: 0})
   response.json(blogs)
 })
 
@@ -22,8 +23,25 @@ blogsRouter.get('/:id', async (request, response, next) => {
 
 // Lisätään uusi blogi
 blogsRouter.post('/', async (request, response, next) => {
-  const blog = new Blog(request.body)
+  const reqBody = request.body
+
+  const user = await User.findById(reqBody.userId)
+
+  if (!user) {
+    return response.status(400).send({ error: 'userId not found.'})
+  }
+
+  const blog = new Blog({
+    title: reqBody.title,
+    author: reqBody.author,
+    url: reqBody.url,
+    likes: reqBody.likes,
+    user: user.id
+  })
+
   const savedBlog = await blog.save()
+  user.blogs = user.blogs.concat(savedBlog.id)
+  await user.save()
   response.status(201).json(savedBlog)
 })
 
