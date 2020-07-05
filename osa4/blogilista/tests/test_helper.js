@@ -40,6 +40,12 @@ const initialBlogs = [
   }
 ]
 
+const blogToAdd = {
+  title: 'Testilisäys',
+  author: 'Teppo Testaaja',
+  url: 'www.testiblogix.com'
+}
+
 // Kaikki tietokannan blogit JSON-muodossa
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
@@ -47,8 +53,7 @@ const blogsInDb = async () => {
 }
 
 const validNonExistingId = async () => {
-  const blog = new Blog(
-    {
+  const blog = new Blog({
       author: 'fortesting',
       title: 'fortesting',
       url: 'fortesting'
@@ -62,6 +67,7 @@ const validNonExistingId = async () => {
 
 module.exports = {
   initialBlogs,
+  blogToAdd,
   blogsInDb,
   validNonExistingId
 }
