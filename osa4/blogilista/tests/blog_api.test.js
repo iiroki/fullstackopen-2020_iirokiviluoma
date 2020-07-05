@@ -13,7 +13,7 @@ beforeEach(async () => {
 })
 
 // Blogien hakemiseen liittyvät testit
-describe.skip('Fetching all blogs from database', () => {
+describe('Fetching all blogs from database', () => {
   test('Blogs are returned as JSON', async () => {
   await api
     .get('/api/blogs')
@@ -72,14 +72,56 @@ describe('Fetching specific blog from database', () => {
 // Blogien lisäämiseen liittyvät testit
 describe('Adding blogs to database', () => {
   test('Succeeds with valid data', async () => {
+    const blog = {
+      title: 'Testilisäys',
+      author: 'Teppo Testaaja',
+      url: 'www.testiblogix.com',
+      likes: 5
+    }
+
     await api
       .post('/api/blogs')
-      .send(helper.blogToAdd)
+      .send(blog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
     
     const blogsAtEnd = await helper.blogsInDb()
+    // Tietokannan blogien määrä kasvaa yhdellä
     expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
+    // Lisätty blogi löytyy tietokannasta
+    const blogTitles = blogsAtEnd.map(b => b.title)
+    expect(blogTitles).toContain(blog.title)
+  })
+
+  test('Statuscode 400 with invalid data', async () => {
+    const blog = {
+      title: 'Invalid',
+      author: 'Blog',
+      // Ei urlia
+      likes: 10
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(blog)
+      .expect(400)
+  })
+
+  test('Likes are defaulted to 0 when blog has no value for likes', async () => {
+    const blog = {
+      title: "Blog with no likes",
+      author: 'Pls Like',
+      url: 'www.likepls.com'
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(blog)
+      .expect(201)
+      .expect(response => {
+        // Lisätyn blogin tykkäykset = 0
+        expect(response.body.likes).toBe(0)
+      })
   })
 })
 
