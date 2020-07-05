@@ -126,8 +126,8 @@ describe('Adding blogs to database', () => {
 })
 
 // Blogin poistoon liittyvät testit
-describe.only('Removing blogs from database', () => {
-  test('Deleting blogs with valid id', async () => {
+describe('Removing blogs from database', () => {
+  test('Deleting blog with valid id', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToRemove = blogsAtStart[0]
 
@@ -158,6 +158,59 @@ describe.only('Removing blogs from database', () => {
       .expect(400)
   })
 })
+
+describe('Modifying blogs in database', () => {
+  test('Modifying blog with valid id', async () => {
+    const [blogToUpdate, blogNotUpdated] = await helper.blogUpdatedLikes()
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(blogToUpdate)
+      .expect(200)
+      .expect(response => {
+
+      })
+
+    const blogsAtEnd = await helper.blogsInDb()
+    // Päivitetty blogi löytyy tietokannasta
+    expect(blogsAtEnd).toContainEqual(blogToUpdate)
+    // Päivittämätön blogi ei enää löydy tietokannasta
+    expect(blogsAtEnd).not.toContainEqual(blogNotUpdated)
+  })
+
+  test('Statuscode 404 with valid non-existing id', async () => {
+    const id = await helper.validNonExistingId()
+    const [blogToUpdate] = await helper.blogUpdatedLikes()
+
+    await api
+    .put(`/api/blogs/${id}`)
+    .send(blogToUpdate)
+    .expect(404)
+  })
+
+  test('Statuscode 400 with invalid id', async () => {
+    const id = helper.invalidId
+    const [blogToUpdate] = await helper.blogUpdatedLikes()
+
+    await api
+    .put(`/api/blogs/${id}`)
+    .send(blogToUpdate)
+    .expect(400)
+  })
+
+  test('Statuscode 400 with invalid data to update with', async () => {
+    const [blogToUpdate] = await helper.blogUpdatedLikes()
+    // Poistetaa title ja url
+    delete blogToUpdate.title
+    delete blogToUpdate.url
+
+    await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(blogToUpdate)
+    .expect(400)
+  })
+})
+
 
 afterAll(() => {
   // Suljetaan tietokantayhteys testien jälkeen

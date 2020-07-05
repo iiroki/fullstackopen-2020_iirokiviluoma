@@ -46,6 +46,15 @@ const blogsInDb = async () => {
   return blogs.map(blog => blog.toJSON())
 }
 
+const blogUpdatedLikes = async () => {
+  const blogsAtStart = await blogsInDb()
+  const blogNotUpdated = blogsAtStart[0]
+  // Kopio päivitettävästä blogista
+  const blogToUpdate = Object.assign({}, blogNotUpdated)
+  blogToUpdate.likes += 1
+  return [blogToUpdate, blogNotUpdated]
+}
+
 const validNonExistingId = async () => {
   const blog = new Blog({
       author: 'fortesting',
@@ -64,6 +73,7 @@ const invalidId = '1nv4l1d1d'
 module.exports = {
   initialBlogs,
   blogsInDb,
+  blogUpdatedLikes,
   validNonExistingId,
   invalidId
 }
