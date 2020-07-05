@@ -22,7 +22,7 @@ const blogSchema = mongoose.Schema({
 // Muutetaan Mongoose-oliot käytännöllisempään muotoon
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = document._id.toString()
+    returnedObject.id = returnedObject._id.toString()
     // Näillä tiedoilla ei tehdä sovelluksen kannalta mitään
     delete returnedObject._id
     delete returnedObject.__v

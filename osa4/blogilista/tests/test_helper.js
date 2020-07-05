@@ -40,6 +40,11 @@ const initialBlogs = [
   }
 ]
 
+// Kovakoodatut käyttäjätilit testejä varten
+const initialUsers = [
+
+]
+
 // Kaikki tietokannan blogit JSON-muodossa
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
