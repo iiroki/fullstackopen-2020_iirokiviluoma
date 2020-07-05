@@ -200,7 +200,7 @@ describe('Modifying blogs in database', () => {
 
   test('Statuscode 400 with invalid data to update with', async () => {
     const [blogToUpdate] = await helper.blogUpdatedLikes()
-    // Poistetaa title ja url
+    // Poistetaan title ja url
     delete blogToUpdate.title
     delete blogToUpdate.url
 
