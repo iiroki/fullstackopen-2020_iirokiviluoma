@@ -4,7 +4,9 @@ const User = require('../models/user')
 
 // Haetaan kaikki blogit
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user', { blogs: 0})
+  const blogs = await Blog
+    .find({}).populate('user', { blogs: 0})  // Piilotetaan käyttäjän blogit
+
   response.json(blogs)
 })
 
@@ -27,6 +29,7 @@ blogsRouter.post('/', async (request, response, next) => {
 
   const user = await User.findById(reqBody.userId)
 
+  // Väliaikainen tarkistus, poistetaan 4.19-osassa!
   if (!user) {
     return response.status(400).send({ error: 'userId not found.'})
   }
@@ -39,6 +42,7 @@ blogsRouter.post('/', async (request, response, next) => {
     user: user.id
   })
 
+  // Tallenetaan blogiin ja käyttäjään tiedot blogin kirjoittajasta
   const savedBlog = await blog.save()
   user.blogs = user.blogs.concat(savedBlog.id)
   await user.save()

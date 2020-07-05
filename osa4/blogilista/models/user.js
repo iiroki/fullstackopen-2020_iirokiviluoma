@@ -6,7 +6,7 @@ const userSchema = mongoose.Schema({
     type: String,
     minlength: 3,
     required: true,
-    unique: true
+    unique: true  // Ei sallita duplikaatteja
   },
   passwordHash: {
     type: String,  // Salasanan validointi suoritetaan muualla!
@@ -15,13 +15,11 @@ const userSchema = mongoose.Schema({
   name: {
     type: String
   },
-  blogs: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Blog',
-      default: []
-    }
-  ]
+  blogs: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Blog',
+    default: []
+  }]
 })
 
 userSchema.set('toJSON', {
