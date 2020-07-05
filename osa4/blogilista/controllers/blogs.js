@@ -38,4 +38,26 @@ blogsRouter.delete('/:id', async (request, response, next) => {
   }
 })
 
+// Blogin muokkaaminen
+blogsRouter.put('/:id', async (request, response, next) => {
+  const reqBody = request.body
+
+  const blog = {
+    title: reqBody.title,
+    author: reqBody.author,
+    url: reqBody.url,
+    likes: reqBody.likes
+  }
+
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog,
+    {new: true, runValidators: true})
+
+  if (updatedBlog) {
+    response.json(updatedBlog)
+  }
+  else {
+    response.status(404).end()
+  }
+})
+
 module.exports = blogsRouter
