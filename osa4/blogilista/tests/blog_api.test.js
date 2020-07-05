@@ -52,7 +52,7 @@ describe('Fetching specific blog from database', () => {
     expect(result.body).toEqual(blog)
   })
 
-  test('Statuscode 404 with non-existing valid id', async () => {
+  test('Statuscode 404 with valid non-existing id', async () => {
     const id = await helper.validNonExistingId()
 
     const result = await api
@@ -61,7 +61,7 @@ describe('Fetching specific blog from database', () => {
   })
 
   test('Statuscode 400 with invalid id', async () => {
-    const id = '1nv4l1d1d'
+    const id = helper.invalidId
 
     const result = await api
     .get(`/api/blogs/${id}`)
@@ -69,10 +69,10 @@ describe('Fetching specific blog from database', () => {
   })
 })
 
-// Blogien lisäämiseen liittyvät testit
+// Blogin lisäämiseen liittyvät testit
 describe('Adding blogs to database', () => {
   test('Succeeds with valid data', async () => {
-    const blog = {
+    const blogToAdd = {
       title: 'Testilisäys',
       author: 'Teppo Testaaja',
       url: 'www.testiblogix.com',
@@ -81,7 +81,7 @@ describe('Adding blogs to database', () => {
 
     await api
       .post('/api/blogs')
-      .send(blog)
+      .send(blogToAdd)
       .expect(201)
       .expect('Content-Type', /application\/json/)
     
@@ -90,11 +90,11 @@ describe('Adding blogs to database', () => {
     expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
     // Lisätty blogi löytyy tietokannasta
     const blogTitles = blogsAtEnd.map(b => b.title)
-    expect(blogTitles).toContain(blog.title)
+    expect(blogTitles).toContain(blogToAdd.title)
   })
 
   test('Statuscode 400 with invalid data', async () => {
-    const blog = {
+    const blogToAdd = {
       // Ei titleä
       author: 'Blog',
       // Ei urlia
@@ -103,12 +103,12 @@ describe('Adding blogs to database', () => {
 
     await api
       .post('/api/blogs')
-      .send(blog)
+      .send(blogToAdd)
       .expect(400)
   })
 
   test('Likes are defaulted to 0 when blog has no value for likes', async () => {
-    const blog = {
+    const blogToAdd = {
       title: "Blog with no likes",
       author: 'Pls Like',
       url: 'www.likepls.com'
@@ -116,12 +116,46 @@ describe('Adding blogs to database', () => {
 
     await api
       .post('/api/blogs')
-      .send(blog)
+      .send(blogToAdd)
       .expect(201)
       .expect(response => {
         // Lisätyn blogin tykkäykset = 0
         expect(response.body.likes).toBe(0)
       })
+  })
+})
+
+// Blogin poistoon liittyvät testit
+describe.only('Removing blogs from database', () => {
+  test('Deleting blogs with valid id', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToRemove = blogsAtStart[0]
+
+    await api
+      .delete(`/api/blogs/${blogToRemove.id}`)
+      .expect(204)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    // Tietokannan blogien määrä vähenee yhdellä
+    expect(blogsAtEnd.length).toBe(blogsAtStart.length - 1)
+    // Poistettua blogia ei löydy tietokannasta
+    expect(blogsAtEnd).not.toContain(blogToRemove)
+  })
+
+  test('Statuscode 404 with valid non-existing id', async () => {
+    const id = await helper.validNonExistingId()
+
+    await api
+      .delete(`/api/blogs/${id}`)
+      .expect(404)
+  })
+
+  test('Statuscode 400 with invalid id', async () => {
+    const id = helper.invalidId
+
+    await api
+      .delete(`/api/blogs/${id}`)
+      .expect(400)
   })
 })
 

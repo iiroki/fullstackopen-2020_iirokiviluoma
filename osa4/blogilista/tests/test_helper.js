@@ -59,8 +59,11 @@ const validNonExistingId = async () => {
   return blog._id.toString()
 }
 
+const invalidId = '1nv4l1d1d'
+
 module.exports = {
   initialBlogs,
   blogsInDb,
-  validNonExistingId
+  validNonExistingId,
+  invalidId
 }

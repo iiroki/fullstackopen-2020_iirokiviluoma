@@ -8,6 +8,7 @@ const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
+mongoose.set('useFindAndModify', false)
 const url = config.MONGODB_URL
 
 // Yhdistetään MongoDB-tietokantaan
