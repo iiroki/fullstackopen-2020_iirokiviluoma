@@ -40,11 +40,6 @@ const initialBlogs = [
   }
 ]
 
-// Kovakoodatut käyttäjätilit testejä varten
-const initialUsers = [
-
-]
-
 // Kaikki tietokannan blogit JSON-muodossa
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
@@ -60,7 +55,7 @@ const blogUpdatedLikes = async () => {
   return [blogToUpdate, blogNotUpdated]
 }
 
-const validNonExistingId = async () => {
+const validNonExistingBlogId = async () => {
   const blog = new Blog({
       author: 'fortesting',
       title: 'fortesting',
@@ -73,12 +68,27 @@ const validNonExistingId = async () => {
   return blog._id.toString()
 }
 
+// Kovakoodatut käyttäjätilit testejä varten
+const initialUsers = [
+  {
+    username: 'fortesting',
+    passwordHash: 'testhash',
+    name: 'Dumb'
+  },
+  {
+    username: 'testman',
+    passwordHash: 'testhash',
+    name: 'Tester'
+  }
+]
+
 const invalidId = '1nv4l1d1d'
 
 module.exports = {
   initialBlogs,
   blogsInDb,
   blogUpdatedLikes,
-  validNonExistingId,
+  validNonExistingBlogId,
+  initialUsers,
   invalidId
 }

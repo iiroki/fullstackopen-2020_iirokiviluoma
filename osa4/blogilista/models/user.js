@@ -9,7 +9,8 @@ const userSchema = mongoose.Schema({
     unique: true
   },
   passwordHash: {
-    type: String  // Salasanan validointi suoritetaan muualla!
+    type: String,  // Salasanan validointi suoritetaan muualla!
+    required: true
   },
   name: {
     type: String
