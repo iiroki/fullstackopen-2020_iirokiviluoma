@@ -95,7 +95,7 @@ describe('Adding blogs to database', () => {
 
   test('Statuscode 400 with invalid data', async () => {
     const blog = {
-      title: 'Invalid',
+      // Ei titleä
       author: 'Blog',
       // Ei urlia
       likes: 10
