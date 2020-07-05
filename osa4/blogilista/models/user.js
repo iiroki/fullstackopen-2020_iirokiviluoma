@@ -4,12 +4,12 @@ const uValidator = require('mongoose-unique-validator')
 const userSchema = mongoose.Schema({
   username: {
     type: String,
+    minlength: 3,
     required: true,
     unique: true
   },
   passwordHash: {
-    type: String,
-    required: true
+    type: String  // Salasanan validointi suoritetaan muualla!
   },
   name: {
     type: String

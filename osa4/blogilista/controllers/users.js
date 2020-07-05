@@ -11,8 +11,14 @@ usersRouter.get('/', async (request, response) => {
 // Lisätään käyttäjä
 usersRouter.post('/', async (request, response, next) => {
   const reqBody = request.body
+
+  if (reqBody.password.length < 3) {
+    response.status(400).send({ error: 'password must be at least 3 characters.'})
+  }
+
+
   const saltRounds = 10
-  const passwordHash = await bcrypt.hash(reqBody.passwordHash, saltRounds)
+  const passwordHash = await bcrypt.hash(reqBody.password, saltRounds)
 
   const user = new User({
     username: reqBody.username,
