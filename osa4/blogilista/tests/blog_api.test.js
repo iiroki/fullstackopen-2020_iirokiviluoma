@@ -23,13 +23,13 @@ const initializeBlogs = async () => {
 
   // Haetaan käyttäjien login-tokenit
   for (let user of helper.initialUsers) {
-    loginTokens = loginTokens.concat(await getLoginToken(user))
+    loginTokens = loginTokens.concat(await getTokenAuth(user))
   }
   const max = loginTokens.length - 1
 
   // Lisätään blogit tietokantaan tokenien avulla.
   for (let blog of helper.initialBlogs) {
-    const auth = 'Bearer ' + loginTokens[Math.floor(Math.random() * max)]
+    const auth = loginTokens[Math.floor(Math.random() * max)]
     
     await api
       .post('/api/blogs')
@@ -38,14 +38,14 @@ const initializeBlogs = async () => {
   }
 }
 
-const getLoginToken = async (user) => {
+const getTokenAuth = async (user) => {
   const logInData = {
     username: user.username,
     password: user.password
   }
 
   const response = await api.post('/api/login').send(logInData)
-  return response.body.token
+  return 'BEARER ' + response.body.token
 }
 
 describe.skip('User tests', () => {
@@ -243,7 +243,7 @@ describe.only('Blog tests', () => {
   })
 
   // Blogin lisäämiseen liittyvät testit
-  describe.only('Adding blog to database', () => {
+  describe('Adding blog to database', () => {
     test('Succeeds with valid data', async () => {
       const blogsAtStart = await helper.blogsInDb()
 
@@ -254,8 +254,7 @@ describe.only('Blog tests', () => {
         likes: 5
       }
 
-      const token = await getLoginToken(helper.initialUsers[0])
-      const auth = 'Bearer ' + token
+      const auth = await getTokenAuth(helper.initialUsers[0])
 
       await api
         .post('/api/blogs')
@@ -270,53 +269,66 @@ describe.only('Blog tests', () => {
       expect(titles).toContain(blogToAdd.title)
     })
 
-    test('Statuscode 400 with invalid data', async () => {
-      /*const blogToAdd = {
+    test('Fails with 401 when invalid token', async () => {
+      const blogToAdd = {
+        title: 'Testilisäys',
+        author: 'Teppo Testaaja',
+        url: 'www.testiblogix.com',
+        likes: 5
+      }
+
+      const auth = helper.invalidId
+
+      await api
+        .post('/api/blogs')
+        .set('Authorization', auth)
+        .send(blogToAdd)
+        .expect(401)
+    })
+
+    test('Fails with 400 when provided invalid data', async () => {
+      const blogToAdd = {
         // Ei titleä
         author: 'Blog',
         // Ei urlia
         likes: 10
       }
 
+      const auth = await getTokenAuth(helper.initialUsers[0])
+
       await api
         .post('/api/blogs')
+        .set('Authorization', auth)
         .send(blogToAdd)
-        .expect(400)*/
+        .expect(400)
     })
 
     test('Likes are defaulted to 0 when blog has no value for likes', async () => {
-      /*const blogToAdd = {
+      const blogToAdd = {
         title: "Blog with no likes",
         author: 'Pls Like',
         url: 'www.likepls.com'
+        // Ei tykkäyksiä
       }
+
+      const auth = await getTokenAuth(helper.initialUsers[0])
 
       await api
         .post('/api/blogs')
+        .set('Authorization', auth)
         .send(blogToAdd)
         .expect(201)
         .expect(response => {
           // Lisätyn blogin tykkäykset = 0
           expect(response.body.likes).toBe(0)
-        })*/
+        })
     })
   })
 
   // Blogin poistoon liittyvät testit
-  describe.skip('Removing blogs from database', () => {
-    test('Deleting blog with valid id', async () => {
-      /*const blogsAtStart = await helper.blogsInDb()
-      const blogToRemove = blogsAtStart[0]
-
-      await api
-        .delete(`/api/blogs/${blogToRemove.id}`)
-        .expect(204)
-      
-      const blogsAtEnd = await helper.blogsInDb()
-      // Tietokannan blogien määrä vähenee yhdellä
-      expect(blogsAtEnd.length).toBe(blogsAtStart.length - 1)
-      // Poistettua blogia ei löydy tietokannasta
-      expect(blogsAtEnd).not.toContain(blogToRemove)*/
+  describe.only('Removing blogs from database', () => {
+    test.only('Deleting blog with valid id', async () => {
+      // TBD
     })
 
     test('Fails with 404 with valid non-existing id', async () => {
