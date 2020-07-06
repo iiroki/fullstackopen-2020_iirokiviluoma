@@ -18,6 +18,12 @@ const errorHandler = (error, request, respone, next) => {
   else if (error.name === 'ValidationError') {
     return respone.status(400).json({ error: error.message})
   }
+  else if (error.name === 'JsonWebTokenError') {
+    return respone.status(401).json({ error: 'Invalid token'})
+  }
+
+  logger.error(error.message)
+  next(error)  // Expressis virheenkäsittelijä
 }
 
 const unknownEndpoint = (request, response) => {

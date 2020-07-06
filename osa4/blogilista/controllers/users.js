@@ -1,6 +1,7 @@
 const usersRouter = require('express').Router()
-const User = require('../models/user')
 const bcrypt = require('bcrypt')
+
+const User = require('../models/user')
 
 // Haetaan kaikki käyttäjät
 usersRouter.get('/', async (request, response) => {
@@ -16,7 +17,7 @@ usersRouter.post('/', async (request, response, next) => {
   const reqBody = request.body
 
   if (reqBody.password.length < 3) {
-    return response.status(400).json({ error: 'password must be at least 3 characters.'})
+    return response.status(400).json({ error: 'password must be at least 3 characters'})
   }
 
   const saltRounds = 10

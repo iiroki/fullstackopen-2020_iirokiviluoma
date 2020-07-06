@@ -1,6 +1,18 @@
 const blogsRouter = require('express').Router()
+const jwt = require('jsonwebtoken')
+
+const config = require('../utils/config')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+
+// Pyynnön mukana tullut token
+const getToken = request => {
+  const auth = request.get('authorization')
+  if (auth && auth.toLowerCase().startsWith('bearer ')) {
+    return auth.substring(7)
+  }
+  return null
+}
 
 // Haetaan kaikki blogit
 blogsRouter.get('/', async (request, response) => {
@@ -26,13 +38,18 @@ blogsRouter.get('/:id', async (request, response, next) => {
 // Lisätään uusi blogi
 blogsRouter.post('/', async (request, response, next) => {
   const reqBody = request.body
+  const token = getToken(request)
+  console.log(`TOKEN: ${token}`)
 
-  const user = await User.findById(reqBody.userId)
+  const decodedToken = jwt.verify(token, config.SECRET)
+  console.log(`DECODED TOKEN ID: ${decodedToken.id}`)
 
-  // Väliaikainen tarkistus, poistetaan 4.19-osassa!
-  if (!user) {
-    return response.status(400).json({ error: 'userId not found.'})
+  // Varmistetaan tokenin oikeellisuus
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: 'Invalid or missing token'})
   }
+
+  const user = await User.findById(decodedToken.id)
 
   const blog = new Blog({
     title: reqBody.title,
