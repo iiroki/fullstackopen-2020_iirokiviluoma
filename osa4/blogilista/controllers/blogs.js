@@ -31,7 +31,7 @@ blogsRouter.post('/', async (request, response, next) => {
 
   // Väliaikainen tarkistus, poistetaan 4.19-osassa!
   if (!user) {
-    return response.status(400).send({ error: 'userId not found.'})
+    return response.status(400).json({ error: 'userId not found.'})
   }
 
   const blog = new Blog({
@@ -39,7 +39,7 @@ blogsRouter.post('/', async (request, response, next) => {
     author: reqBody.author,
     url: reqBody.url,
     likes: reqBody.likes,
-    user: user.id
+    user: user._id
   })
 
   // Tallenetaan blogiin ja käyttäjään tiedot blogin kirjoittajasta

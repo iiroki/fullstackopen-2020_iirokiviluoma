@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 
 // Haetaan kaikki käyttäjät
 usersRouter.get('/', async (request, response) => {
-  // Piilotetaan kirjoittaja ja tykkäykset
+  // Piilotetaan käyttäjä ja tykkäykset
   const users = await User
     .find({}).populate('blogs', { user: 0, likes: 0})
   
@@ -16,7 +16,7 @@ usersRouter.post('/', async (request, response, next) => {
   const reqBody = request.body
 
   if (reqBody.password.length < 3) {
-    return response.status(400).send({ error: 'password must be at least 3 characters.'})
+    return response.status(400).json({ error: 'password must be at least 3 characters.'})
   }
 
   const saltRounds = 10

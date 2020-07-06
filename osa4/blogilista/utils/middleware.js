@@ -13,7 +13,7 @@ const errorHandler = (error, request, respone, next) => {
   logger.error(error.message)
 
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
-    return respone.status(400).send({ error: 'Bad id'})
+    return respone.status(400).json({ error: 'Bad id'})
   }
   else if (error.name === 'ValidationError') {
     return respone.status(400).json({ error: error.message})
@@ -21,7 +21,7 @@ const errorHandler = (error, request, respone, next) => {
 }
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'Unknown endpoint'})
+  response.status(404).json({ error: 'Unknown endpoint'})
 }
 
 module.exports = {
