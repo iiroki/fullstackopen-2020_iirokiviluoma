@@ -25,16 +25,20 @@ const initializeBlogs = async () => {
   for (let user of helper.initialUsers) {
     loginTokens = loginTokens.concat(await getTokenAuth(user))
   }
-  const max = loginTokens.length - 1
+  let userIndex = 0
 
   // Lisätään blogit tietokantaan tokenien avulla.
   for (let blog of helper.initialBlogs) {
-    const auth = loginTokens[Math.floor(Math.random() * max)]
+    const auth = loginTokens[userIndex]
     
     await api
       .post('/api/blogs')
       .set('Authorization', auth)
       .send(blog)
+    
+    userIndex = userIndex === 0
+      ? 1
+      : 0
   }
 }
 
@@ -327,8 +331,20 @@ describe.only('Blog tests', () => {
 
   // Blogin poistoon liittyvät testit
   describe.only('Removing blogs from database', () => {
-    test.only('Deleting blog with valid id', async () => {
-      // TBD
+    test.only('Deleting blog with valid id and token', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToRemove = blogsAtStart[0]
+      const auth = await getTokenAuth(helper.initialUsers[0])
+
+      await api
+        .delete(`/api/blogs/${blogToRemove.id}`)
+        .set('Authorization', auth)
+        .expect(204)
+      
+      const blogsAtEnd = await helper.blogsInDb()
+      // Blogien määrä vähentynyt + poistettavaa blogia ei löydy
+      expect(blogsAtEnd.length).toBe(blogsAtStart.length - 1)
+      expect(blogsAtEnd).not.toContain(blogToRemove)
     })
 
     test('Fails with 404 with valid non-existing id', async () => {
