@@ -18,10 +18,37 @@ const initializeUsers = async () => {
 }
 
 const initializeBlogs = async () => {
-  // TBD
+  await Blog.deleteMany({})
+  let loginTokens = []
+
+  // Haetaan käyttäjien login-tokenit
+  for (let user of helper.initialUsers) {
+    loginTokens = loginTokens.concat(await getLoginToken(user))
+  }
+  const max = loginTokens.length - 1
+
+  // Lisätään blogit tietokantaan tokenien avulla.
+  for (let blog of helper.initialBlogs) {
+    const auth = 'Bearer ' + loginTokens[Math.floor(Math.random() * max)]
+    
+    await api
+      .post('/api/blogs')
+      .set('Authorization', auth)
+      .send(blog)
+  }
 }
 
-describe('User tests', () => {
+const getLoginToken = async (user) => {
+  const logInData = {
+    username: user.username,
+    password: user.password
+  }
+
+  const response = await api.post('/api/login').send(logInData)
+  return response.body.token
+}
+
+describe.skip('User tests', () => {
   // Alustetaan käyttäjien testitietokanta ennen testejä
   beforeEach(async () => {
     await initializeUsers()
@@ -49,7 +76,7 @@ describe('User tests', () => {
         .expect('Content-Type', /application\/json/)
     })
 
-    test('Statuscode 400 + msg when creating user with too short username', async () => {
+    test('Fails with 400 + msg when creating user with too short username', async () => {
       const userToAdd = {
         username: 'ab',
         password: 'asdfgh',
@@ -65,7 +92,7 @@ describe('User tests', () => {
         })
     })
 
-    test('Statuscode 400 + msg when creating user with too short password', async () => {
+    test('Fails with 400 + msg when creating user with too short password', async () => {
       const userToAdd = {
         username: 'username',
         password: 'as',
@@ -81,7 +108,7 @@ describe('User tests', () => {
         })
     })
     
-    test('Statuscode 400 + msg when creating user with already existing username', async () => {
+    test('Fails with 400 + msg when creating user with already existing username', async () => {
       const userToAdd = {
         username: 'fortesting',
         password: 'test123',
@@ -97,13 +124,64 @@ describe('User tests', () => {
         })
     })
   })
+
+  describe('Logins', () => {
+    test('Succeeds with correct username and password', async () => {
+      const userToLogIn = helper.initialUsers[0]
+
+      const logInData = {
+        username: userToLogIn.username,
+        password: userToLogIn.password
+      }
+
+      await api
+        .post('/api/login')
+        .send(logInData)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+        .expect(response => {
+          expect(response.body.token).toBeDefined()
+          expect(response.body.username).toBeDefined()
+          expect(response.body.name).toBeDefined()
+        })
+    })
+
+    test('Fails with 401 when non-existing username', async () => {
+      const userToLogIn = helper.initialUsers[0]
+
+      const logInData = {
+        username: userToLogIn.username,
+        password: 'wrongpassword'
+      }
+
+      await api
+        .post('/api/login')
+        .send(logInData)
+        .expect(401)
+    })
+
+    test('Fails with 401 when wrong password', async () => {
+      const userToLogIn = helper.initialUsers[0]
+
+      const logInData = {
+        username: 'wrongusername',
+        password: userToLogIn.password
+      }
+
+      await api
+        .post('/api/login')
+        .send(logInData)
+        .expect(401)
+    })
+  })
 })
 
 
-describe.skip('Blog tests', () => {
+describe.only('Blog tests', () => {
   // Alustetaan blogien testitietokanta ennen jokaista testiä
   beforeEach(async () => {
     await initializeUsers()
+    await initializeBlogs()
   })
 
   // Blogien hakemiseen liittyvät testit
@@ -137,16 +215,17 @@ describe.skip('Blog tests', () => {
     test('Succeeds with valid id', async () => {
       const blogsAtStart = await helper.blogsInDb()
       const blog = blogsAtStart[0]
+      blog.user = blog.user.toString()  //ObjectId -> String
 
       const result = await api
         .get(`/api/blogs/${blog.id}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
-      
+
       expect(result.body).toEqual(blog)
     })
 
-    test('Statuscode 404 with valid non-existing id', async () => {
+    test('Fails with 404 when provided valid non-existing id', async () => {
       const id = await helper.validNonExistingBlogId()
 
       const result = await api
@@ -154,7 +233,7 @@ describe.skip('Blog tests', () => {
         .expect(404)
     })
 
-    test('Statuscode 400 with invalid id', async () => {
+    test('Fails with 400 when provided invalid id', async () => {
       const id = helper.invalidId
 
       const result = await api
@@ -164,30 +243,31 @@ describe.skip('Blog tests', () => {
   })
 
   // Blogin lisäämiseen liittyvät testit
-  describe('Adding blogs to database', () => {
+  describe.only('Adding blog to database', () => {
     test('Succeeds with valid data', async () => {
-      const x = await helper.usersInDb()
-      console.log(x)
+      const blogsAtStart = await helper.blogsInDb()
 
-      /*const blogToAdd = {
+      const blogToAdd = {
         title: 'Testilisäys',
         author: 'Teppo Testaaja',
         url: 'www.testiblogix.com',
         likes: 5
       }
 
+      const token = await getLoginToken(helper.initialUsers[0])
+      const auth = 'Bearer ' + token
+
       await api
         .post('/api/blogs')
+        .set('Authorization', auth)
         .send(blogToAdd)
         .expect(201)
         .expect('Content-Type', /application\/json/)
-      
+
       const blogsAtEnd = await helper.blogsInDb()
-      // Tietokannan blogien määrä kasvaa yhdellä
-      expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
-      // Lisätty blogi löytyy tietokannasta
-      const blogTitles = blogsAtEnd.map(b => b.title)
-      expect(blogTitles).toContain(blogToAdd.title)*/
+      const titles = blogsAtEnd.map(blog => blog.title)
+      expect(blogsAtStart.length + 1).toBe(blogsAtEnd.length)
+      expect(titles).toContain(blogToAdd.title)
     })
 
     test('Statuscode 400 with invalid data', async () => {
@@ -223,7 +303,7 @@ describe.skip('Blog tests', () => {
   })
 
   // Blogin poistoon liittyvät testit
-  describe('Removing blogs from database', () => {
+  describe.skip('Removing blogs from database', () => {
     test('Deleting blog with valid id', async () => {
       /*const blogsAtStart = await helper.blogsInDb()
       const blogToRemove = blogsAtStart[0]
@@ -239,7 +319,7 @@ describe.skip('Blog tests', () => {
       expect(blogsAtEnd).not.toContain(blogToRemove)*/
     })
 
-    test('Statuscode 404 with valid non-existing id', async () => {
+    test('Fails with 404 with valid non-existing id', async () => {
       const id = await helper.validNonExistingBlogId()
 
       await api
@@ -256,7 +336,7 @@ describe.skip('Blog tests', () => {
     })
   })
 
-  describe('Modifying blogs in database', () => {
+  describe.skip('Modifying blogs in database', () => {
     test('Modifying blog with valid id', async () => {
       const [blogToUpdate, blogNotUpdated] = await helper.blogUpdatedLikes()
 
@@ -273,7 +353,7 @@ describe.skip('Blog tests', () => {
       expect(blogsAtEnd).not.toContainEqual(blogNotUpdated)
     })
 
-    test('Statuscode 404 with valid non-existing id', async () => {
+    test('Fails with 404 when provided valid non-existing id', async () => {
       const id = await helper.validNonExistingBlogId()
       const [blogToUpdate] = await helper.blogUpdatedLikes()
 
@@ -283,7 +363,7 @@ describe.skip('Blog tests', () => {
       .expect(404)
     })
 
-    test('Statuscode 400 with invalid id', async () => {
+    test('Fails with 400 when provided invalid id', async () => {
       const id = helper.invalidId
       const [blogToUpdate] = await helper.blogUpdatedLikes()
 
@@ -293,7 +373,7 @@ describe.skip('Blog tests', () => {
       .expect(400)
     })
 
-    test('Statuscode 400 with invalid data to update with', async () => {
+    test('Fails with 400 when invalid data to update with', async () => {
       const [blogToUpdate] = await helper.blogUpdatedLikes()
       // Poistetaan title ja url
       delete blogToUpdate.title

@@ -80,6 +80,11 @@ const initialUsers = [
     username: 'testman',
     password: 'qwerty1',
     name: 'Tester'
+  },
+  {
+    username: 'testlurker',
+    password: 'justlurking',
+    name: 'Lurker'
   }
 ]
 
