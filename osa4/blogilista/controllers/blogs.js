@@ -8,7 +8,7 @@ const User = require('../models/user')
 // Haetaan kaikki blogit
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
-    .find({}).populate('user', { blogs: 0})  // Piilotetaan käyttäjän blogit
+    .find({}).populate('user', { blogs: 0 })  // Piilotetaan käyttäjän blogit
 
   response.json(blogs)
 })
@@ -26,18 +26,17 @@ blogsRouter.get('/:id', async (request, response, next) => {
   }
 })
 
-// Lisätään uusi blogi
+// Lisätään uusi blogi tokenin avulla
 blogsRouter.post('/', async (request, response, next) => {
   const reqBody = request.body
   const decodedToken = jwt.verify(request.token, config.SECRET)
 
-  // Varmistetaan tokenin oikeellisuus
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'Invalid or missing token'})
-  }
-
   // Haetaan käyttäjä tokenista dekoodatun olion perusteella
   const user = await User.findById(decodedToken.id)
+
+  if (!user) {
+    return response.status(401).json({ error: 'Invalid token - user not found' })
+  }
 
   const blog = new Blog({
     title: reqBody.title,
@@ -54,15 +53,24 @@ blogsRouter.post('/', async (request, response, next) => {
   response.status(201).json(savedBlog)
 })
 
-// Blogin poisto
+// Blogin poisto tokenin avulla
 blogsRouter.delete('/:id', async (request, response, next) => {
-  const result = await Blog.findByIdAndRemove(request.params.id)
-  if (result) {
-    response.status(204).end()
+  const blog = await Blog.findById(request.params.id)
+
+  // Jos blogia ei löytynyt
+  if (!blog) {
+    return response.status(404).end()
   }
-  else {
-    response.status(404).end()
+
+  const decodedToken = jwt.verify(request.token, config.SECRET)
+
+  // Varmistetaan tokenin ja blogin yhteneväisyys
+  if (decodedToken.id !== blog.user.toString()) {
+    return response.status(401).json({ error: 'Invalid token - no match' })
   }
+
+  blog.remove()
+  response.status(204).end()
 })
 
 // Blogin muokkaaminen

@@ -7,7 +7,7 @@ const User = require('../models/user')
 usersRouter.get('/', async (request, response) => {
   // Piilotetaan käyttäjä ja tykkäykset
   const users = await User
-    .find({}).populate('blogs', { user: 0, likes: 0})
+    .find({}).populate('blogs', { user: 0, likes: 0 })
   
     return response.json(users)
 })
@@ -17,7 +17,7 @@ usersRouter.post('/', async (request, response, next) => {
   const reqBody = request.body
 
   if (reqBody.password.length < 3) {
-    return response.status(400).json({ error: 'password must be at least 3 characters'})
+    return response.status(400).json({ error: 'password must be at least 3 characters' })
   }
 
   const saltRounds = 10
