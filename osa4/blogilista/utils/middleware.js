@@ -30,8 +30,22 @@ const unknownEndpoint = (request, response) => {
   response.status(404).json({ error: 'Unknown endpoint'})
 }
 
+// Eristetään pyynnön mukana tullut token request.tokeniin
+const tokenExtractor = (request, response, next) => {
+  const auth = request.get('authorization')
+  if (auth && auth.toLowerCase().startsWith('bearer ')) {
+    request.token = auth.substring(7)
+  }
+  else {
+    request.token = null
+  }
+
+  next()
+}
+
 module.exports = {
   requestLogger,
   errorHandler,
-  unknownEndpoint
+  unknownEndpoint,
+  tokenExtractor
 }

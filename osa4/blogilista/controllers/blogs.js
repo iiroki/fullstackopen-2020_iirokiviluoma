@@ -5,15 +5,6 @@ const config = require('../utils/config')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
-// Pyynnön mukana tullut token
-const getToken = request => {
-  const auth = request.get('authorization')
-  if (auth && auth.toLowerCase().startsWith('bearer ')) {
-    return auth.substring(7)
-  }
-  return null
-}
-
 // Haetaan kaikki blogit
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
@@ -38,17 +29,14 @@ blogsRouter.get('/:id', async (request, response, next) => {
 // Lisätään uusi blogi
 blogsRouter.post('/', async (request, response, next) => {
   const reqBody = request.body
-  const token = getToken(request)
-  console.log(`TOKEN: ${token}`)
-
-  const decodedToken = jwt.verify(token, config.SECRET)
-  console.log(`DECODED TOKEN ID: ${decodedToken.id}`)
+  const decodedToken = jwt.verify(request.token, config.SECRET)
 
   // Varmistetaan tokenin oikeellisuus
-  if (!token || !decodedToken.id) {
+  if (!decodedToken.id) {
     return response.status(401).json({ error: 'Invalid or missing token'})
   }
 
+  // Haetaan käyttäjä tokenista dekoodatun olion perusteella
   const user = await User.findById(decodedToken.id)
 
   const blog = new Blog({

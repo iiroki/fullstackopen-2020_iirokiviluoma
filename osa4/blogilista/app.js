@@ -28,6 +28,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true})
 app.use(cors())
 app.use(express.json())
 app.use(middleware.requestLogger)
+app.use(middleware.tokenExtractor)
 
 // Käytetään omia reittien käsittelijöitä
 app.use('/api/blogs', blogsRouter)
