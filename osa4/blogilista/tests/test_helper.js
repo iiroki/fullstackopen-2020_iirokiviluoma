@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 // Kovakoodatut blogit testejä varten
 const initialBlogs = [
@@ -72,15 +73,20 @@ const validNonExistingBlogId = async () => {
 const initialUsers = [
   {
     username: 'fortesting',
-    passwordHash: 'testhash',
+    password: 'testpassword',
     name: 'Dumb'
   },
   {
     username: 'testman',
-    passwordHash: 'testhash',
+    password: 'qwerty1',
     name: 'Tester'
   }
 ]
+
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map(user => user.toJSON())
+}
 
 const invalidId = '1nv4l1d1d'
 
@@ -90,5 +96,6 @@ module.exports = {
   blogUpdatedLikes,
   validNonExistingBlogId,
   initialUsers,
+  usersInDb,
   invalidId
 }
