@@ -42,3 +42,11 @@ h1 {
   font-size: 40px;
   text-decoration: underline;
 }
+
+table {
+  text-align: center;
+}
+
+.logged_user_info {
+  margin-bottom: 20px;
+}

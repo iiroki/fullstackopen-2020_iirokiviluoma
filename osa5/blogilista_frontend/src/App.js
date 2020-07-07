@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './App.css'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
+import LoggedUserInfo from './components/LoggedUserInfo'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -17,11 +18,23 @@ const App = () => {
     )  
   }, [])  // Aktivoidaan 1. renderöinnin jälkeen
 
+  // Tarkastetaan selaimen muistista kirjautumistiedot
+  useEffect(() => {
+    const loggedUserJson = window.localStorage.getItem('loggedUser')
+
+    if (loggedUserJson) {
+      const loggedUser = JSON.parse(loggedUserJson)
+      blogService.setToken(loggedUser.token)
+      setUser(loggedUser)
+    }
+  }, [])
+
   const resetLoginFields = () => {
     setUsername('')
     setPassword('')
   }
 
+  // Tapahtumankäsittelijä sisäänkirjautumiselle
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -31,22 +44,35 @@ const App = () => {
         password
       })
 
-      resetLoginFields()
+      window.localStorage.setItem(
+        'loggedUser', JSON.stringify(userToLogIn)
+      )
+
+      blogService.setToken(userToLogIn.token)
       setUser(userToLogIn)
+      resetLoginFields()
     }
     catch (exception) {
       console.log('Invalid username/password')
     }
   }
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value)
+  // Tapahtumankäsittelijä uloskirjautumiselle
+  const handleLogout = (event) => {
+    window.localStorage.removeItem('loggedUser')
+    blogService.setToken(null)
+    setUser(null)
   }
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value)
+  const handleUsernameChange = (target) => {
+    setUsername(target.value)
   }
 
+  const handlePasswordChange = (target) => {
+    setPassword(target.value)
+  }
+
+  // Sivu, joka näytetään kirjautumattomalle käyttäjälle.
   const loginPage = () => {
     return (
       <LoginForm
@@ -57,10 +83,11 @@ const App = () => {
     )
   }
 
+  // Sivu, joka näytetään kirjautuneelle käyttäjälle.
   const loggedInPage = () => {
     return (
       <div>
-        <h4>Logged in as {user.name}</h4>
+        <LoggedUserInfo name={user.name} handleLogout={handleLogout} />
 
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
