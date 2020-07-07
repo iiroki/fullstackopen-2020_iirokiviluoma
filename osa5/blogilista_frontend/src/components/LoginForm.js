@@ -3,7 +3,7 @@ import React from 'react'
 const LoginForm = (props) => (
   <div>
     <form onSubmit={props.handleLogin}>
-      <table cellPadding='1'>
+      <table>
         <tbody>
 
           <tr>
@@ -31,7 +31,7 @@ const LoginForm = (props) => (
           </tr>
 
           <tr>
-            <td colSpan='3'>
+            <td colSpan='2'>
               <button type='submit'>Log in</button>
             </td>
           </tr>

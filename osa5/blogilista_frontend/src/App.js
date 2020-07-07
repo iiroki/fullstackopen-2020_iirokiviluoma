@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
-import Blog from './components/Blog'
+import BlogList from './components/Blog'
 import LoginForm from './components/LoginForm'
 import LoggedUserInfo from './components/LoggedUserInfo'
+import NewBlogForm from './components/NewBlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -11,6 +12,9 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [newBlogTitle, setNewBlogTitle] = useState('')
+  const [newBlogAuthor, setNewBlogAuthor] = useState('')
+  const [newBlogUrl, setNewBlogUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -34,6 +38,12 @@ const App = () => {
     setPassword('')
   }
 
+  const resetNewBlogFields = () => {
+    setNewBlogTitle('')
+    setNewBlogAuthor('')
+    setNewBlogUrl('')
+  }
+
   // Tapahtumankäsittelijä sisäänkirjautumiselle
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -53,6 +63,7 @@ const App = () => {
       resetLoginFields()
     }
     catch (exception) {
+      // TBD: Ilmoitukset!
       console.log('Invalid username/password')
     }
   }
@@ -64,6 +75,26 @@ const App = () => {
     setUser(null)
   }
 
+  // Tapahtumankäsittelijä uuden blogin lisäämiselle
+  const addNewBlog = async (event) => {
+    event.preventDefault()
+
+    try {
+      const blogToAdd = await blogService.addNew({
+        title: newBlogTitle,
+        author: newBlogAuthor,
+        url: newBlogUrl
+      })
+
+      setBlogs(blogs.concat(blogToAdd))
+
+      resetNewBlogFields()
+    }
+    catch (exception) {
+      console.log('New blog failed.')
+    }
+  }
+
   const handleUsernameChange = (target) => {
     setUsername(target.value)
   }
@@ -72,7 +103,19 @@ const App = () => {
     setPassword(target.value)
   }
 
-  // Sivu, joka näytetään kirjautumattomalle käyttäjälle.
+  const handleNewBlogTitleChange = (target) => {
+    setNewBlogTitle(target.value)
+  }
+
+  const handleNewBlogAuthorChange = (target) => {
+    setNewBlogAuthor(target.value)
+  }
+
+  const handleNewBlogUrlChange = (target) => {
+    setNewBlogUrl(target.value)
+  }
+
+  // Kirjautumattomalle käyttäjälle näytettävä sivu
   const loginPage = () => {
     return (
       <LoginForm
@@ -83,15 +126,23 @@ const App = () => {
     )
   }
 
-  // Sivu, joka näytetään kirjautuneelle käyttäjälle.
+  // Kirjautuneelle käyttäjälle näytettävä sivu
   const loggedInPage = () => {
     return (
       <div>
         <LoggedUserInfo name={user.name} handleLogout={handleLogout} />
 
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )}
+        <NewBlogForm
+          handleAddNewBlog={addNewBlog}
+          title={newBlogTitle}
+          handleNewBlogTitleChange={handleNewBlogTitleChange}
+          author={newBlogAuthor}
+          handleNewBlogAuthorChange={handleNewBlogAuthorChange}
+          url={newBlogUrl}
+          handleNewBlogUrlChange={handleNewBlogUrlChange}
+        />
+
+        <BlogList blogs={blogs} />
       </div>
     )
   }

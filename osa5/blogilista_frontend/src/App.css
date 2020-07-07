@@ -45,6 +45,7 @@ h1 {
 
 table {
   text-align: center;
+  margin-bottom: 30px;
 }
 
 .logged_user_info {
