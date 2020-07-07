@@ -13,13 +13,13 @@ const errorHandler = (error, request, respone, next) => {
   logger.error(error.message)
 
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
-    return respone.status(400).json({ error: 'Bad id'})
+    return respone.status(400).json({ error: 'Bad id' })
   }
   else if (error.name === 'ValidationError') {
-    return respone.status(400).json({ error: error.message})
+    return respone.status(400).json({ error: error.message })
   }
   else if (error.name === 'JsonWebTokenError') {
-    return respone.status(401).json({ error: 'Invalid token'})
+    return respone.status(401).json({ error: 'Invalid token' })
   }
 
   logger.error(error.message)
@@ -27,7 +27,7 @@ const errorHandler = (error, request, respone, next) => {
 }
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).json({ error: 'Unknown endpoint'})
+  response.status(404).json({ error: 'Unknown endpoint' })
 }
 
 // Eristetään pyynnön mukana tullut token request.tokeniin

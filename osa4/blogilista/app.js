@@ -17,7 +17,7 @@ const url = config.MONGODB_URL
 
 // Yhdistetään MongoDB-tietokantaan
 logger.info(`Connecting to MongoDB: ${url}`)
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     logger.info(`Connected to MongoDB.`)
   })

@@ -58,11 +58,10 @@ const blogUpdatedLikes = async () => {
 
 const validNonExistingBlogId = async () => {
   const blog = new Blog({
-      author: 'fortesting',
-      title: 'fortesting',
-      url: 'fortesting'
-    }
-  )
+    author: 'fortesting',
+    title: 'fortesting',
+    url: 'fortesting'
+  })
 
   await blog.save()
   await blog.remove()

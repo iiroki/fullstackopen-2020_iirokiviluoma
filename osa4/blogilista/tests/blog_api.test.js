@@ -10,7 +10,7 @@ const api = supertest(app)
 
 const initializeUsers = async () => {
   await User.deleteMany({})
-    
+
   // Lisätään käyttäjät tietokantaan
   for (let user of helper.initialUsers) {
     await api.post('/api/users').send(user)
@@ -30,12 +30,12 @@ const initializeBlogs = async () => {
   // Lisätään blogit tietokantaan tokenien avulla.
   for (let blog of helper.initialBlogs) {
     const auth = loginTokens[userIndex]
-    
+
     await api
       .post('/api/blogs')
       .set('Authorization', auth)
       .send(blog)
-    
+
     userIndex = userIndex === 0
       ? 1
       : 0
@@ -52,7 +52,7 @@ const getTokenAuth = async (user) => {
   return 'BEARER ' + response.body.token
 }
 
-describe.skip('User tests', () => {
+describe('User tests', () => {
   // Alustetaan käyttäjien testitietokanta ennen testejä
   beforeEach(async () => {
     await initializeUsers()
@@ -111,7 +111,7 @@ describe.skip('User tests', () => {
           expect(response.body).toBeDefined()
         })
     })
-    
+
     test('Fails with 400 + msg when creating user with already existing username', async () => {
       const userToAdd = {
         username: 'fortesting',
@@ -181,7 +181,7 @@ describe.skip('User tests', () => {
 })
 
 
-describe.only('Blog tests', () => {
+describe('Blog tests', () => {
   // Alustetaan blogien testitietokanta ennen jokaista testiä
   beforeEach(async () => {
     await initializeUsers()
@@ -196,10 +196,10 @@ describe.only('Blog tests', () => {
     })
 
     test('Blogs are returned as JSON', async () => {
-    await api
-      .get('/api/blogs')
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
+      await api
+        .get('/api/blogs')
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
     })
 
     test('Specific blog is found within returned blogs', async () => {
@@ -229,20 +229,20 @@ describe.only('Blog tests', () => {
       expect(result.body).toEqual(blog)
     })
 
-    test('Fails with 404 when provided valid non-existing id', async () => {
+    test('Fails with 404 when valid non-existing id', async () => {
       const id = await helper.validNonExistingBlogId()
 
-      const result = await api
+      await api
         .get(`/api/blogs/${id}`)
         .expect(404)
     })
 
-    test('Fails with 400 when provided invalid id', async () => {
+    test('Fails with 400 when invalid id', async () => {
       const id = helper.invalidId
 
-      const result = await api
-      .get(`/api/blogs/${id}`)
-      .expect(400)
+      await api
+        .get(`/api/blogs/${id}`)
+        .expect(400)
     })
   })
 
@@ -290,7 +290,7 @@ describe.only('Blog tests', () => {
         .expect(401)
     })
 
-    test('Fails with 400 when provided invalid data', async () => {
+    test('Fails with 400 when invalid data', async () => {
       const blogToAdd = {
         // Ei titleä
         author: 'Blog',
@@ -330,8 +330,8 @@ describe.only('Blog tests', () => {
   })
 
   // Blogin poistoon liittyvät testit
-  describe.only('Removing blogs from database', () => {
-    test.only('Deleting blog with valid id and token', async () => {
+  describe('Removing blogs from database', () => {
+    test('Deleting blog with valid id and token', async () => {
       const blogsAtStart = await helper.blogsInDb()
       const blogToRemove = blogsAtStart[0]
       const auth = await getTokenAuth(helper.initialUsers[0])
@@ -340,14 +340,25 @@ describe.only('Blog tests', () => {
         .delete(`/api/blogs/${blogToRemove.id}`)
         .set('Authorization', auth)
         .expect(204)
-      
+
       const blogsAtEnd = await helper.blogsInDb()
       // Blogien määrä vähentynyt + poistettavaa blogia ei löydy
       expect(blogsAtEnd.length).toBe(blogsAtStart.length - 1)
       expect(blogsAtEnd).not.toContain(blogToRemove)
     })
 
-    test('Fails with 404 with valid non-existing id', async () => {
+    test('Fails with 401 when valid id but invalid token', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToRemove = blogsAtStart[0]
+      const auth = helper.invalidId
+
+      await api
+        .delete(`/api/blogs/${blogToRemove.id}`)
+        .set('Authorization', auth)
+        .expect(401)
+    })
+
+    test('Fails with 404 when valid non-existing id', async () => {
       const id = await helper.validNonExistingBlogId()
 
       await api
@@ -355,7 +366,7 @@ describe.only('Blog tests', () => {
         .expect(404)
     })
 
-    test('Statuscode 400 with invalid id', async () => {
+    test('Fails with 400 when invalid id', async () => {
       const id = helper.invalidId
 
       await api
@@ -364,7 +375,7 @@ describe.only('Blog tests', () => {
     })
   })
 
-  describe.skip('Modifying blogs in database', () => {
+  describe('Modifying blogs in database', () => {
     test('Modifying blog with valid id', async () => {
       const [blogToUpdate, blogNotUpdated] = await helper.blogUpdatedLikes()
 
@@ -381,24 +392,24 @@ describe.only('Blog tests', () => {
       expect(blogsAtEnd).not.toContainEqual(blogNotUpdated)
     })
 
-    test('Fails with 404 when provided valid non-existing id', async () => {
+    test('Fails with 404 when valid non-existing id', async () => {
       const id = await helper.validNonExistingBlogId()
       const [blogToUpdate] = await helper.blogUpdatedLikes()
 
       await api
-      .put(`/api/blogs/${id}`)
-      .send(blogToUpdate)
-      .expect(404)
+        .put(`/api/blogs/${id}`)
+        .send(blogToUpdate)
+        .expect(404)
     })
 
-    test('Fails with 400 when provided invalid id', async () => {
+    test('Fails with 400 when invalid id', async () => {
       const id = helper.invalidId
       const [blogToUpdate] = await helper.blogUpdatedLikes()
 
       await api
-      .put(`/api/blogs/${id}`)
-      .send(blogToUpdate)
-      .expect(400)
+        .put(`/api/blogs/${id}`)
+        .send(blogToUpdate)
+        .expect(400)
     })
 
     test('Fails with 400 when invalid data to update with', async () => {
@@ -408,9 +419,9 @@ describe.only('Blog tests', () => {
       delete blogToUpdate.url
 
       await api
-      .put(`/api/blogs/${blogToUpdate.id}`)
-      .send(blogToUpdate)
-      .expect(400)
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(blogToUpdate)
+        .expect(400)
     })
   })
 })
