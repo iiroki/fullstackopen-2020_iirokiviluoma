@@ -1,7 +1,7 @@
 import React from 'react'
 
 const LoggedUserInfo = ({ name, handleLogout }) => (
-  <div className='logged_user_info'>
+  <div className='loggedUserInfo'>
     <b>Logged in as {name} </b>
     <button onClick={handleLogout}>Log out</button>
   </div>

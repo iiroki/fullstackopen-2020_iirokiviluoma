@@ -2,7 +2,7 @@ import React from 'react'
 
 const NewBlogForm = (props) => (
   <div>
-    <h3>Add new blog</h3>
+    <h3>New blog</h3>
     <form onSubmit={props.handleAddNewBlog}>
       <table>
         <tbody>

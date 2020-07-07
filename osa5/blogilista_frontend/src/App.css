@@ -48,6 +48,30 @@ table {
   margin-bottom: 30px;
 }
 
-.logged_user_info {
+.loggedUserNnfo {
   margin-bottom: 20px;
+}
+
+.notificationGood {
+  display: inline-block;
+  color: darkgreen;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: darkgreen;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.notificationError {
+  display: inline-block;
+  color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: red;
+  padding: 5px;
+  margin-bottom: 10px;
 }

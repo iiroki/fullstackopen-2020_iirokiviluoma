@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
+import blogService from './services/blogs'
+import loginService from './services/login'
 import BlogList from './components/Blog'
 import LoginForm from './components/LoginForm'
 import LoggedUserInfo from './components/LoggedUserInfo'
 import NewBlogForm from './components/NewBlogForm'
-import blogService from './services/blogs'
-import loginService from './services/login'
+import {Notification, notificationTypes} from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
+  const [notificationMsg, setNotificationMsg] = useState(null)
+  const [notificationType, setNotificationType] = useState(notificationTypes.NONE)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [newBlogTitle, setNewBlogTitle] = useState('')
   const [newBlogAuthor, setNewBlogAuthor] = useState('')
   const [newBlogUrl, setNewBlogUrl] = useState('')
+
+  const NOTIFICATIONTIME = 5000  // ms
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -44,6 +49,17 @@ const App = () => {
     setNewBlogUrl('')
   }
 
+  const showNotification = (msg, type) => {
+    setNotificationType(type)
+    setNotificationMsg(msg)
+    clearTimeout()
+
+    setTimeout(() => {
+      setNotificationType(notificationTypes.NONE)
+      setNotificationMsg(null)
+    }, NOTIFICATIONTIME)
+  }
+
   // Tapahtumankäsittelijä sisäänkirjautumiselle
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -61,10 +77,17 @@ const App = () => {
       blogService.setToken(userToLogIn.token)
       setUser(userToLogIn)
       resetLoginFields()
+
+      showNotification(
+        'Login successful',
+        notificationTypes.GOOD
+      )
     }
     catch (exception) {
-      // TBD: Ilmoitukset!
-      console.log('Invalid username/password')
+      showNotification(
+        'Invalid username or password',
+        notificationTypes.ERROR
+      )
     }
   }
 
@@ -73,6 +96,11 @@ const App = () => {
     window.localStorage.removeItem('loggedUser')
     blogService.setToken(null)
     setUser(null)
+
+    showNotification(
+      'Logout successful',
+      notificationTypes.GOOD
+    )
   }
 
   // Tapahtumankäsittelijä uuden blogin lisäämiselle
@@ -87,11 +115,18 @@ const App = () => {
       })
 
       setBlogs(blogs.concat(blogToAdd))
-
       resetNewBlogFields()
+
+      showNotification(
+        `A new blog added: ${blogToAdd.title} - ${blogToAdd.author}`,
+        notificationTypes.GOOD
+      )
     }
     catch (exception) {
-      console.log('New blog failed.')
+      showNotification(
+        'Invalid data',
+        notificationTypes.ERROR
+      )
     }
   }
 
@@ -150,6 +185,8 @@ const App = () => {
   return (
     <div>
       <h1>Blogs</h1>
+
+      <Notification msg={notificationMsg} type={notificationType} />
 
       {user === null
         ? loginPage()
