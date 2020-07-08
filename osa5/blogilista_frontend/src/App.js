@@ -90,9 +90,6 @@ const App = () => {
       newBlogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(blogToAdd))
 
-      console.log(blogToAdd)
-      console.log(blogs)
-
       showNotification(
         `A new blog added: ${blogToAdd.title} - ${blogToAdd.author}`,
         notificationTypes.GOOD
@@ -101,8 +98,6 @@ const App = () => {
       return true
     }
     catch (exception) {
-      console.log(exception)
-
       showNotification(
         'Invalid data',
         notificationTypes.ERROR
@@ -110,6 +105,12 @@ const App = () => {
 
       return false
     }
+  }
+
+  // Tapahtumankäsittelijä blogista tykkäämiselle
+  const handleBlogLike = async (blogObject, id) => {
+    const likedBlog = await blogService.addLike(id, blogObject)
+    setBlogs(blogs.map(b => b.id === id ? likedBlog : b))
   }
 
   // Kirjautumattomalle käyttäjälle näytettävä sivu
@@ -127,7 +128,7 @@ const App = () => {
         <NewBlogForm handleAddNewBlog={handleAddNewBlog} />
       </Togglable>
 
-      <BlogList blogs={blogs} />
+      <BlogList blogs={blogs} handleLike={handleBlogLike} />
     </div>
 )
   

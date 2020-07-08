@@ -12,17 +12,24 @@ const getAll = async () => {
   return response.data
 }
 
-const addNew = async (blogContent) => {
+const addNew = async (contents) => {
   const config = {
     headers: { Authorization: token}
   }
   
-  const response = await axios.post(baseUrl, blogContent, config)
+  const response = await axios.post(baseUrl, contents, config)
+  return response.data
+}
+
+const addLike = async (id, contents) => {
+  const url = `${baseUrl}/${id}`
+  const response = await axios.put(url, contents)
   return response.data
 }
 
 export default {
   setToken,
   getAll,
-  addNew
+  addNew,
+  addLike
 }
