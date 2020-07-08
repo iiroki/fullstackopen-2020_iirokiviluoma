@@ -89,14 +89,14 @@ blogsRouter.put('/:id', async (request, response, next) => {
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog,
     { new: true, runValidators: true })
 
-  await updatedBlog.populate('user', { blogs : 0 }).execPopulate()
+  // Päivitettävää blogia ei löydy
+  if (!updatedBlog) {
+    return response.status(404).end()
+  }
 
-  if (updatedBlog) {
-    response.json(updatedBlog)
-  }
-  else {
-    response.status(404).end()
-  }
+  await updatedBlog.populate('user', { blogs : 0 }).execPopulate()
+  response.json(updatedBlog)
+
 })
 
 module.exports = blogsRouter
