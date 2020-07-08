@@ -19,9 +19,15 @@ const App = () => {
   const newBlogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )  
+    blogService.getAll().then(blogs => {
+      const sortedBlogs = [...blogs].sort((a, b) => {
+        if (a.likes > b.likes) return 1
+        if (a.likes < b.likes) return -1
+        return 0
+      })
+      
+      setBlogs(sortedBlogs)
+    })  
   }, [])  // Aktivoidaan 1. renderöinnin jälkeen
 
   // Tarkastetaan selaimen muistista kirjautumistiedot
