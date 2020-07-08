@@ -48,8 +48,12 @@ table {
   margin-bottom: 30px;
 }
 
-.loggedUserNnfo {
+.loggedUserInfo {
   margin-bottom: 20px;
+}
+
+.blogList {
+  margin-top: 20px;
 }
 
 .notificationGood {

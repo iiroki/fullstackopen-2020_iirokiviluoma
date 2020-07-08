@@ -10,7 +10,7 @@ const LoginForm = ({ handleLogin }) => {
     setPassword('')
   }*/
 
-  const createLogin = async (event) => {
+  const createLogin = (event) => {
     event.preventDefault()
 
     handleLogin({

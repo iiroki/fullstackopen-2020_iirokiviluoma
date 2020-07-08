@@ -2,19 +2,18 @@ import React, { useState, useEffect } from 'react'
 import './App.css'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import BlogList from './components/Blog'
+import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import LoggedUserInfo from './components/LoggedUserInfo'
 import NewBlogForm from './components/NewBlogForm'
 import {Notification, notificationTypes} from './components/Notification'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [notificationMsg, setNotificationMsg] = useState(null)
   const [notificationType, setNotificationType] = useState(notificationTypes.NONE)
-  //const [username, setUsername] = useState('')
-  //const [password, setPassword] = useState('')
 
   const NOTIFICATIONTIME = 5000  // ms
 
@@ -94,12 +93,16 @@ const App = () => {
         `A new blog added: ${blogToAdd.title} - ${blogToAdd.author}`,
         notificationTypes.GOOD
       )
+      
+      return true
     }
     catch (exception) {
       showNotification(
         'Invalid data',
         notificationTypes.ERROR
       )
+
+      return false
     }
   }
 
@@ -114,7 +117,9 @@ const App = () => {
     <div>
       <LoggedUserInfo name={user.name} handleLogout={handleLogout} />
 
-      <NewBlogForm handleAddNewBlog={handleAddNewBlog} />
+      <Togglable buttonLabel='New blog'>
+        <NewBlogForm handleAddNewBlog={handleAddNewBlog} />
+      </Togglable>
 
       <BlogList blogs={blogs} />
     </div>
@@ -123,7 +128,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>Blogs</h1>
+      <h1>Bloglist</h1>
 
       <Notification msg={notificationMsg} type={notificationType} />
 

@@ -6,20 +6,22 @@ const NewBlogForm = ({ handleAddNewBlog }) => {
   const [newBlogUrl, setNewBlogUrl] = useState('')
 
   // Tila asetetaan oletustilaan uuden renderöinnin yhteydessä!
-  /*const resetNewBlogFields = () => {
+  const resetNewBlogFields = () => {
     setNewBlogTitle('')
     setNewBlogAuthor('')
     setNewBlogUrl('')
-  }*/
+  }
 
   const createNewBlog = async (event) => {
     event.preventDefault()
 
-    handleAddNewBlog({
+    const success = await handleAddNewBlog({
       title: newBlogTitle,
       author: newBlogAuthor,
       url: newBlogUrl
     })
+
+    if (success) resetNewBlogFields()
   }
 
   return (
