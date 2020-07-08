@@ -10,7 +10,13 @@ const BlogView = ({ blog, handleFullView }) => (
 )
 
 // Bloginäkymä kaikilla blogin tiedoilla
-const BlogFullView = ({ blog, handleFullView, handleLike }) => (
+const BlogFullView = ({
+  blog,
+  currentUser,
+  handleFullView,
+  handleLike,
+  handleDelete
+}) => (
   <div className='blog'>
     <b><u>
       <div className='blogHeader' onClick={handleFullView}>
@@ -25,10 +31,14 @@ const BlogFullView = ({ blog, handleFullView, handleLike }) => (
         Like
     </button><br/>
     Added by: {blog.user.name}<br/>
+
+    {currentUser === blog.user.username
+      ? <button onClick={() => handleDelete(blog)}>Remove</button>
+      : null}
   </div>
 )
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, currentUser, handleLike, handleDelete }) => {
   const [fullView, setFullView] = useState(false)
 
   const toggleFullView = () => {
@@ -40,14 +50,16 @@ const Blog = ({ blog, handleLike }) => {
     fullView === true
       ? <BlogFullView
           blog={blog}
+          currentUser={currentUser}
           handleFullView={toggleFullView}
           handleLike={handleLike}
+          handleDelete={handleDelete}
         />
       : <BlogView blog={blog} handleFullView={toggleFullView} />
   )
 }
 
-const BlogList = ({ blogs, handleLike }) => {
+const BlogList = ({ blogs, currentUser, handleLike, handleDelete }) => {
   // Muutetaan blogin data oikeaan muotoon tykkäyksen lisäystä varten
   const createBlogLike = (likedBlog) => {
     handleLike({
@@ -59,6 +71,15 @@ const BlogList = ({ blogs, handleLike }) => {
     }, likedBlog.id)
   }
 
+  // Muutetaan blogin data oikeaan muotoon poistoa varten
+  const createBlogDeletion = (blogToDelete) => {
+    handleDelete({
+      title: blogToDelete.title,
+      author: blogToDelete.author,
+      likes: blogToDelete.likes
+    }, blogToDelete.id)
+  }
+
   return (
     <div className='blogList'>
       <h3>Blogs</h3>
@@ -66,7 +87,13 @@ const BlogList = ({ blogs, handleLike }) => {
       <i>Click on a blog to see more information.</i>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={createBlogLike} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          currentUser={currentUser}
+          handleLike={createBlogLike}
+          handleDelete={createBlogDeletion}
+        />
       )}
     </div>
   )

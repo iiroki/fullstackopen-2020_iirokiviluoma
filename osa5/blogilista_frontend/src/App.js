@@ -115,8 +115,45 @@ const App = () => {
 
   // Tapahtumankäsittelijä blogista tykkäämiselle
   const handleBlogLike = async (blogObject, id) => {
-    const likedBlog = await blogService.addLike(id, blogObject)
-    setBlogs(blogs.map(b => b.id === id ? likedBlog : b))
+    try {
+      const likedBlog = await blogService.addLike(id, blogObject)
+      setBlogs(blogs.map(b => b.id === id ? likedBlog : b))
+    }
+    catch (exception) {
+      showNotification(
+        `Error occurred when attempting to like blog ${blogObject.title}`,
+        notificationTypes.ERROR
+      )
+    }
+  }
+
+  // Tapahtumankäsittelijä blogin poistamiselle
+  const handleDeleteBlog = async (blogObject, id) => {
+    const confirmationMsg = `Are you sure you want to delete blog ` +
+    `${blogObject.title} by ${blogObject.author} with ${blogObject.likes} ` +
+    `likes?`
+
+    // Varmistusikkuna poistolle
+    if (!window.confirm(confirmationMsg)) {
+      return
+    }
+
+    try {
+      await blogService.deleteBlog(id)
+
+      showNotification(
+        `Blog ${blogObject.title} deleted`,
+        notificationTypes.GOOD
+      )
+    }
+    catch (exception) {
+      showNotification(
+        `Blog ${blogObject.title} is already deleted from the server`,
+        notificationTypes.ERROR
+      )
+    }
+
+    setBlogs(blogs.filter(b => b.id !== id))
   }
 
   // Kirjautumattomalle käyttäjälle näytettävä sivu
@@ -134,11 +171,15 @@ const App = () => {
         <NewBlogForm handleAddNewBlog={handleAddNewBlog} />
       </Togglable>
 
-      <BlogList blogs={blogs} handleLike={handleBlogLike} />
+      <BlogList
+        blogs={blogs}
+        currentUser={user.username}
+        handleLike={handleBlogLike}
+        handleDelete={handleDeleteBlog}
+      />
     </div>
 )
   
-
   return (
     <div>
       <h1>Bloglist</h1>
