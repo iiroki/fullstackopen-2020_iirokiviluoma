@@ -15,9 +15,9 @@ const App = () => {
   const [notificationType, setNotificationType] = useState(notificationTypes.NONE)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [newBlogTitle, setNewBlogTitle] = useState('')
-  const [newBlogAuthor, setNewBlogAuthor] = useState('')
-  const [newBlogUrl, setNewBlogUrl] = useState('')
+  //const [newBlogTitle, setNewBlogTitle] = useState('')
+  //const [newBlogAuthor, setNewBlogAuthor] = useState('')
+  //const [newBlogUrl, setNewBlogUrl] = useState('')
 
   const NOTIFICATIONTIME = 5000  // ms
 
@@ -43,16 +43,9 @@ const App = () => {
     setPassword('')
   }
 
-  const resetNewBlogFields = () => {
-    setNewBlogTitle('')
-    setNewBlogAuthor('')
-    setNewBlogUrl('')
-  }
-
   const showNotification = (msg, type) => {
     setNotificationType(type)
     setNotificationMsg(msg)
-    clearTimeout()
 
     setTimeout(() => {
       setNotificationType(notificationTypes.NONE)
@@ -104,18 +97,12 @@ const App = () => {
   }
 
   // Tapahtumankäsittelijä uuden blogin lisäämiselle
-  const addNewBlog = async (event) => {
-    event.preventDefault()
-
+  const addNewBlog = async (blogObject) => {
     try {
-      const blogToAdd = await blogService.addNew({
-        title: newBlogTitle,
-        author: newBlogAuthor,
-        url: newBlogUrl
-      })
+      const blogToAdd = await blogService.addNew(blogObject)
 
       setBlogs(blogs.concat(blogToAdd))
-      resetNewBlogFields()
+      //resetNewBlogFields()
 
       showNotification(
         `A new blog added: ${blogToAdd.title} - ${blogToAdd.author}`,
@@ -138,49 +125,27 @@ const App = () => {
     setPassword(target.value)
   }
 
-  const handleNewBlogTitleChange = (target) => {
-    setNewBlogTitle(target.value)
-  }
-
-  const handleNewBlogAuthorChange = (target) => {
-    setNewBlogAuthor(target.value)
-  }
-
-  const handleNewBlogUrlChange = (target) => {
-    setNewBlogUrl(target.value)
-  }
-
   // Kirjautumattomalle käyttäjälle näytettävä sivu
-  const loginPage = () => {
-    return (
-      <LoginForm
-        handleLogin={handleLogin}
-        username={username} handleUsernameChange={handleUsernameChange}
-        password={password} handlePasswordChange={handlePasswordChange}
-      />
-    )
-  }
+  const loginPage = () => (
+    <LoginForm
+      handleLogin={handleLogin}
+      username={username} handleUsernameChange={handleUsernameChange}
+      password={password} handlePasswordChange={handlePasswordChange}
+    />
+)
+  
 
   // Kirjautuneelle käyttäjälle näytettävä sivu
-  const loggedInPage = () => {
-    return (
-      <div>
-        <LoggedUserInfo name={user.name} handleLogout={handleLogout} />
+  const loggedInPage = () => (
+    <div>
+      <LoggedUserInfo name={user.name} handleLogout={handleLogout} />
 
-        <NewBlogForm
-          handleAddNewBlog={addNewBlog}
-          title={newBlogTitle}
-          handleNewBlogTitleChange={handleNewBlogTitleChange}
-          author={newBlogAuthor}
-          handleNewBlogAuthorChange={handleNewBlogAuthorChange}
-          url={newBlogUrl}
-          handleNewBlogUrlChange={handleNewBlogUrlChange}
-        />
+      <NewBlogForm handleAddNewBlog={addNewBlog} />
 
-        <BlogList blogs={blogs} />
-      </div>
-    )
-  }
+      <BlogList blogs={blogs} />
+    </div>
+)
+  
 
   return (
     <div>
