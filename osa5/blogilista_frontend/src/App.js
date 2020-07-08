@@ -21,11 +21,11 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs => {
       const sortedBlogs = [...blogs].sort((a, b) => {
-        if (a.likes > b.likes) return 1
-        if (a.likes < b.likes) return -1
+        if (a.likes < b.likes) return 1
+        if (a.likes > b.likes) return -1
         return 0
       })
-      
+
       setBlogs(sortedBlogs)
     })  
   }, [])  // Aktivoidaan 1. renderöinnin jälkeen
