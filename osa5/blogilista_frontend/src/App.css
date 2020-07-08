@@ -52,6 +52,10 @@ table {
   margin-bottom: 20px;
 }
 
+.blogHeader {
+  cursor: pointer;
+}
+
 .blog {
   font-size: 20px;
   border-style: double;

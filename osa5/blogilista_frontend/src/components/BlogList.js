@@ -2,15 +2,19 @@ import React, { useState } from 'react'
 
 const BlogView = ({ blog, handleFullView }) => (
   <div className='blog'>
+    <div className='blogHeader' onClick={handleFullView}>
       {blog.title} - {blog.author} 
-      <button className='inlineButton' onClick={handleFullView}>View</button>
     </div>
+  </div>
 )
 
 const BlogFullView = ({ blog, handleFullView }) => (
   <div className='blog'>
-    <b>{blog.title}</b>
-    <button className='inlineButton' onClick={handleFullView}>Hide</button><br/>
+    <b><u>
+      <div className='blogHeader' onClick={handleFullView}>
+        {blog.title}
+      </div>
+    </u></b>
     Author: {blog.author}<br/>
     Likes: {blog.likes}
     <button className='inlineButton'>Like</button><br/>
@@ -35,7 +39,9 @@ const Blog = ({ blog }) => {
 
 const BlogList = ({ blogs }) => (
   <div className='blogList'>
-    <h4>Blogs</h4>
+    <h3>Blogs</h3>
+
+    <i>Click on a blog to see more information.</i>
 
     {blogs.map(blog =>
     <Blog key={blog.id} blog={blog} />
