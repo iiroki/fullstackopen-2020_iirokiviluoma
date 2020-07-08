@@ -90,6 +90,9 @@ const App = () => {
       newBlogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(blogToAdd))
 
+      console.log(blogToAdd)
+      console.log(blogs)
+
       showNotification(
         `A new blog added: ${blogToAdd.title} - ${blogToAdd.author}`,
         notificationTypes.GOOD

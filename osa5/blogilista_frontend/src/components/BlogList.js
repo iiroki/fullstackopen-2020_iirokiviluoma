@@ -3,17 +3,17 @@ import React, { useState } from 'react'
 const BlogView = ({ blog, handleFullView }) => (
   <div className='blog'>
       {blog.title} - {blog.author} 
-      <button className='button' onClick={handleFullView}>View</button>
+      <button className='inlineButton' onClick={handleFullView}>View</button>
     </div>
 )
 
 const BlogFullView = ({ blog, handleFullView }) => (
   <div className='blog'>
     <b>{blog.title}</b>
-    <button className='button' onClick={handleFullView}>Hide</button><br/>
+    <button className='inlineButton' onClick={handleFullView}>Hide</button><br/>
     Author: {blog.author}<br/>
     Likes: {blog.likes}
-    <button className='button'>Like</button><br/>
+    <button className='inlineButton'>Like</button><br/>
     Added by: {blog.user.name}<br/>
   </div>
 )
