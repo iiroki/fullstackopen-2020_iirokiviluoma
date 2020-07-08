@@ -15,7 +15,8 @@ blogsRouter.get('/', async (request, response) => {
 
 // Haetaan yksittäinen blogi
 blogsRouter.get('/:id', async (request, response, next) => {
-  const blog = await Blog.findById(request.params.id)
+  const blog = await Blog
+    .findById(request.params.id).populate('user', { blogs: 0 })
 
   // Tarkistetaan löytyikö blogi tietokannasta
   if (blog) {
@@ -48,6 +49,7 @@ blogsRouter.post('/', async (request, response, next) => {
 
   // Tallenetaan blogiin ja käyttäjään tiedot blogin kirjoittajasta
   const savedBlog = await blog.save()
+  await savedBlog.populate('user', { blogs : 0 }).execPopulate()
   user.blogs = user.blogs.concat(savedBlog.id)
   await user.save()
   response.status(201).json(savedBlog)
