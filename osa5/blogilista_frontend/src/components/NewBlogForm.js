@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const NewBlogForm = ({ handleAddNewBlog }) => {
   const [newBlogTitle, setNewBlogTitle] = useState('')
@@ -42,7 +43,7 @@ const NewBlogForm = ({ handleAddNewBlog }) => {
                 />
               </td>
             </tr>
-            
+
             <tr>
               <td>Author: </td>
               <td>
@@ -72,11 +73,16 @@ const NewBlogForm = ({ handleAddNewBlog }) => {
                 <button type='submit'>Add</button>
               </td>
             </tr>
-          
+
           </tbody>
         </table>
       </form>
     </div>
   )
 }
+
+NewBlogForm.propTypes = {
+  handleAddNewBlog: PropTypes.func.isRequired
+}
+
 export default NewBlogForm

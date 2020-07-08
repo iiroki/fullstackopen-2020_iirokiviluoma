@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 // Yksinkertaistettu bloginäkymä
 const BlogView = ({ blog, handleFullView }) => (
   <div className='blog'>
     <div className='blogHeader' onClick={handleFullView}>
-      {blog.title} - {blog.author} 
+      {blog.title} - {blog.author}
     </div>
   </div>
 )
@@ -48,13 +49,14 @@ const Blog = ({ blog, currentUser, handleLike, handleDelete }) => {
   // Näytetään blogin tiedot fullView-muuttujan mukaan
   return (
     fullView === true
-      ? <BlogFullView
-          blog={blog}
-          currentUser={currentUser}
-          handleFullView={toggleFullView}
-          handleLike={handleLike}
-          handleDelete={handleDelete}
-        />
+      ?
+      <BlogFullView
+        blog={blog}
+        currentUser={currentUser}
+        handleFullView={toggleFullView}
+        handleLike={handleLike}
+        handleDelete={handleDelete}
+      />
       : <BlogView blog={blog} handleFullView={toggleFullView} />
   )
 }
@@ -97,6 +99,13 @@ const BlogList = ({ blogs, currentUser, handleLike, handleDelete }) => {
       )}
     </div>
   )
+}
+
+BlogList.propTypes = {
+  blogs: PropTypes.array.isRequired,
+  currentUser: PropTypes.string.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired
 }
 
 export default BlogList

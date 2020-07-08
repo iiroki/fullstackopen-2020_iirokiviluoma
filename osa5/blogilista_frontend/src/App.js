@@ -6,7 +6,7 @@ import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import LoggedUserInfo from './components/LoggedUserInfo'
 import NewBlogForm from './components/NewBlogForm'
-import {Notification, notificationTypes} from './components/Notification'
+import { Notification, notificationTypes } from './components/Notification'
 import Togglable from './components/Togglable'
 
 const App = () => {
@@ -28,7 +28,7 @@ const App = () => {
         return 0
       })
 
-      setBlogs(sortedBlogs) 
+      setBlogs(sortedBlogs)
     }
 
     getBlogs()
@@ -81,7 +81,7 @@ const App = () => {
   }
 
   // Tapahtumankäsittelijä uloskirjautumiselle
-  const handleLogout = (event) => {
+  const handleLogout = () => {
     window.localStorage.removeItem('loggedUser')
     blogService.setToken(null)
     setUser(null)
@@ -104,7 +104,7 @@ const App = () => {
         `A new blog added: ${blogToAdd.title} - ${blogToAdd.author}`,
         notificationTypes.GOOD
       )
-      
+
       return true
     }
     catch (exception) {
@@ -163,8 +163,8 @@ const App = () => {
   // Kirjautumattomalle käyttäjälle näytettävä sivu
   const loginPage = () => (
     <LoginForm handleLogin={handleLogin} />
-)
-  
+  )
+
 
   // Kirjautuneelle käyttäjälle näytettävä sivu
   const loggedInPage = () => (
@@ -182,8 +182,8 @@ const App = () => {
         handleDelete={handleDeleteBlog}
       />
     </div>
-)
-  
+  )
+
   return (
     <div>
       <h1>Bloglist</h1>
