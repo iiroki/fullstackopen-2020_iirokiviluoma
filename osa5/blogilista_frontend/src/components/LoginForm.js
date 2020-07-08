@@ -5,10 +5,7 @@ const LoginForm = ({ handleLogin }) => {
   const [password, setPassword] = useState('')
 
   // Tila asetetaan oletustilaan uuden renderöinnin yhteydessä!
-  /*const resetLoginFields = () => {
-    setUsername('')
-    setPassword('')
-  }*/
+  // Eli uudestaan kirjautumissivulle saavuttaessa.
 
   const createLogin = (event) => {
     event.preventDefault()

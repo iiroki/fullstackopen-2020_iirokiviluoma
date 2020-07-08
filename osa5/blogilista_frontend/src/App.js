@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './App.css'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -16,6 +16,7 @@ const App = () => {
   const [notificationType, setNotificationType] = useState(notificationTypes.NONE)
 
   const NOTIFICATIONTIME = 5000  // ms
+  const newBlogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -85,9 +86,9 @@ const App = () => {
   const handleAddNewBlog = async (blogObject) => {
     try {
       const blogToAdd = await blogService.addNew(blogObject)
-
+      // Lomake pois näkyvistä onnistuneen lisäämisen jälkeen
+      newBlogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(blogToAdd))
-      //resetNewBlogFields()
 
       showNotification(
         `A new blog added: ${blogToAdd.title} - ${blogToAdd.author}`,
@@ -97,6 +98,8 @@ const App = () => {
       return true
     }
     catch (exception) {
+      console.log(exception)
+
       showNotification(
         'Invalid data',
         notificationTypes.ERROR
@@ -117,7 +120,7 @@ const App = () => {
     <div>
       <LoggedUserInfo name={user.name} handleLogout={handleLogout} />
 
-      <Togglable buttonLabel='New blog'>
+      <Togglable buttonLabel='New blog' ref={newBlogFormRef}>
         <NewBlogForm handleAddNewBlog={handleAddNewBlog} />
       </Togglable>
 
