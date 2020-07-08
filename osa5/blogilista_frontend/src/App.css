@@ -52,6 +52,14 @@ table {
   margin-bottom: 20px;
 }
 
+.blog {
+  font-size: 20px;
+  border-style: double;
+  padding: 3px;
+  padding-top: 10px;
+  margin-bottom: 3px;
+}
+
 .blogList {
   margin-top: 20px;
 }
@@ -78,4 +86,8 @@ table {
   border-color: red;
   padding: 5px;
   margin-bottom: 10px;
+}
+
+.button {
+  margin-left: 5px;
 }
