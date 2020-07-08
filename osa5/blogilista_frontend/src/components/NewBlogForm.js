@@ -5,13 +5,14 @@ const NewBlogForm = ({ handleAddNewBlog }) => {
   const [newBlogAuthor, setNewBlogAuthor] = useState('')
   const [newBlogUrl, setNewBlogUrl] = useState('')
 
-  const resetNewBlogFields = () => {
+  // Tila asetetaan oletustilaan uuden renderöinnin yhteydessä!
+  /*const resetNewBlogFields = () => {
     setNewBlogTitle('')
     setNewBlogAuthor('')
     setNewBlogUrl('')
-  }
+  }*/
 
-  const createNewBlog = (event) => {
+  const createNewBlog = async (event) => {
     event.preventDefault()
 
     handleAddNewBlog({
@@ -19,8 +20,6 @@ const NewBlogForm = ({ handleAddNewBlog }) => {
       author: newBlogAuthor,
       url: newBlogUrl
     })
-
-    resetNewBlogFields()
   }
 
   return (

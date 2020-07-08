@@ -13,11 +13,8 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notificationMsg, setNotificationMsg] = useState(null)
   const [notificationType, setNotificationType] = useState(notificationTypes.NONE)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  //const [newBlogTitle, setNewBlogTitle] = useState('')
-  //const [newBlogAuthor, setNewBlogAuthor] = useState('')
-  //const [newBlogUrl, setNewBlogUrl] = useState('')
+  //const [username, setUsername] = useState('')
+  //const [password, setPassword] = useState('')
 
   const NOTIFICATIONTIME = 5000  // ms
 
@@ -38,11 +35,6 @@ const App = () => {
     }
   }, [])
 
-  const resetLoginFields = () => {
-    setUsername('')
-    setPassword('')
-  }
-
   const showNotification = (msg, type) => {
     setNotificationType(type)
     setNotificationMsg(msg)
@@ -54,14 +46,9 @@ const App = () => {
   }
 
   // Tapahtumankäsittelijä sisäänkirjautumiselle
-  const handleLogin = async (event) => {
-    event.preventDefault()
-
+  const handleLogin = async (loginObject) => {
     try {
-      const userToLogIn = await loginService.login({
-        username,
-        password
-      })
+      const userToLogIn = await loginService.login(loginObject)
 
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(userToLogIn)
@@ -69,7 +56,6 @@ const App = () => {
 
       blogService.setToken(userToLogIn.token)
       setUser(userToLogIn)
-      resetLoginFields()
 
       showNotification(
         'Login successful',
@@ -97,7 +83,7 @@ const App = () => {
   }
 
   // Tapahtumankäsittelijä uuden blogin lisäämiselle
-  const addNewBlog = async (blogObject) => {
+  const handleAddNewBlog = async (blogObject) => {
     try {
       const blogToAdd = await blogService.addNew(blogObject)
 
@@ -117,21 +103,9 @@ const App = () => {
     }
   }
 
-  const handleUsernameChange = (target) => {
-    setUsername(target.value)
-  }
-
-  const handlePasswordChange = (target) => {
-    setPassword(target.value)
-  }
-
   // Kirjautumattomalle käyttäjälle näytettävä sivu
   const loginPage = () => (
-    <LoginForm
-      handleLogin={handleLogin}
-      username={username} handleUsernameChange={handleUsernameChange}
-      password={password} handlePasswordChange={handlePasswordChange}
-    />
+    <LoginForm handleLogin={handleLogin} />
 )
   
 
@@ -140,7 +114,7 @@ const App = () => {
     <div>
       <LoggedUserInfo name={user.name} handleLogout={handleLogout} />
 
-      <NewBlogForm handleAddNewBlog={addNewBlog} />
+      <NewBlogForm handleAddNewBlog={handleAddNewBlog} />
 
       <BlogList blogs={blogs} />
     </div>

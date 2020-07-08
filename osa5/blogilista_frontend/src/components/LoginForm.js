@@ -1,45 +1,65 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const LoginForm = (props) => (
-  <div>
-    <form onSubmit={props.handleLogin}>
-      <table>
-        <tbody>
+const LoginForm = ({ handleLogin }) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
-          <tr>
-            <td>Username: </td>
-            <td>
-              <input
-                type='text'
-                value={props.username}
-                name='Username'
-                onChange={({ target }) => props.handleUsernameChange(target)}
-              />
-            </td>
-          </tr>
+  // Tila asetetaan oletustilaan uuden renderöinnin yhteydessä!
+  /*const resetLoginFields = () => {
+    setUsername('')
+    setPassword('')
+  }*/
+
+  const createLogin = async (event) => {
+    event.preventDefault()
+
+    handleLogin({
+      username: username,
+      password: password
+    })
+  }
+
+  return (
+    <div>
+      <form onSubmit={createLogin}>
+        <table>
+          <tbody>
+
+            <tr>
+              <td>Username: </td>
+              <td>
+                <input
+                  type='text'
+                  value={username}
+                  name='Username'
+                  onChange={({ target }) => setUsername(target.value)}
+                />
+              </td>
+            </tr>
+            
+            <tr>
+              <td>Password: </td>
+              <td>
+                <input
+                  type='password'
+                  value={password}
+                  name='Password'
+                  onChange={({ target }) => setPassword(target.value)}
+                />
+              </td>
+            </tr>
+
+            <tr>
+              <td colSpan='2'>
+                <button type='submit'>Log in</button>
+              </td>
+            </tr>
           
-          <tr>
-            <td>Password: </td>
-            <td>
-              <input
-                type='password'
-                value={props.password}
-                name='Password'
-                onChange={({ target }) => props.handlePasswordChange(target)}
-              />
-            </td>
-          </tr>
-
-          <tr>
-            <td colSpan='2'>
-              <button type='submit'>Log in</button>
-            </td>
-          </tr>
-        
-        </tbody>
-      </table>
-    </form>
-  </div>
-)
+          </tbody>
+        </table>
+      </form>
+    </div>
+  )
+}
 
 export default LoginForm
