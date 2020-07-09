@@ -26,7 +26,7 @@ const NewBlogForm = ({ handleAddNewBlog }) => {
   }
 
   return (
-    <div>
+    <div className='newBlogForm'>
       <h3>New blog</h3>
       <form onSubmit={createNewBlog}>
         <table>
