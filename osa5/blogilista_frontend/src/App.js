@@ -20,15 +20,24 @@ const App = () => {
 
   useEffect(() => {
     const getBlogs = async () => {
-      const blogs = await blogService.getAll()
+      try {
+        const blogs = await blogService.getAll()
 
-      const sortedBlogs = [...blogs].sort((a, b) => {
-        if (a.likes < b.likes) return 1
-        if (a.likes > b.likes) return -1
-        return 0
-      })
+        // Järjestetään blogit laskevaan tykkäysjärjestykseen
+        const sortedBlogs = [...blogs].sort((a, b) => {
+          if (a.likes < b.likes) return 1
+          if (a.likes > b.likes) return -1
+          return 0
+        })
 
-      setBlogs(sortedBlogs)
+        setBlogs(sortedBlogs)
+      }
+      catch (exception) {
+        showNotification(
+          'Error fetching blogs from the server',
+          notificationTypes.ERROR
+        )
+      }
     }
 
     getBlogs()
