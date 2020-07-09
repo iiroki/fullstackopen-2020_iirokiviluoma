@@ -4,7 +4,7 @@ import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
 
 describe('Blog tests', () => {
-  test('A single blog is rendered with its content', () => {
+  test('A single blog is rendered with title and author by default', () => {
     const blogToRender = {
       title: 'testrender',
       author: 'fortesting',
@@ -17,9 +17,40 @@ describe('Blog tests', () => {
     )
 
     const div = component.container.querySelector('.blog')
+    // Title ja author renderöidään, urlia ja likejä ei
     expect(div).toHaveTextContent(blogToRender.title)
     expect(div).toHaveTextContent(blogToRender.author)
     expect(div).not.toHaveTextContent(blogToRender.url)
     expect(div).not.toHaveTextContent(blogToRender.likes)
+  })
+
+  test('A single blog is rendered with all its content after pressing it', () => {
+    const blogToRender = {
+      title: 'testrender',
+      author: 'fortesting',
+      url: 'www.test.com',
+      likes: 1,
+      user: {
+        username: 'test',
+        name: 'Testi'
+      }
+    }
+
+    const component = render(
+      <Blog blog={blogToRender} currentUser={blogToRender.user.username} />
+    )
+
+    const blogExpand = component.container.querySelector('.blogExpand')
+    fireEvent.click(blogExpand)
+    const div = component.container.querySelector('.blog')
+
+    component.debug()
+
+    // Title, author, url, likes ja käyttäjä renderöidään
+    expect(div).toHaveTextContent(blogToRender.title)
+    expect(div).toHaveTextContent(blogToRender.author)
+    expect(div).toHaveTextContent(blogToRender.url)
+    expect(div).toHaveTextContent(blogToRender.likes)
+    expect(div).toHaveTextContent(blogToRender.user.name)
   })
 })

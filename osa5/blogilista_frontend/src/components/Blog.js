@@ -3,9 +3,10 @@ import React, { useState } from 'react'
 // Yksinkertaistettu bloginäkymä
 const BlogView = ({ blog, handleFullView }) => (
   <div className='blog'>
-    <div className='blogHeader' onClick={handleFullView}>
-      &#x25BF; {blog.title} - {blog.author}
+    <div className='blogExpand' onClick={handleFullView}>
+      &#x25B5;
     </div>
+    {blog.title} - {blog.author}
   </div>
 )
 
@@ -18,10 +19,12 @@ const BlogFullView = ({
   handleDelete
 }) => (
   <div className='blog'>
-    <div className='blogHeader' onClick={handleFullView}>
-      &#x25B5; <b><u>{blog.title}</u></b>
+    <div className='blogExpand' onClick={handleFullView}>
+      &#x25BF;
     </div>
+    <b><u>{blog.title}</u></b><br/>
     Author: {blog.author}<br/>
+    URL: {blog.url}<br/>
     Likes: {blog.likes}
     <button
       className='inlineButton'

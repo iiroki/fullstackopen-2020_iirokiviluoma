@@ -52,8 +52,10 @@ table {
   margin-bottom: 20px;
 }
 
-.blogHeader {
+.blogExpand {
   cursor: pointer;
+  display: inline;
+  margin-right: 5px;
 }
 
 .blog {

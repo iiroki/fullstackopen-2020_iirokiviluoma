@@ -27,7 +27,7 @@ const BlogList = ({ blogs, currentUser, handleLike, handleDelete }) => {
     <div className='blogList'>
       <h3>Blogs</h3>
 
-      <i>Click on a blog to see more information.</i>
+      <i>Click the arrow next to a blog to see more information.</i>
 
       {blogs.map(blog =>
         <Blog
