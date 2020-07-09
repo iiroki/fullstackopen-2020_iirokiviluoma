@@ -97,3 +97,7 @@ table {
 .likeButton {
   margin-left: 5px;
 }
+
+.addButton {
+  font-weight: bold;
+}

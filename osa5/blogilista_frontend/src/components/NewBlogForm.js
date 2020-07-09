@@ -36,9 +36,9 @@ const NewBlogForm = ({ handleAddNewBlog }) => {
               <td>Title: </td>
               <td>
                 <input
+                  id='title'
                   type='text'
                   value={newBlogTitle}
-                  name='Title'
                   onChange={({ target }) => setNewBlogTitle(target.value)}
                 />
               </td>
@@ -48,9 +48,9 @@ const NewBlogForm = ({ handleAddNewBlog }) => {
               <td>Author: </td>
               <td>
                 <input
+                  id='author'
                   type='text'
                   value={newBlogAuthor}
-                  name='Author'
                   onChange={({ target }) => setNewBlogAuthor(target.value)}
                 />
               </td>
@@ -60,9 +60,9 @@ const NewBlogForm = ({ handleAddNewBlog }) => {
               <td>URL: </td>
               <td>
                 <input
+                  id='url'
                   type='text'
                   value={newBlogUrl}
-                  name='Url'
                   onChange={({ target }) => setNewBlogUrl(target.value)}
                 />
               </td>
@@ -70,7 +70,7 @@ const NewBlogForm = ({ handleAddNewBlog }) => {
 
             <tr>
               <td colSpan='2'>
-                <button type='submit'>Add</button>
+                <button className='addButton' type='submit'>Add</button>
               </td>
             </tr>
 

@@ -1,7 +1,8 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, fireEvent } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
+import NewBlogForm from './NewBlogForm'
 
 describe('Blog tests', () => {
   test('A single blog is rendered with title and author by default', () => {
@@ -79,5 +80,45 @@ describe('Blog tests', () => {
     fireEvent.click(blogLike)
     // mockHandleriä on kutsuttu kaksi kertaa
     expect(mockHandler.mock.calls.length).toBe(2)
+  })
+
+  test('Clicking "Add"-button to add a new blog calls the event handler ' +
+  'with all the required fields', () => {
+    const testValues = {
+      title: 'Test title',
+      author: 'Test Author',
+      url: 'www.testurl.com'
+    }
+
+    const mockHandler = jest.fn()
+
+    const component = render(
+      <NewBlogForm handleAddNewBlog={mockHandler} />
+    )
+
+    const titleInput = component.container.querySelector('#title')
+    const authorInput = component.container.querySelector('#author')
+    const urlInput = component.container.querySelector('#url')
+    const submitButton = component.container.querySelector('.addButton')
+
+    // Asetetaan input-kentille testiarvot
+    fireEvent.change(titleInput, {
+      target: { value: testValues.title }
+    })
+    fireEvent.change(authorInput, {
+      target: { value: testValues.author }
+    })
+    fireEvent.change(urlInput, {
+      target: { value: testValues.url }
+    })
+
+    fireEvent.click(submitButton)
+    // mockHandleriä kutsuttu vain kerran oikeilla arvoilla
+    expect(mockHandler.mock.calls.length).toBe(1)
+    expect(mockHandler.mock.calls[0][0]).toEqual({
+      title: testValues.title,
+      author: testValues.author,
+      url: testValues.url
+    })
   })
 })
