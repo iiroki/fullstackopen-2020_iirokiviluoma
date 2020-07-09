@@ -94,6 +94,10 @@ table {
   margin-bottom: 10px;
 }
 
+.logoutButton {
+  margin-left: 5px;
+}
+
 .likeButton {
   margin-left: 5px;
 }

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 const LoggedUserInfo = ({ name, handleLogout }) => (
   <div className='loggedUserInfo'>
     <b>Logged in as {name}</b>
-    <button className='inlineButton' onClick={handleLogout}>Log out</button>
+    <button className='logoutButton' onClick={handleLogout}>Log out</button>
   </div>
 )
 
