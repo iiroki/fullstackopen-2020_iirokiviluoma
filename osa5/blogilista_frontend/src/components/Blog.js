@@ -27,7 +27,7 @@ const BlogFullView = ({
     URL: {blog.url}<br/>
     Likes: {blog.likes}
     <button
-      className='inlineButton'
+      className='likeButton'
       onClick={() => handleLike(blog)}>
         Like
     </button><br/>

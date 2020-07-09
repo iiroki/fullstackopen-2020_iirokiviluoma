@@ -43,14 +43,41 @@ describe('Blog tests', () => {
     const blogExpand = component.container.querySelector('.blogExpand')
     fireEvent.click(blogExpand)
     const div = component.container.querySelector('.blog')
-
-    component.debug()
-
     // Title, author, url, likes ja käyttäjä renderöidään
     expect(div).toHaveTextContent(blogToRender.title)
     expect(div).toHaveTextContent(blogToRender.author)
     expect(div).toHaveTextContent(blogToRender.url)
     expect(div).toHaveTextContent(blogToRender.likes)
     expect(div).toHaveTextContent(blogToRender.user.name)
+  })
+
+  test('Clicking "Like"-button twice calls the event handler twice', () => {
+    const blogToRender = {
+      title: 'testrender',
+      author: 'fortesting',
+      url: 'www.test.com',
+      likes: 1,
+      user: {
+        username: 'test',
+        name: 'Testi'
+      }
+    }
+
+    const mockHandler = jest.fn()
+
+    const component = render(
+      <Blog blog={blogToRender}
+        currentUser={blogToRender.user.username}
+        handleLike={mockHandler}
+      />
+    )
+
+    const blogExpand = component.container.querySelector('.blogExpand')
+    fireEvent.click(blogExpand)
+    const blogLike = component.container.querySelector('.likeButton')
+    fireEvent.click(blogLike)
+    fireEvent.click(blogLike)
+    // mockHandleriä on kutsuttu kaksi kertaa
+    expect(mockHandler.mock.calls.length).toBe(2)
   })
 })
