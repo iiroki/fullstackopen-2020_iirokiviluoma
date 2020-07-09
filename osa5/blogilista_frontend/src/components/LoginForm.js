@@ -27,9 +27,9 @@ const LoginForm = ({ handleLogin }) => {
               <td>Username: </td>
               <td>
                 <input
+                  id='username'
                   type='text'
                   value={username}
-                  name='Username'
                   onChange={({ target }) => setUsername(target.value)}
                 />
               </td>
@@ -39,9 +39,9 @@ const LoginForm = ({ handleLogin }) => {
               <td>Password: </td>
               <td>
                 <input
+                  id='password'
                   type='password'
                   value={password}
-                  name='Password'
                   onChange={({ target }) => setPassword(target.value)}
                 />
               </td>
@@ -49,7 +49,7 @@ const LoginForm = ({ handleLogin }) => {
 
             <tr>
               <td colSpan='2'>
-                <button type='submit'>Log in</button>
+                <button id='loginButton' type='submit'>Log in</button>
               </td>
             </tr>
 
