@@ -18,4 +18,6 @@ osa4
     blogilista backend
 osa5
     blogilista frontend
+osa6
+    unicafe revisited
 ```
