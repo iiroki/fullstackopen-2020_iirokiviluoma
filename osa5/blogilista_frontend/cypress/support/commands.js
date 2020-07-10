@@ -30,13 +30,12 @@ Cypress.Commands.add('loginUser', ({ username, password }) => {
     'http://localhost:3003/api/login',
     { username, password })
     .then(response => {
-      console.log(response.body)
       window.localStorage.setItem('loggedUser', JSON.stringify(response.body))
       cy.visit('http://localhost:3000')
     })
 })
 
-Cypress.Commands.add('addBlog', ({ title, author, url }) => {
+Cypress.Commands.add('addBlog', ({ title, author, url, likes }) => {
   cy.request({
     url: 'http://localhost:3003/api/blogs',
     method: 'POST',
@@ -46,7 +45,8 @@ Cypress.Commands.add('addBlog', ({ title, author, url }) => {
     body: {
       title: title,
       author: author,
-      url: url
+      url: url,
+      likes: likes
     }
   })
 
@@ -59,4 +59,8 @@ Cypress.Commands.add('addUser', ({ username, password, name }) => {
     password: password,
     name: name
   })
+})
+
+Cypress.Commands.add('getBlogs', () => {
+  return cy.request('GET', 'http://localhost:3000/api/blogs')
 })

@@ -22,16 +22,34 @@ const BlogFullView = ({
     <div className='blogExpand' onClick={handleFullView}>
       &#x25BF;
     </div>
-    <b><u>{blog.title}</u></b><br/>
-    Author: {blog.author}<br/>
-    URL: {blog.url}<br/>
-    Likes: {blog.likes}
+    <span id='title'>
+      <b><u>{blog.title}</u></b>
+    </span><br/>
+
+    <span id='author'>
+      Author: {blog.author}
+    </span><br/>
+
+    <span id='url'>
+      URL: {blog.url}
+    </span><br/>
+
+    <span id='likes'>
+      {'Likes: '}
+      <span id='likesAmount'>
+        <i>{blog.likes}</i>
+      </span>
+    </span>
+
     <button
       className='likeButton'
       onClick={() => handleLike(blog)}>
         Like
     </button><br/>
-    Added by: {blog.user.name}<br/>
+
+    <span id='addedBy'>
+      Added by: {blog.user.name}
+    </span><br/>
 
     {currentUser === blog.user.username
       ?
