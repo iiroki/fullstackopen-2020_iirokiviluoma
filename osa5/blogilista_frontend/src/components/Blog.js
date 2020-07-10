@@ -34,7 +34,10 @@ const BlogFullView = ({
     Added by: {blog.user.name}<br/>
 
     {currentUser === blog.user.username
-      ? <button onClick={() => handleDelete(blog)}>Remove</button>
+      ?
+      <button id='removeButton' onClick={() => handleDelete(blog)}>
+        Remove
+      </button>
       : null}
   </div>
 )

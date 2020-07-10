@@ -121,8 +121,7 @@ describe('Bloglist App', function() {
         .and('contain', 'Add')
 
       // Lisättävää blogia ei löydy blogilistasta
-      const blogList = cy.get('.blogList')
-      blogList.should('not.contain', 'Cypress test blog - Cypress')
+      cy.get('.blogList').should('not.contain', 'Cypress test blog - Cypress')
     })
   })
 
@@ -145,6 +144,40 @@ describe('Bloglist App', function() {
       cy.get('.likeButton').click()
       // Tarkastetaan tykkäysten määrän nousseen yhdellä
       cy.contains('Likes: 1')
+    })
+
+    // Blogin lisäänyt voi poistaa kyseisen blogin
+    it('User who added the blog can delete it', function() {
+      // Avataan blogin täysinäkymä ja painetaan "Remove"-nappia
+      cy.get('.blogExpand').click()
+      cy.get('#removeButton').click()
+
+      // Ilmoitus onnistuneesta poistosta
+      cy.get('.notificationGood')
+        .should('exist')
+        .and('contain', 'Blog Cypress test blog deleted')
+        // Väri: darkgreen
+        .and('have.css', 'color', 'rgb(0, 100, 0)')
+
+      // Lisättävää blogia ei löydy blogilistasta
+      cy.get('.blogList').should('not.contain', 'Cypress test blog - Cypress')
+    })
+
+    // Muu kuin blogin lisääjä ei kykene poistamaan blogia
+    it('A blog cannot be deleted by someone else than the user wh added it', function() {
+      cy.addUser({
+        username: 'cypresstest2',
+        password: 'cypress2',
+        name: 'Cypress Test 2nd'
+      })
+
+      // Kirjaudutaan ulos ja kirjaudutaan sisään eri käyttäjällä
+      cy.get('.logoutButton').click()
+      cy.loginUser({ username: 'cypresstest2', password: 'cypress2' })
+      // Avataan blogin täysinäkymä
+      cy.get('.blogExpand').click()
+      // "Remove"-nappia ei kuuluisi näkyä
+      cy.get('#removeButton').should('not.exist')
     })
   })
 })
