@@ -118,7 +118,7 @@ const App = () => {
     }
     catch (exception) {
       showNotification(
-        'Invalid data',
+        'Author and URL are minimum requirements to add a new blog',
         notificationTypes.ERROR
       )
 

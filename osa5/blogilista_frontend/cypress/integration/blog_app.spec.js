@@ -50,6 +50,7 @@ describe('Bloglist App', function() {
         .and('contain', 'Invalid username or password')
         // Väri: red
         .and('have.css', 'color', 'rgb(255, 0, 0)')
+
       // Ei näytetä kirjautunutta käyttäjää  (koska ei ole)
       cy.get('html').should('not.contain', 'Logged in as Cypresstest')
       // Kirjautumislomake näytetään edelleen
@@ -108,7 +109,7 @@ describe('Bloglist App', function() {
       // Ilmoitus epäonnistuneesta blogin luomisesta
       cy.get('.notificationError')
         .should('exist')
-        .and('contain', 'Invalid data')
+        .and('contain', 'Author and URL are minimum requirements to add a new blog')
         // Väri: red
         .and('have.css', 'color', 'rgb(255, 0, 0)')
 
@@ -122,6 +123,28 @@ describe('Bloglist App', function() {
       // Lisättävää blogia ei löydy blogilistasta
       const blogList = cy.get('.blogList')
       blogList.should('not.contain', 'Cypress test blog - Cypress')
+    })
+  })
+
+  describe.only('When user has logged in and there\'s a blog created', function() {
+    // Kirjaudutaan sisään ennen testejä ja lisätään yksi blogi
+    beforeEach(function() {
+      cy.loginUser({ username: 'cypresstest', password: 'cypress' })
+
+      cy.addBlog({
+        title: 'Cypress test blog',
+        author: 'Cypress',
+        url: 'www.cypresse2etest.com'
+      })
+    })
+
+    // Listassa olevasta blogista voidaan tykätä
+    it('A blog can be liked', function() {
+      // Avataan blogin täysinäkymä ja painetaan "Like"-nappia
+      cy.get('.blogExpand').click()
+      cy.get('.likeButton').click()
+      // Tarkastetaan tykkäysten määrän nousseen yhdellä
+      cy.contains('Likes: 1')
     })
   })
 })
