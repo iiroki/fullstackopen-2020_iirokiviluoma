@@ -20,4 +20,5 @@ osa5
     blogilista frontend
 osa6
     unicafe revisited
+    anekdootit
 ```
