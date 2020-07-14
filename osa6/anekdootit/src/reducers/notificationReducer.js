@@ -2,10 +2,10 @@ const notificationAtStart = null
 
 const notificationReducer = (state = notificationAtStart, action) => {
   switch (action.type) {
-    case('SHOW_NOTIFICATION'):
-      return action.data.message
+    case'SHOW_NOTIFICATION':
+      return action.data
     
-    case('WIPE_NOTIFICATION'):
+    case'WIPE_NOTIFICATION':
       return notificationAtStart
 
     default:
@@ -16,9 +16,7 @@ const notificationReducer = (state = notificationAtStart, action) => {
 export const showNotification = (message) => {
   return {
     type: 'SHOW_NOTIFICATION',
-    data: {
-      message: message
-    }
+    data: message
   }
 }
 

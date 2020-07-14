@@ -2,10 +2,10 @@ const filterAtStart = ''
 
 const filterReducer = (state = filterAtStart, action) => {
   switch (action.type) {
-    case('SET_FILTER'):
-      return action.data.filter
+    case'SET_FILTER':
+      return action.data
     
-    case('RESET_FILTER'):
+    case'RESET_FILTER':
       return filterAtStart
 
     default:
@@ -16,9 +16,7 @@ const filterReducer = (state = filterAtStart, action) => {
 export const setFilter = (filter) => {
   return {
     type: 'SET_FILTER',
-    data: {
-      filter: filter
-    }
+    data: filter
   }
 }
 
