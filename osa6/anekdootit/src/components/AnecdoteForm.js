@@ -1,11 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
-import { showNotification, wipeNotification } from '../reducers/notificationReducer'
-import anecdoteService from '../services/anecdotes'
-
-// Ajastimen kuuluisi olla yhteinen kaikille ilmoitustyypeille!
-let timer = null
+import { showNotification } from '../reducers/notificationReducer'
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
@@ -14,19 +10,8 @@ const AnecdoteForm = () => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    // Anekdootti serverille
-    const newAnecdote = await anecdoteService.addNew(content)
-    dispatch(createAnecdote(newAnecdote))
-    dispatch(showNotification(`New anecdote added: ${newAnecdote.content}`))
-
-    if (timer) {
-      clearTimeout(timer)
-    }
-    
-    timer = setTimeout(() => {
-      dispatch(wipeNotification())
-      timer = null
-    }, 5000)
+    dispatch(createAnecdote(content))
+    dispatch(showNotification(`New anecdote added: ${content}`, 5))    
   }
 
   return (

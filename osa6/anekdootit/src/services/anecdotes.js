@@ -17,7 +17,14 @@ const addNew = async (content) => {
   return response.data
 }
 
+const modifyExisting = async (id, object) => {
+  const url = `${baseUrl}/${id}`
+  const response = await axios.put(url, object)
+  return response.data
+}
+
 export default {
   getAll,
-  addNew
+  addNew,
+  modifyExisting
 }

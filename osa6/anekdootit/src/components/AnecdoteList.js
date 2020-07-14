@@ -1,10 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
-import { showNotification, wipeNotification } from '../reducers/notificationReducer'
-
-// Ajastimen kuuluisi olla yhteinen kaikille ilmoitustyypeille!
-let timer = null
+import { showNotification } from '../reducers/notificationReducer'
 
 const Anecdote = ({ anecdote, handleVote }) => (
   <li>
@@ -26,17 +23,8 @@ const AnecdoteList = () => {
   const dispatch = useDispatch()
 
   const addVote = (anecdote) => {
-    dispatch(voteAnecdote(anecdote.id))
-    dispatch(showNotification(`Vote +1 given to: ${anecdote.content}`))
-
-    if (timer) {
-      clearTimeout(timer)
-    }
-    
-    timer = setTimeout(() => {
-      dispatch(wipeNotification())
-      timer = null
-    }, 5000)
+    dispatch(voteAnecdote(anecdote))
+    dispatch(showNotification(`Vote +1 given to: ${anecdote.content}`, 5))
   }
 
   const filter = useSelector(state => state.filter)
