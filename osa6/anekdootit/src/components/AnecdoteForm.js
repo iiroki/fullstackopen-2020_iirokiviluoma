@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
 import { showNotification, wipeNotification } from '../reducers/notificationReducer'
 
+// Ajastimen kuuluisi olla yhteinen kaikille ilmoitustyypeille!
 let timer = null
 
 const AnecdoteForm = () => {

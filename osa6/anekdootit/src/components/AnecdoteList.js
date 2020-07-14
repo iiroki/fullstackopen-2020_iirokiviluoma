@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 import { showNotification, wipeNotification } from '../reducers/notificationReducer'
 
+// Ajastimen kuuluisi olla yhteinen kaikille ilmoitustyypeille!
 let timer = null
 
 const Anecdote = ({ anecdote, handleVote }) => (
@@ -38,10 +39,12 @@ const AnecdoteList = () => {
     }, 5000)
   }
 
+  const filter = useSelector(state => state.filter)
 
-  const anecdotes = useSelector(state => state.anecdotes.sort((a, b) => {
-    return b.votes - a.votes
-  }))
+  // Filtteröidään filtterin ja järjestetään tykkäysten perusteella
+  const anecdotes = useSelector(state => state.anecdotes
+    .filter(a => a.content.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
+    .sort((a, b) => b.votes - a.votes))
 
   return (
     <div>
