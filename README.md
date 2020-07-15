@@ -21,4 +21,6 @@ osa5
 osa6
     unicafe revisited
     anekdootit
+osa7
+    routed anecdotes
 ```
