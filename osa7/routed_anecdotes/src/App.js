@@ -6,6 +6,7 @@ import {
   useRouteMatch,
   useHistory
 } from 'react-router-dom'
+import { useField } from './hooks/index'
 
 const Menu = () => {
   const padding = {
@@ -39,7 +40,7 @@ const AnecdoteDetailed = ({ anecdote }) => (
   <div style={{padding: 10}}>
     <h3>{anecdote.content}</h3>
     <div>has {anecdote.votes} votes.</div>
-    <div>More info: <a href={anecdote.info}>Click here</a></div>
+    <div>More info: <a href={`https://${anecdote.info}`}>Click here</a></div>
   </div>
 )
 
@@ -66,9 +67,9 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const content = useField('text')
+  const author = useField('text')
+  const info = useField('text')
 
   const history = useHistory()
 
@@ -76,9 +77,9 @@ const CreateNew = (props) => {
     e.preventDefault()
 
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
 
@@ -90,18 +91,33 @@ const CreateNew = (props) => {
       <h2>create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          Content:
+          <input
+            name='content'
+            type={content.type}
+            value={content.value}
+            onChange={content.onChange}
+          />
         </div>
         <div>
-          author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          Author:
+          <input
+            name='author'
+            type={author.type}
+            value={author.value}
+            onChange={author.onChange}
+          />
         </div>
         <div>
-          url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          URL for more info:
+          <input
+            name='info'
+            type={info.type}
+            value={info.value}
+            onChange={info.onChange}
+          />
         </div>
-        <button>create</button>
+        <button>Create</button>
       </form>
     </div>
   )
@@ -130,6 +146,7 @@ const App = () => {
 
   const [notification, setNotification] = useState(null)
   const addNew = (anecdote) => {
+    console.log(anecdote)
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
     setNotification(`New anecdote created: ${anecdote.content}`)
