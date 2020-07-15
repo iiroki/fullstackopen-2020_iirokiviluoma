@@ -86,6 +86,13 @@ const CreateNew = (props) => {
     history.push('/')
   }
 
+  const handleReset = (e) => {
+    e.preventDefault()
+    content.resetValue()
+    author.resetValue()
+    info.resetValue()
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -117,7 +124,8 @@ const CreateNew = (props) => {
             onChange={info.onChange}
           />
         </div>
-        <button>Create</button>
+        <button type='submit'>Create</button>
+        <button onClick={handleReset}>X</button>
       </form>
     </div>
   )
@@ -146,7 +154,6 @@ const App = () => {
 
   const [notification, setNotification] = useState(null)
   const addNew = (anecdote) => {
-    console.log(anecdote)
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
     setNotification(`New anecdote created: ${anecdote.content}`)
