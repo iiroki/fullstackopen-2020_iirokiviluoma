@@ -23,4 +23,5 @@ osa6
     anekdootit
 osa7
     routed anecdotes
+    country hook
 ```
