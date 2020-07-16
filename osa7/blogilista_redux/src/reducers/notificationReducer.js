@@ -4,7 +4,6 @@ let notificationTimer = null
 const notificationTime = 5000 // ms
 
 const notificationReducer = (state = notificationAtStart, action) => {
-  console.log(action)
   switch (action.type) {
     case 'SET_NOTIFICATION':
       return action.data
@@ -32,5 +31,11 @@ export const setNotification = (msg) => (
     }, notificationTime)
   }
 )
+
+export const notificationTypes = {
+  NONE: 0,
+  GOOD: 1,
+  ERROR: -1
+}
 
 export default notificationReducer

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import { addNewBlog } from '../reducers/blogReducer'
+import { setNotification, notificationTypes } from '../reducers/notificationReducer'
 
 const NewBlogForm = ({ handleHide }) => {
   const [newBlogTitle, setNewBlogTitle] = useState('')
@@ -10,8 +11,9 @@ const NewBlogForm = ({ handleHide }) => {
 
   const dispatch = useDispatch()
 
-  // Tila asetetaan oletustilaan uuden renderöinnin yhteydessä!
-  const resetNewBlogFields = () => {
+  const validateFields = () => newBlogTitle && newBlogUrl
+
+  const resetFields = () => {
     setNewBlogTitle('')
     setNewBlogAuthor('')
     setNewBlogUrl('')
@@ -20,14 +22,20 @@ const NewBlogForm = ({ handleHide }) => {
   const createNewBlog = async (event) => {
     event.preventDefault()
 
-    dispatch(addNewBlog({
-      title: newBlogTitle,
-      author: newBlogAuthor,
-      url: newBlogUrl
-    }))
-
-    handleHide()
-    resetNewBlogFields()
+    if (validateFields()) {
+      dispatch(addNewBlog({
+        title: newBlogTitle,
+        author: newBlogAuthor,
+        url: newBlogUrl
+      }))
+  
+      dispatch(setNotification(`A new blog added: ${newBlogTitle} - ${newBlogAuthor}`))
+      handleHide()
+      resetFields()
+    }
+    else {
+      dispatch(setNotification(`Incomplete form values`))
+    }
   }
 
   return (
@@ -84,6 +92,10 @@ const NewBlogForm = ({ handleHide }) => {
       </form>
     </div>
   )
+}
+
+NewBlogForm.propTypes = {
+  handleHide: PropTypes.func.isRequired
 }
 
 export default NewBlogForm

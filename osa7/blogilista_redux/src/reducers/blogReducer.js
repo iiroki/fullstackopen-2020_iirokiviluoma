@@ -28,12 +28,17 @@ export const initBlogs = () => (
 
 export const addNewBlog = (blogObject) => (
   async dispatch => {
-    const newBlog = await blogService.addNew(blogObject)
+    try {
+      const newBlog = await blogService.addNew(blogObject)
 
-    dispatch({
-      type: 'NEW_BLOG',
-      data: newBlog
-    })
+      dispatch({
+        type: 'NEW_BLOG',
+        data: newBlog
+      })
+    }
+    catch (error) {
+      console.log('ERROR:', error)
+    }
   }
 )
 
