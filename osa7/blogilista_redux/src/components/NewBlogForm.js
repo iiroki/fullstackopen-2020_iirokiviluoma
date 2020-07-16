@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
+import { addNewBlog } from '../reducers/blogReducer'
 
-const NewBlogForm = ({ handleAddNewBlog }) => {
+const NewBlogForm = ({ handleHide }) => {
   const [newBlogTitle, setNewBlogTitle] = useState('')
   const [newBlogAuthor, setNewBlogAuthor] = useState('')
   const [newBlogUrl, setNewBlogUrl] = useState('')
+
+  const dispatch = useDispatch()
 
   // Tila asetetaan oletustilaan uuden renderöinnin yhteydessä!
   const resetNewBlogFields = () => {
@@ -16,13 +20,14 @@ const NewBlogForm = ({ handleAddNewBlog }) => {
   const createNewBlog = async (event) => {
     event.preventDefault()
 
-    const success = await handleAddNewBlog({
+    dispatch(addNewBlog({
       title: newBlogTitle,
       author: newBlogAuthor,
       url: newBlogUrl
-    })
+    }))
 
-    if (success) resetNewBlogFields()
+    handleHide()
+    resetNewBlogFields()
   }
 
   return (
@@ -79,10 +84,6 @@ const NewBlogForm = ({ handleAddNewBlog }) => {
       </form>
     </div>
   )
-}
-
-NewBlogForm.propTypes = {
-  handleAddNewBlog: PropTypes.func.isRequired
 }
 
 export default NewBlogForm

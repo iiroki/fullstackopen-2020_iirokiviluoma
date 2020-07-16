@@ -86,7 +86,6 @@ const App = () => {
     dispatch(setNotification('Logout successful'))
   }
 
-  // Tapahtumankäsittelijä uuden blogin lisäämiselle
   const handleAddNewBlog = async (blogObject) => {
     try {
       const blogToAdd = await blogService.addNew(blogObject)
@@ -149,7 +148,7 @@ const App = () => {
       <LoggedUserInfo name={user.name} handleLogout={handleLogout} />
 
       <Togglable buttonLabel='New blog' ref={newBlogFormRef}>
-        <NewBlogForm handleAddNewBlog={handleAddNewBlog} />
+        <NewBlogForm handleHide={() => newBlogFormRef.current.toggleVisibility()} />
       </Togglable>
 
       <BlogList

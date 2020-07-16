@@ -6,6 +6,9 @@ const blogReducer = (state = blogsAtStart, action) => {
   switch (action.type) {
     case 'INIT_BLOGS':
       return action.data
+    
+    case 'NEW_BLOG':
+      return [...state, action.data]
 
     default:
       return state
@@ -19,6 +22,17 @@ export const initBlogs = () => (
     dispatch({
       type: 'INIT_BLOGS',
       data: blogs
+    })
+  }
+)
+
+export const addNewBlog = (blogObject) => (
+  async dispatch => {
+    const newBlog = await blogService.addNew(blogObject)
+
+    dispatch({
+      type: 'NEW_BLOG',
+      data: newBlog
     })
   }
 )
