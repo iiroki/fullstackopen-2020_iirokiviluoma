@@ -9,6 +9,9 @@ import NewBlogForm from './components/NewBlogForm'
 import { Notification, notificationTypes } from './components/Notification'
 import Togglable from './components/Togglable'
 
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
@@ -17,6 +20,8 @@ const App = () => {
 
   const NOTIFICATIONTIME = 5000  // ms
   const newBlogFormRef = useRef()
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const getBlogs = async () => {
@@ -33,10 +38,7 @@ const App = () => {
         setBlogs(sortedBlogs)
       }
       catch (exception) {
-        showNotification(
-          'Error fetching blogs from the server',
-          notificationTypes.ERROR
-        )
+        console.log(exception)
       }
     }
 
@@ -54,16 +56,6 @@ const App = () => {
     }
   }, [])
 
-  const showNotification = (msg, type) => {
-    setNotificationType(type)
-    setNotificationMsg(msg)
-
-    setTimeout(() => {
-      setNotificationType(notificationTypes.NONE)
-      setNotificationMsg(null)
-    }, NOTIFICATIONTIME)
-  }
-
   // Tapahtumankäsittelijä sisäänkirjautumiselle
   const handleLogin = async (loginObject) => {
     try {
@@ -76,16 +68,10 @@ const App = () => {
       blogService.setToken(userToLogIn.token)
       setUser(userToLogIn)
 
-      showNotification(
-        'Login successful',
-        notificationTypes.GOOD
-      )
+      dispatch(setNotification('Login successful'))
     }
     catch (exception) {
-      showNotification(
-        'Invalid username or password',
-        notificationTypes.ERROR
-      )
+      console.log(exception)
     }
   }
 
@@ -95,10 +81,7 @@ const App = () => {
     blogService.setToken(null)
     setUser(null)
 
-    showNotification(
-      'Logout successful',
-      notificationTypes.GOOD
-    )
+    dispatch(setNotification('Logout successful'))
   }
 
   // Tapahtumankäsittelijä uuden blogin lisäämiselle
@@ -109,19 +92,12 @@ const App = () => {
       newBlogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(blogToAdd))
 
-      showNotification(
-        `A new blog added: ${blogToAdd.title} - ${blogToAdd.author}`,
-        notificationTypes.GOOD
-      )
+      dispatch(setNotification(`A new blog added: ${blogToAdd.title} - ${blogToAdd.author}`))
 
       return true
     }
     catch (exception) {
-      showNotification(
-        'Author and URL are minimum requirements to add a new blog',
-        notificationTypes.ERROR
-      )
-
+      console.log(exception)
       return false
     }
   }
@@ -133,10 +109,7 @@ const App = () => {
       setBlogs(blogs.map(b => b.id === id ? likedBlog : b))
     }
     catch (exception) {
-      showNotification(
-        `Error occurred when attempting to like blog ${blogObject.title}`,
-        notificationTypes.ERROR
-      )
+      console.log(exception)
     }
   }
 
@@ -153,17 +126,11 @@ const App = () => {
 
     try {
       await blogService.deleteBlog(id)
-
-      showNotification(
-        `Blog ${blogObject.title} deleted`,
-        notificationTypes.GOOD
-      )
+      dispatch(setNotification(`Blog ${blogObject.title} deleted`))
+      
     }
     catch (exception) {
-      showNotification(
-        `Blog ${blogObject.title} is already deleted from the server`,
-        notificationTypes.ERROR
-      )
+      console.log(exception)
     }
 
     setBlogs(blogs.filter(b => b.id !== id))
@@ -173,7 +140,6 @@ const App = () => {
   const loginPage = () => (
     <LoginForm handleLogin={handleLogin} />
   )
-
 
   // Kirjautuneelle käyttäjälle näytettävä sivu
   const loggedInPage = () => (

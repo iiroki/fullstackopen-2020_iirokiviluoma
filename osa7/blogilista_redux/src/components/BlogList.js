@@ -1,8 +1,13 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import Blog from './Blog'
 
+import { setNotification } from '../reducers/notificationReducer'
+
 const BlogList = ({ blogs, currentUser, handleLike, handleDelete }) => {
+  const dispatch = useDispatch()
+
   // Muutetaan blogin data oikeaan muotoon tykkäyksen lisäystä varten
   const createBlogLike = (likedBlog) => {
     handleLike({
@@ -12,6 +17,8 @@ const BlogList = ({ blogs, currentUser, handleLike, handleDelete }) => {
       author: likedBlog.author,
       url: likedBlog.url
     }, likedBlog.id)
+
+    dispatch(setNotification(`Like given to: ${likedBlog.title}`))
   }
 
   // Muutetaan blogin data oikeaan muotoon poistoa varten

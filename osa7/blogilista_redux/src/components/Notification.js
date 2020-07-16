@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 const notificationTypes = {
   NONE: null,
@@ -6,12 +7,14 @@ const notificationTypes = {
   ERROR: 1
 }
 
-const Notification = ({ msg, type }) => {
+const Notification = () => {
+  const msg = useSelector(state => state.notification)
+
   if (msg === null) {
     return null
   }
 
-  if (type === notificationTypes.GOOD) {
+  /*if (type === notificationTypes.GOOD) {
     return (
       <div className='notificationGood'>
         {msg}
@@ -27,7 +30,12 @@ const Notification = ({ msg, type }) => {
     )
   }
 
-  else return null
+  else return null*/
+  return (
+    <div className='notificationGood'>
+      {msg}
+    </div>
+  )
 }
 
 export {

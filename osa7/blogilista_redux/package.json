@@ -1,15 +1,7 @@
 {
-  "name": "bloglist-frontend",
+  "name": "bloglist-frontend-redux",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@testing-library/user-event": "^7.2.1",
-    "axios": "^0.19.2",
-    "prop-types": "^15.7.2",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.3.1"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -33,12 +25,24 @@
       "last 1 safari version"
     ]
   },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-redux": "^7.2.0",
+    "react-scripts": "3.3.1",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
+  },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
     "cypress": "^4.10.0",
     "eslint-plugin-cypress": "^2.11.1",
-    "eslint-plugin-jest": "^23.18.0"
+    "eslint-plugin-jest": "^23.18.0",
+    "redux-devtools-extension": "^2.13.8"
   },
   "proxy": "http://localhost:3001"
 }
