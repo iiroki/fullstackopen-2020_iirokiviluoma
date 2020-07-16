@@ -10,6 +10,7 @@ import { Notification, notificationTypes } from './components/Notification'
 import Togglable from './components/Togglable'
 
 import { useDispatch } from 'react-redux'
+import { initBlogs } from './reducers/blogReducer'
 import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
         })
 
         setBlogs(sortedBlogs)
+        dispatch(initBlogs())
       }
       catch (exception) {
         console.log(exception)
@@ -43,7 +45,7 @@ const App = () => {
     }
 
     getBlogs()
-  }, [])  // Aktivoidaan 1. renderöinnin jälkeen
+  }, [])  // Activated after 1. render
 
   // Tarkastetaan selaimen muistista kirjautumistiedot
   useEffect(() => {
@@ -151,7 +153,6 @@ const App = () => {
       </Togglable>
 
       <BlogList
-        blogs={blogs}
         currentUser={user.username}
         handleLike={handleBlogLike}
         handleDelete={handleDeleteBlog}

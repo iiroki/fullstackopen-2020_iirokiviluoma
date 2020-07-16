@@ -1,11 +1,12 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import Blog from './Blog'
 
 import { setNotification } from '../reducers/notificationReducer'
 
-const BlogList = ({ blogs, currentUser, handleLike, handleDelete }) => {
+const BlogList = ({ currentUser, handleLike, handleDelete }) => {
+  const blogs = useSelector(state => state.blogs)
   const dispatch = useDispatch()
 
   // Muutetaan blogin data oikeaan muotoon tykkäyksen lisäystä varten
@@ -50,7 +51,6 @@ const BlogList = ({ blogs, currentUser, handleLike, handleDelete }) => {
 }
 
 BlogList.propTypes = {
-  blogs: PropTypes.array.isRequired,
   currentUser: PropTypes.string.isRequired,
   handleLike: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired
