@@ -21,7 +21,7 @@ const addNew = async (contents) => {
   return response.data
 }
 
-const addLike = async (id, contents) => {
+const modifyExisting = async (id, contents) => {
   const url = `${baseUrl}/${id}`
   const response = await axios.put(url, contents)
   return response.data
@@ -41,6 +41,6 @@ export default {
   setToken,
   getAll,
   addNew,
-  addLike,
+  modifyExisting,
   deleteBlog
 }

@@ -62,40 +62,6 @@ const App = () => {
     dispatch(setNotification('Logout successful'))
   }
 
-  // Tapahtumankäsittelijä blogista tykkäämiselle
-  const handleBlogLike = async (blogObject, id) => {
-    /*try {
-      const likedBlog = await blogService.addLike(id, blogObject)
-      setBlogs(blogs.map(b => b.id === id ? likedBlog : b))
-    }
-    catch (exception) {
-      console.log(exception)
-    }*/
-  }
-
-  // Tapahtumankäsittelijä blogin poistamiselle
-  const handleDeleteBlog = async (blogObject, id) => {
-    const confirmationMsg = `Are you sure you want to delete blog ` +
-    `${blogObject.title} by ${blogObject.author} with ${blogObject.likes} ` +
-    `likes?`
-
-    // Varmistusikkuna poistolle
-    if (!window.confirm(confirmationMsg)) {
-      return
-    }
-
-    /*try {
-      await blogService.deleteBlog(id)
-      dispatch(setNotification(`Blog ${blogObject.title} deleted`))
-      
-    }
-    catch (exception) {
-      console.log(exception)
-    }
-
-    setBlogs(blogs.filter(b => b.id !== id))*/
-  }
-
   // Kirjautumattomalle käyttäjälle näytettävä sivu
   const loginPage = () => (
     <LoginForm handleLogin={handleLogin} />
@@ -112,11 +78,7 @@ const App = () => {
         />
       </Togglable>
 
-      <BlogList
-        currentUser={user.username}
-        handleLike={handleBlogLike}
-        handleDelete={handleDeleteBlog}
-      />
+      <BlogList currentUser={user.username} />
     </div>
   )
 

@@ -17,48 +17,50 @@ const BlogFullView = ({
   handleFullView,
   handleLike,
   handleDelete
-}) => (
-  <div className='blog'>
-    <div className='blogExpand' onClick={handleFullView}>
-      &#x25BF;
-    </div>
-    <span id='title'>
-      <b><u>{blog.title}</u></b>
-    </span><br/>
+}) => {
+  return (
+    <div className='blog'>
+      <div className='blogExpand' onClick={handleFullView}>
+        &#x25BF;
+      </div>
+      <span id='title'>
+        <b><u>{blog.title}</u></b>
+      </span><br/>
 
-    <span id='author'>
-      Author: {blog.author}
-    </span><br/>
+      <span id='author'>
+        Author: {blog.author}
+      </span><br/>
 
-    <span id='url'>
-      URL: {blog.url}
-    </span><br/>
+      <span id='url'>
+        URL: {blog.url}
+      </span><br/>
 
-    <span id='likes'>
-      {'Likes: '}
-      <span id='likesAmount'>
-        <i>{blog.likes}</i>
+      <span id='likes'>
+        {'Likes: '}
+        <span id='likesAmount'>
+          <i>{blog.likes}</i>
+        </span>
       </span>
-    </span>
 
-    <button
-      className='likeButton'
-      onClick={() => handleLike(blog)}>
-        Like
-    </button><br/>
+      <button
+        className='likeButton'
+        onClick={() => handleLike(blog)}>
+          Like
+      </button><br/>
 
-    <span id='addedBy'>
-      Added by: {blog.user.name}
-    </span><br/>
+      <span id='addedBy'>
+        Added by: {blog.user.name}
+      </span><br/>
 
-    {currentUser === blog.user.username
-      ?
-      <button id='removeButton' onClick={() => handleDelete(blog)}>
-        Remove
-      </button>
-      : null}
-  </div>
-)
+      {currentUser === blog.user.username
+        ?
+        <button id='removeButton' onClick={() => handleDelete(blog)}>
+          Remove
+        </button>
+        : null}
+    </div>
+  )
+}
 
 const Blog = ({ blog, currentUser, handleLike, handleDelete }) => {
   const [fullView, setFullView] = useState(false)
