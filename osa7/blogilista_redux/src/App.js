@@ -1,18 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Switch, Route } from 'react-router-dom'
 import './App.css'
-import blogService from './services/blogs'
-import loginService from './services/login'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import LoggedUserInfo from './components/LoggedUserInfo'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
-
-import { useSelector, useDispatch } from 'react-redux'
 import { checkLogin } from './reducers/userReducer'
 import { initBlogs } from './reducers/blogReducer'
-import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
   const user = useSelector(state => state.user)
@@ -55,10 +52,20 @@ const App = () => {
 
       <Notification />
 
-      {user === null
-        ? loginPage()
-        : loggedInPage()
-      }
+      <Switch>
+        <Route path={'/users'}>
+          Users...
+        </Route>
+
+        <Route path={'/'}>
+          {user === null
+            ? loginPage()
+            : loggedInPage()
+          }
+        </Route>
+      </Switch>
+
+      
     </div>
   )
 }
