@@ -18,7 +18,7 @@ const Togglable = React.forwardRef((props, ref) => {
   })
 
   return (
-    <div className='togglable'>
+    <div className='togglable' style={{padding: '10px'}}>
       <div style={hideWhenVisible}>
         <button className='btn btn-outline-primary' onClick={toggleVisibility}>
           {props.buttonLabel}

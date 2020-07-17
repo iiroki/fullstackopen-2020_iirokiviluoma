@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Switch, Route, useRouteMatch, Link } from 'react-router-dom'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
 
+import NavigationMenu from './components/NavigationMenu'
 import BlogList from './components/BlogList'
 import Blog from './components/Blog'
 import UserList from './components/UserList'
 import User from './components/User'
 import LoginForm from './components/LoginForm'
-import LoggedUserInfo from './components/LoggedUserInfo'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -18,10 +18,10 @@ import { initUsers } from './reducers/userReducer'
 
 const App = () => {
   const loggedUser = useSelector(state => state.login)
-
   const dispatch = useDispatch()
   const newBlogFormRef = useRef()
 
+  // Initializing blogs and users
   useEffect(() => {
     dispatch(initBlogs())
     dispatch(initUsers())
@@ -32,24 +32,9 @@ const App = () => {
     dispatch(checkLogin())
   }, [dispatch])
 
-  const NavigationMenu = () => (
-    <nav className='navbar navbar-expand-lg navbarlight bg-light'>
-      <span className='nav-item'><Link to='/'>Blogs</Link></span>
-      <span className='nav-item'><Link to='/users'>Users</Link></span>
-      
-    </nav>
-  )
-
-  // Login page shown when there's no user logged in
-  const loginPage = () => (
-    <LoginForm />
-  )
-
   // Main page shown to user who's logged in
   const MainPage = () => (
     <div>
-      <LoggedUserInfo />
-
       <Togglable buttonLabel='New blog' ref={newBlogFormRef}>
         <NewBlogForm
           handleHide={() => newBlogFormRef.current.toggleVisibility()}
@@ -62,21 +47,18 @@ const App = () => {
 
   const usersPage = () => (
     <div>
-      <LoggedUserInfo />
       <UserList />
     </div>
   )
 
   const blogPage = (blogId) => (
     <div>
-      <LoggedUserInfo />
       <Blog id={blogId} />
     </div>
   )
 
   const userPage = (userId) => (
     <div>
-      <LoggedUserInfo />
       <User id={userId} />
     </div>
   )
@@ -94,8 +76,8 @@ const App = () => {
     : null
   
   return (
-    <div>
-      <h1>Bloglist</h1>
+    <div className='container'>
+      <h1><b>Bloglist</b></h1>
 
       <NavigationMenu />
 
@@ -104,28 +86,28 @@ const App = () => {
       <Switch>
         <Route path={'/blogs/:id'}>
           {loggedUser === null
-            ? loginPage()
+            ? <LoginForm />
             : blogPage(blogId)
           }
         </Route>
 
         <Route path={'/users/:id'}>
           {loggedUser === null
-            ? loginPage()
+            ? <LoginForm />
             : userPage(userId)
           }
         </Route>
 
         <Route path={'/users'}>
           {loggedUser === null
-            ? loginPage()
+            ? <LoginForm />
             : usersPage()
           }
         </Route>
 
         <Route path={'/'}>
           {loggedUser === null
-            ? loginPage()
+            ? <LoginForm />
             : MainPage()
           }
         </Route>

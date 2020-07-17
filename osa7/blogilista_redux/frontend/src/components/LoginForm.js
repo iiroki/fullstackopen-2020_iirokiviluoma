@@ -25,9 +25,9 @@ const LoginForm = () => {
   }
 
   return (
-    <div>
+    <div style={{paddingTop: '15px'}}>
       <form onSubmit={createLogin}>
-        <table>
+        <table style={{textAlign: 'center'}}>
           <tbody>
 
             <tr>
@@ -56,7 +56,7 @@ const LoginForm = () => {
 
             <tr>
               <td colSpan='2'>
-                <button id='loginButton' type='submit'>Log in</button>
+                <button className='btn btn-outline-primary' id='loginButton' type='submit'>Log in</button>
               </td>
             </tr>
 
