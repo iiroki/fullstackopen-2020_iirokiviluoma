@@ -1,9 +1,14 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const UserTableItem = ({ user }) => (
   <tr>
-    <td>{user.name}</td>
+    <td>
+      <Link to={`/users/${user.id}`}>
+        {user.name}
+      </Link>
+    </td>
     <td>{user.blogs.length}</td>
   </tr>
 )
@@ -11,10 +16,6 @@ const UserTableItem = ({ user }) => (
 const UserList = () => {
   const users = useSelector(state => state.users
     .sort((a, b) => b.blogs.length - a.blogs.length))
-
-  const tableStyle = {
-    align: 'left'
-  }
 
   return (
     <div>

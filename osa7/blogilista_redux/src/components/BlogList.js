@@ -6,10 +6,10 @@ import Blog from './Blog'
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
 import { setNotification, notificationTypes } from '../reducers/notificationReducer'
 
-const BlogList = ({ currentUser }) => {
+const BlogList = ({ currentUser }) => {    
   const blogs = useSelector(state => state.blogs
     .sort((a, b) => b.likes - a.likes))
-    
+
   const dispatch = useDispatch()
 
   // Muutetaan blogin data oikeaan muotoon tykkäyksen lisäystä varten

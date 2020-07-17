@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import './App.css'
 
 import BlogList from './components/BlogList'
 import UserList from './components/UserList'
+import User from './components/User'
 import LoginForm from './components/LoginForm'
 import LoggedUserInfo from './components/LoggedUserInfo'
 import NewBlogForm from './components/NewBlogForm'
@@ -17,6 +18,7 @@ import { initUsers } from './reducers/userReducer'
 
 const App = () => {
   const loggedUser = useSelector(state => state.login)
+
   const dispatch = useDispatch()
   const newBlogFormRef = useRef()
 
@@ -35,7 +37,7 @@ const App = () => {
     <LoginForm />
   )
 
-  // Page shown to user who's logged in
+  // Main page shown to user who's logged in
   const MainPage = () => (
     <div>
       <LoggedUserInfo />
@@ -50,13 +52,26 @@ const App = () => {
     </div>
   )
 
-  const userPage = () => (
+  const usersPage = () => (
     <div>
       <LoggedUserInfo />
       <UserList />
     </div>
   )
 
+  const userPage = (userId) => (
+    <div>
+      <LoggedUserInfo />
+      <User id={userId} />
+    </div>
+  )
+
+  const userMatch = useRouteMatch('/users/:id')
+  
+  const userId = userMatch
+    ? userMatch.params.id
+    : null
+  
   return (
     <div>
       <h1>Bloglist</h1>
@@ -64,10 +79,17 @@ const App = () => {
       <Notification />
 
       <Switch>
+      <Route path={'/users/:id'}>
+          {loggedUser === null
+            ? loginPage()
+            : userPage(userId)
+          }
+        </Route>
+
         <Route path={'/users'}>
           {loggedUser === null
             ? loginPage()
-            : userPage()
+            : usersPage()
           }
         </Route>
 
