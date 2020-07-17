@@ -11,7 +11,7 @@ const BlogList = () => {
     <div className='blogList'>
       <h3>Blogs</h3>
 
-      <i>Click the arrow next to a blog to see more information.</i>
+      <i>Click on a blog to see more information.</i>
 
       {blogs.map(blog =>
         <div className='blog' key={blog.id}>

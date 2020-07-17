@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Switch, Route, useRouteMatch } from 'react-router-dom'
+import { Switch, Route, useRouteMatch, Link } from 'react-router-dom'
 import './App.css'
 
 import BlogList from './components/BlogList'
@@ -32,6 +32,13 @@ const App = () => {
   useEffect(() => {
     dispatch(checkLogin())
   }, [dispatch])
+
+  const NavigationMenu = () => (
+    <div>
+      <Link to='/'>Blogs</Link>
+      <Link to='/users'>Users</Link>
+    </div>
+  )
 
   // Login page shown when there's no user logged in
   const loginPage = () => (
@@ -89,6 +96,8 @@ const App = () => {
   return (
     <div>
       <h1>Bloglist</h1>
+
+      <NavigationMenu />
 
       <Notification />
 
