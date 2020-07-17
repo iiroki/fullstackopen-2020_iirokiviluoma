@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useSelector, useDispatch } from 'react-redux'
+import { logIn } from '../reducers/userReducer'
+import { setNotification, notificationTypes } from '../reducers/notificationReducer'
 
-const LoginForm = ({ handleLogin }) => {
+const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
+  const dispatch = useDispatch()
 
   // Tila asetetaan oletustilaan uuden renderöinnin yhteydessä!
   // Eli uudestaan kirjautumissivulle saavuttaessa.
@@ -11,10 +15,12 @@ const LoginForm = ({ handleLogin }) => {
   const createLogin = (event) => {
     event.preventDefault()
 
-    handleLogin({
+    dispatch(logIn({
       username: username,
       password: password
-    })
+    }))
+
+    dispatch(setNotification('Login successful', notificationTypes.GOOD))
   }
 
   return (
@@ -58,10 +64,6 @@ const LoginForm = ({ handleLogin }) => {
       </form>
     </div>
   )
-}
-
-LoginForm.propTypes = {
-  handleLogin: PropTypes.func.isRequired
 }
 
 export default LoginForm

@@ -9,12 +9,13 @@ import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { checkLogin } from './reducers/userReducer'
 import { initBlogs } from './reducers/blogReducer'
 import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
-  const [user, setUser] = useState(null)
+  const user = useSelector(state => state.user)
 
   const newBlogFormRef = useRef()
   const dispatch = useDispatch()
@@ -23,54 +24,20 @@ const App = () => {
     dispatch(initBlogs())
   }, [dispatch])  // Activated after 1. render
 
-  // Tarkastetaan selaimen muistista kirjautumistiedot
+  // Check if there is active login token
   useEffect(() => {
-    const loggedUserJson = window.localStorage.getItem('loggedUser')
-
-    if (loggedUserJson) {
-      const loggedUser = JSON.parse(loggedUserJson)
-      blogService.setToken(loggedUser.token)
-      setUser(loggedUser)
-    }
-  }, [])
-
-  // Tapahtumankäsittelijä sisäänkirjautumiselle
-  const handleLogin = async (loginObject) => {
-    try {
-      const userToLogIn = await loginService.login(loginObject)
-
-      window.localStorage.setItem(
-        'loggedUser', JSON.stringify(userToLogIn)
-      )
-
-      blogService.setToken(userToLogIn.token)
-      setUser(userToLogIn)
-
-      dispatch(setNotification('Login successful'))
-    }
-    catch (exception) {
-      console.log(exception)
-    }
-  }
-
-  // Tapahtumankäsittelijä uloskirjautumiselle
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedUser')
-    blogService.setToken(null)
-    setUser(null)
-
-    dispatch(setNotification('Logout successful'))
-  }
+    dispatch(checkLogin())
+  }, [dispatch])
 
   // Kirjautumattomalle käyttäjälle näytettävä sivu
   const loginPage = () => (
-    <LoginForm handleLogin={handleLogin} />
+    <LoginForm />
   )
 
   // Kirjautuneelle käyttäjälle näytettävä sivu
   const loggedInPage = () => (
     <div>
-      <LoggedUserInfo name={user.name} handleLogout={handleLogout} />
+      <LoggedUserInfo />
 
       <Togglable buttonLabel='New blog' ref={newBlogFormRef}>
         <NewBlogForm

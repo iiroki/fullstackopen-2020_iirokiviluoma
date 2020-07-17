@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Blog from './Blog'
 
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
-import { setNotification } from '../reducers/notificationReducer'
+import { setNotification, notificationTypes } from '../reducers/notificationReducer'
 
 const BlogList = ({ currentUser }) => {
   const blogs = useSelector(state => state.blogs
@@ -22,15 +22,8 @@ const BlogList = ({ currentUser }) => {
       user: blogToLike.user.id
     }))
 
-    /*console.log(blogToLike.id, {
-      author: blogToLike.author,
-      likes: blogToLike.likes + 1,
-      title: blogToLike.title,
-      url: blogToLike.url,
-      user: blogToLike.user.id
-    })*/
-
-    dispatch(setNotification(`Like given to: ${blogToLike.title}`))
+    dispatch(setNotification(`Like given to: ${blogToLike.title}`,
+    notificationTypes.GOOD))
   }
 
   // Muutetaan blogin data oikeaan muotoon poistoa varten
@@ -45,7 +38,8 @@ const BlogList = ({ currentUser }) => {
     }
 
     dispatch(deleteBlog(blogToDelete.id))
-    dispatch(setNotification(`Removed: ${blogToDelete.title}`))
+    dispatch(setNotification(`Removed: ${blogToDelete.title}`,
+    notificationTypes.GOOD))
   }
 
   return (

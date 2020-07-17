@@ -29,12 +29,15 @@ const NewBlogForm = ({ handleHide }) => {
         url: newBlogUrl
       }))
   
-      dispatch(setNotification(`A new blog added: ${newBlogTitle} - ${newBlogAuthor}`))
+      dispatch(setNotification(`A new blog added: ${newBlogTitle} - ${newBlogAuthor}`,
+        notificationTypes.GOOD))
+
       handleHide()
       resetFields()
     }
     else {
-      dispatch(setNotification(`Incomplete form values`))
+      dispatch(setNotification(`Incomplete form values`,
+        notificationTypes.GOOD))
     }
   }
 

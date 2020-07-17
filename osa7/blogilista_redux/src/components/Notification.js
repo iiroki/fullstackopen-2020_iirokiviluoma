@@ -1,18 +1,32 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { notificationTypes } from '../reducers/notificationReducer'
 
 const Notification = () => {
-  const msg = useSelector(state => state.notification)
+  const { msg, type }= useSelector(state => state.notification)
 
   if (msg === null) {
     return null
   }
 
-  return (
-    <div className='notification'>
-      {msg}
-    </div>
-  )
+  switch (type) {
+    case notificationTypes.GOOD:
+      return (
+        <div className='notificationGood'>
+          {msg}
+        </div>
+      )
+    
+    case notificationTypes.ERROR:
+      return (
+        <div className='notificationError'>
+          {msg}
+        </div>
+      )
+
+    default:
+      return null
+  }
 }
 
 export default Notification

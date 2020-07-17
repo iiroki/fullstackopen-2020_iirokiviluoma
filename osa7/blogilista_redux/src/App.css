@@ -70,14 +70,26 @@ table {
   margin-top: 20px;
 }
 
-.notification {
+.notificationGood {
   display: inline-block;
-  color: black;
+  color: darkgreen;
   background: lightgrey;
   font-size: 20px;
   border-style: solid;
   border-radius: 5px;
-  border-color: black;
+  border-color: darkgreen;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.notificationError {
+  display: inline-block;
+  color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: red;
   padding: 5px;
   margin-bottom: 10px;
 }

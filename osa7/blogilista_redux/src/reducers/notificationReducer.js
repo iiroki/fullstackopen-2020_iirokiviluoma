@@ -1,4 +1,7 @@
-const notificationAtStart = null
+const notificationAtStart = {
+  msg: null,
+  type: null
+}
 let notificationTimer = null
 
 const notificationTime = 5000 // ms
@@ -16,11 +19,14 @@ const notificationReducer = (state = notificationAtStart, action) => {
   }
 }
 
-export const setNotification = (msg) => (
+export const setNotification = (msg, type) => (
   dispatch => {
     dispatch({
       type: 'SET_NOTIFICATION',
-      data: msg
+      data: {
+        msg,
+        type
+      }
     })
   
     if (notificationTimer) clearTimeout(notificationTimer)
