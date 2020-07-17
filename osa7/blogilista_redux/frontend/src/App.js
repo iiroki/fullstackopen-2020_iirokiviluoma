@@ -32,7 +32,7 @@ const App = () => {
     dispatch(checkLogin())
   }, [dispatch])
 
-  // Main page shown to user who's logged in
+  // Main page of the app
   const MainPage = () => (
     <div>
       <Togglable buttonLabel='New blog' ref={newBlogFormRef}>
@@ -45,24 +45,7 @@ const App = () => {
     </div>
   )
 
-  const usersPage = () => (
-    <div>
-      <UserList />
-    </div>
-  )
-
-  const blogPage = (blogId) => (
-    <div>
-      <Blog id={blogId} />
-    </div>
-  )
-
-  const userPage = (userId) => (
-    <div>
-      <User id={userId} />
-    </div>
-  )
-
+  // Check if routes match for specific blog/user
   const blogMatch = useRouteMatch('/blogs/:id')
   
   const blogId = blogMatch
@@ -87,21 +70,21 @@ const App = () => {
         <Route path={'/blogs/:id'}>
           {loggedUser === null
             ? <LoginForm />
-            : blogPage(blogId)
+            : <Blog id={blogId} />
           }
         </Route>
 
         <Route path={'/users/:id'}>
           {loggedUser === null
             ? <LoginForm />
-            : userPage(userId)
+            : <User id={userId} />
           }
         </Route>
 
         <Route path={'/users'}>
           {loggedUser === null
             ? <LoginForm />
-            : usersPage()
+            : <UserList />
           }
         </Route>
 

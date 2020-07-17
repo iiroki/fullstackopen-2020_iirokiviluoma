@@ -12,14 +12,14 @@ const Notification = () => {
   switch (type) {
     case notificationTypes.GOOD:
       return (
-        <div className='notificationGood'>
+        <div className='alert alert-success'>
           {msg}
         </div>
       )
     
     case notificationTypes.ERROR:
       return (
-        <div className='notificationError'>
+        <div className='alert alert-danger'>
           {msg}
         </div>
       )
