@@ -47,9 +47,12 @@ export const logIn = (loginObject) => (
         type: 'SET_USER',
         data: userToLogIn
       })
+
+      return true
     }
     catch (error) {
       console.log(error.message)
+      return false
     }
   }
 )

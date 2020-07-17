@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { logIn } from '../reducers/userReducer'
 import { setNotification, notificationTypes } from '../reducers/notificationReducer'
@@ -8,19 +8,20 @@ const LoginForm = () => {
   const [password, setPassword] = useState('')
 
   const dispatch = useDispatch()
-
   // Tila asetetaan oletustilaan uuden renderöinnin yhteydessä!
   // Eli uudestaan kirjautumissivulle saavuttaessa.
 
-  const createLogin = (event) => {
+  const createLogin = async (event) => {
     event.preventDefault()
 
-    dispatch(logIn({
+    const success = await dispatch(logIn({
       username: username,
       password: password
     }))
 
-    dispatch(setNotification('Login successful', notificationTypes.GOOD))
+    success
+    ? dispatch(setNotification('Login successful', notificationTypes.GOOD))
+    : dispatch(setNotification('Invalid login credentials', notificationTypes.ERROR))
   }
 
   return (

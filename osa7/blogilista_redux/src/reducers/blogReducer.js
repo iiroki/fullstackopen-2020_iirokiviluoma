@@ -46,9 +46,12 @@ export const addNewBlog = (blogObject) => (
         type: 'NEW_BLOG',
         data: newBlog
       })
+
+      return true
     }
     catch (error) {
       console.log(error.message)
+      return false
     }
   }
 )

@@ -22,22 +22,20 @@ const NewBlogForm = ({ handleHide }) => {
   const createNewBlog = async (event) => {
     event.preventDefault()
 
-    if (validateFields()) {
-      dispatch(addNewBlog({
-        title: newBlogTitle,
-        author: newBlogAuthor,
-        url: newBlogUrl
-      }))
+    const success = await dispatch(addNewBlog({
+      title: newBlogTitle,
+      author: newBlogAuthor,
+      url: newBlogUrl
+    }))
   
+    if (success) {
       dispatch(setNotification(`A new blog added: ${newBlogTitle} - ${newBlogAuthor}`,
         notificationTypes.GOOD))
-
       handleHide()
       resetFields()
-    }
-    else {
+    } else {
       dispatch(setNotification(`Incomplete form values`,
-        notificationTypes.GOOD))
+        notificationTypes.ERROR))
     }
   }
 
