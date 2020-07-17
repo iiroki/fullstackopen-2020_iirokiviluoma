@@ -2,23 +2,27 @@ import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
 import './App.css'
+
 import BlogList from './components/BlogList'
+import UserList from './components/UserList'
 import LoginForm from './components/LoginForm'
 import LoggedUserInfo from './components/LoggedUserInfo'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
-import { checkLogin } from './reducers/userReducer'
+
+import { checkLogin } from './reducers/loginReducer'
 import { initBlogs } from './reducers/blogReducer'
+import { initUsers } from './reducers/userReducer'
 
 const App = () => {
-  const user = useSelector(state => state.user)
-
-  const newBlogFormRef = useRef()
+  const loggedUser = useSelector(state => state.login)
   const dispatch = useDispatch()
+  const newBlogFormRef = useRef()
 
   useEffect(() => {
     dispatch(initBlogs())
+    dispatch(initUsers())
   }, [dispatch])  // Activated after 1. render
 
   // Check if there is active login token
@@ -26,13 +30,13 @@ const App = () => {
     dispatch(checkLogin())
   }, [dispatch])
 
-  // Kirjautumattomalle käyttäjälle näytettävä sivu
+  // Login page shown when there's no user logged in
   const loginPage = () => (
     <LoginForm />
   )
 
-  // Kirjautuneelle käyttäjälle näytettävä sivu
-  const loggedInPage = () => (
+  // Page shown to user who's logged in
+  const MainPage = () => (
     <div>
       <LoggedUserInfo />
 
@@ -42,7 +46,14 @@ const App = () => {
         />
       </Togglable>
 
-      <BlogList currentUser={user.username} />
+      <BlogList currentUser={loggedUser.username} />
+    </div>
+  )
+
+  const userPage = () => (
+    <div>
+      <LoggedUserInfo />
+      <UserList />
     </div>
   )
 
@@ -54,13 +65,16 @@ const App = () => {
 
       <Switch>
         <Route path={'/users'}>
-          Users...
+          {loggedUser === null
+            ? loginPage()
+            : userPage()
+          }
         </Route>
 
         <Route path={'/'}>
-          {user === null
+          {loggedUser === null
             ? loginPage()
-            : loggedInPage()
+            : MainPage()
           }
         </Route>
       </Switch>

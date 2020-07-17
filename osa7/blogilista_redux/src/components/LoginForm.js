@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { logIn } from '../reducers/userReducer'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { logIn } from '../reducers/loginReducer'
 import { setNotification, notificationTypes } from '../reducers/notificationReducer'
 
 const LoginForm = () => {

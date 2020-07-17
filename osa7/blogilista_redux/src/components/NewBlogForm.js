@@ -11,8 +11,6 @@ const NewBlogForm = ({ handleHide }) => {
 
   const dispatch = useDispatch()
 
-  const validateFields = () => newBlogTitle && newBlogUrl
-
   const resetFields = () => {
     setNewBlogTitle('')
     setNewBlogAuthor('')

@@ -1,10 +1,10 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { logOut } from '../reducers/userReducer'
+import { logOut } from '../reducers/loginReducer'
 import { setNotification, notificationTypes } from '../reducers/notificationReducer'
 
 const LoggedUserInfo = () => {
-  const name = useSelector(state => state.user.name)
+  const name = useSelector(state => state.login.name)
   const dispatch = useDispatch()
 
   const handleLogout = () => {

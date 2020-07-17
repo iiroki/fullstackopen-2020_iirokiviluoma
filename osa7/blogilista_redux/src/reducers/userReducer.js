@@ -1,69 +1,22 @@
-import blogService from '../services/blogs'
-import loginService from '../services/login'
+import userService from '../services/users'
 
-const userAtStart = null
-
-const userReducer = (state = userAtStart, action) => {
+const userReducer = (state = [], action) => {
   switch (action.type) {
-    case 'SET_USER':
+    case 'INIT_USERS':
       return action.data
-
-    case 'REMOVE_USER':
-      return userAtStart
 
     default:
       return state
   }
 }
 
-export const checkLogin = () => (
-  thunk => {
-    const loggedUserJson = window.localStorage.getItem('loggedUser')
-
-    if (loggedUserJson) {
-      const loggedUser = JSON.parse(loggedUserJson)
-      blogService.setToken(loggedUser.token)
-      
-      thunk({
-        type: 'SET_USER',
-        data: loggedUser
-      })
-    }
-  }
-)
-
-export const logIn = (loginObject) => (
+export const initUsers = () => (
   async thunk => {
-    try {
-      const userToLogIn = await loginService.login(loginObject)
-
-      window.localStorage.setItem(
-        'loggedUser', JSON.stringify(userToLogIn)
-      )
-
-      blogService.setToken(userToLogIn.token)
-
-      thunk({
-        type: 'SET_USER',
-        data: userToLogIn
-      })
-
-      return true
-    }
-    catch (error) {
-      console.log(error.message)
-      return false
-    }
-  }
-)
-
-export const logOut = () => (
-  thunk => {
-    window.localStorage.removeItem('loggedUser')
-    blogService.setToken(null)
+    const users = await userService.getAll()
 
     thunk({
-      type: 'REMOVE_USER'
+      type: 'INIT_USERS',
+      data: users
     })
   }
 )
