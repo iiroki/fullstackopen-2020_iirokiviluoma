@@ -25,4 +25,5 @@ osa7
     routed anecdotes
     country hook
     ultimate hooks
+    blogilista redux (frontend + backend)
 ```
