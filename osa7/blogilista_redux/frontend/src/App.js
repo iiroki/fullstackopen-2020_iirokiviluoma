@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Switch, Route, useRouteMatch, Link } from 'react-router-dom'
-import './App.css'
 
 import BlogList from './components/BlogList'
 import Blog from './components/Blog'

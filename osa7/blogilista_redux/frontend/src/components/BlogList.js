@@ -3,23 +3,29 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
+const BlogTableItem = ({ blog }) => (
+  <tr>
+    <td><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></td>
+  </tr>
+)
+
 const BlogList = () => {    
   const blogs = useSelector(state => state.blogs
     .sort((a, b) => b.likes - a.likes))
 
   return (
-    <div className='blogList'>
+    <div>
       <h3>Blogs</h3>
 
-      <i>Click on a blog to see more information.</i>
+      <table className='table table-striped'>
+        <thead><tr><th>Click on a blog to see more information.</th></tr></thead>
+        <tbody>
+          {blogs.map(blog =>
+            <BlogTableItem key={blog.id} blog={blog} />
+          )}
+        </tbody>
+      </table>
 
-      {blogs.map(blog =>
-        <div className='blog' key={blog.id}>
-          <Link to={`/blogs/${blog.id}`}>
-            {blog.title}
-          </Link>
-        </div>
-      )}
     </div>
   )
 }
