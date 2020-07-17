@@ -15,7 +15,9 @@ const LoggedUserInfo = () => {
   return (
     <div className='loggedUserInfo'>
       <b>Logged in as {name}</b>
-      <button className='logoutButton' onClick={handleLogout}>Log out</button>
+      <button className='btn btn-outline-primary' onClick={handleLogout}>
+        Log out
+      </button>
     </div>
   )
 }

@@ -34,10 +34,11 @@ const App = () => {
   }, [dispatch])
 
   const NavigationMenu = () => (
-    <div>
-      <Link to='/'>Blogs</Link>
-      <Link to='/users'>Users</Link>
-    </div>
+    <nav className='navbar navbar-expand-lg navbarlight bg-light'>
+      <span className='nav-item'><Link to='/'>Blogs</Link></span>
+      <span className='nav-item'><Link to='/users'>Users</Link></span>
+      
+    </nav>
   )
 
   // Login page shown when there's no user logged in

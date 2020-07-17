@@ -82,7 +82,7 @@ const NewBlogForm = ({ handleHide }) => {
 
             <tr>
               <td colSpan='2'>
-                <button className='addButton' type='submit'>Add</button>
+                <button className='btn btn-outline-primary' type='submit'>Add</button>
               </td>
             </tr>
 
