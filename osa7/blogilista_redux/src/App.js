@@ -4,6 +4,7 @@ import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import './App.css'
 
 import BlogList from './components/BlogList'
+import Blog from './components/Blog'
 import UserList from './components/UserList'
 import User from './components/User'
 import LoginForm from './components/LoginForm'
@@ -59,12 +60,25 @@ const App = () => {
     </div>
   )
 
+  const blogPage = (blogId) => (
+    <div>
+      <LoggedUserInfo />
+      <Blog id={blogId} />
+    </div>
+  )
+
   const userPage = (userId) => (
     <div>
       <LoggedUserInfo />
       <User id={userId} />
     </div>
   )
+
+  const blogMatch = useRouteMatch('/blogs/:id')
+  
+  const blogId = blogMatch
+    ? blogMatch.params.id
+    : null
 
   const userMatch = useRouteMatch('/users/:id')
   
@@ -79,7 +93,14 @@ const App = () => {
       <Notification />
 
       <Switch>
-      <Route path={'/users/:id'}>
+        <Route path={'/blogs/:id'}>
+          {loggedUser === null
+            ? loginPage()
+            : blogPage(blogId)
+          }
+        </Route>
+
+        <Route path={'/users/:id'}>
           {loggedUser === null
             ? loginPage()
             : userPage(userId)
