@@ -5,68 +5,6 @@ import { useHistory } from 'react-router-dom'
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
 import { setNotification, notificationTypes } from '../reducers/notificationReducer'
 
-/*// Yksinkertaistettu bloginäkymä
-const BlogView = ({ blog, handleFullView }) => (
-  <div className='blog'>
-    <div className='blogExpand' onClick={handleFullView}>
-      &#x25B5;
-    </div>
-    {blog.title} - {blog.author}
-  </div>
-)
-
-// Bloginäkymä kaikilla blogin tiedoilla
-const BlogFullView = ({
-  blog,
-  currentUser,
-  handleFullView,
-  handleLike,
-  handleDelete
-}) => {
-  return (
-    <div className='blog'>
-      <div className='blogExpand' onClick={handleFullView}>
-        &#x25BF;
-      </div>
-      <span id='title'>
-        <b><u>{blog.title}</u></b>
-      </span><br/>
-
-      <span id='author'>
-        Author: {blog.author}
-      </span><br/>
-
-      <span id='url'>
-        URL: {blog.url}
-      </span><br/>
-
-      <span id='likes'>
-        {'Likes: '}
-        <span id='likesAmount'>
-          <i>{blog.likes}</i>
-        </span>
-      </span>
-
-      <button
-        className='likeButton'
-        onClick={() => handleLike(blog)}>
-          Like
-      </button><br/>
-
-      <span id='addedBy'>
-        Added by: {blog.user.name}
-      </span><br/>
-
-      {currentUser === blog.user.username
-        ?
-        <button id='removeButton' onClick={() => handleDelete(blog)}>
-          Remove
-        </button>
-        : null}
-    </div>
-  )
-}*/
-
 const Blog = ({ id }) => {
   const blog = useSelector(state => state.blogs)
     .find(b => b.id === id)
@@ -110,17 +48,7 @@ const Blog = ({ id }) => {
 
   return (
     <div className='blog'>
-      <span id='title'>
-        <b><u>{blog.title}</u></b>
-      </span><br/>
-
-      <span id='author'>
-        Author: {blog.author}
-      </span><br/>
-
-      <span id='url'>
-        URL: {blog.url}
-      </span><br/>
+      <h3><b><i>{blog.title}</i></b></h3>
 
       <span id='likes'>
         {'Likes: '}
@@ -130,10 +58,18 @@ const Blog = ({ id }) => {
       </span>
 
       <button
-        className='likeButton'
+        className='btn btn-outline-primary'
         onClick={() => handleLikeBlog(blog)}>
           Like
       </button><br/>
+
+      <span id='author'>
+        Author: {blog.author}
+      </span><br/>
+
+      <span id='url'>
+        URL: <a href={`https://${blog.url}`}>{blog.url}</a>
+      </span><br/>
 
       <span id='addedBy'>
         Added by: {blog.user.name}
@@ -141,10 +77,20 @@ const Blog = ({ id }) => {
 
       {currentUser === blog.user.username
         ?
-        <button id='removeButton' onClick={() => handleDeleteBlog(blog)}>
+        <button className='btn btn-outline-primary' id='removeButton' onClick={() => handleDeleteBlog(blog)}>
           Remove
         </button>
         : null}
+      
+      <div>
+        Comments
+      
+        <ul>
+          {blog.comments.map(c =>
+            <li key={c}>{c}</li>)}
+        </ul>
+
+      </div>
     </div>
   )
 }
