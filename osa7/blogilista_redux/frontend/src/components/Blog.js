@@ -13,11 +13,6 @@ const Blog = ({ id }) => {
   const dispatch = useDispatch()
   const history = useHistory()
 
-  if (currentUser && blog) {
-    console.log('USER:', currentUser)
-  console.log('ADDED BY:', blog.user.username)
-  }
-
   if (!blog) return null
 
   // Muutetaan blogin data oikeaan muotoon tykkäyksen lisäystä varten

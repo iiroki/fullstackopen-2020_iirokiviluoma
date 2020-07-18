@@ -59,43 +59,44 @@ const App = () => {
     : null
   
   return (
-    <div className='container'>
-      <h1><b>Bloglist</b></h1>
+    <div>
+      <h1 style={{padding: '15px'}}><b>Bloglist</b></h1>
 
       <NavigationMenu />
 
       <Notification />
 
-      <Switch>
-        <Route path={'/blogs/:id'}>
-          {loggedUser === null
-            ? <LoginForm />
-            : <Blog id={blogId} />
-          }
-        </Route>
+      <div className='container'>
+        <Switch>
+          <Route path={'/blogs/:id'}>
+            {loggedUser === null
+              ? <LoginForm />
+              : <Blog id={blogId} />
+            }
+          </Route>
 
-        <Route path={'/users/:id'}>
-          {loggedUser === null
-            ? <LoginForm />
-            : <User id={userId} />
-          }
-        </Route>
+          <Route path={'/users/:id'}>
+            {loggedUser === null
+              ? <LoginForm />
+              : <User id={userId} />
+            }
+          </Route>
 
-        <Route path={'/users'}>
-          {loggedUser === null
-            ? <LoginForm />
-            : <UserList />
-          }
-        </Route>
+          <Route path={'/users'}>
+            {loggedUser === null
+              ? <LoginForm />
+              : <UserList />
+            }
+          </Route>
 
-        <Route path={'/'}>
-          {loggedUser === null
-            ? <LoginForm />
-            : MainPage()
-          }
-        </Route>
-      </Switch>
-
+          <Route path={'/'}>
+            {loggedUser === null
+              ? <LoginForm />
+              : MainPage()
+            }
+          </Route>
+        </Switch>
+      </div>
       
     </div>
   )
