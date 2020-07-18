@@ -15,6 +15,9 @@ const blogReducer = (state = blogsAtStart, action) => {
     
     case 'LIKE_BLOG':
       return state.map(b => b.id === action.data.id ? action.data : b)
+    
+    case 'COMMENT_BLOG':
+      return state.map(b => b.id === action.data.id ? action.data : b)
 
     default:
       return state
@@ -80,6 +83,22 @@ export const likeBlog = (id, blogObject) => (
       thunk({
         type: 'LIKE_BLOG',
         data: likedBlog
+      })
+    }
+    catch (error) {
+      console.log(error.message)
+    }
+  }
+)
+
+export const commentBlog = (id, commentObject) => (
+  async thunk => {
+    try {
+      const commentedBlog = await blogService.commentBlog(id, commentObject)
+
+      thunk({
+        type: 'COMMENT_BLOG',
+        data: commentedBlog
       })
     }
     catch (error) {

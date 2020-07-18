@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-
+import CommentForm from './CommentForm'
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
 import { setNotification, notificationTypes } from '../reducers/notificationReducer'
 
@@ -46,6 +46,10 @@ const Blog = ({ id }) => {
     history.push('/')
   }
 
+  const margin = {
+    marginLeft: '10px'
+  }
+
   return (
     <div className='blog'>
       <h3><b><i>{blog.title}</i></b></h3>
@@ -59,6 +63,7 @@ const Blog = ({ id }) => {
 
       <button
         className='btn btn-outline-primary'
+        style={margin}
         onClick={() => handleLikeBlog(blog)}>
           Like
       </button><br/>
@@ -83,11 +88,17 @@ const Blog = ({ id }) => {
         : null}
       
       <div>
-        Comments
+        Comments:
+
+        <CommentForm blogId={blog.id} />
       
         <ul>
-          {blog.comments.map(c =>
-            <li key={c}>{c}</li>)}
+          {blog.comments.length === 0
+            ? <span>No comments yet</span>
+            :
+            blog.comments.map(c =>
+              <li key={c}>{c}</li>
+            )}
         </ul>
 
       </div>

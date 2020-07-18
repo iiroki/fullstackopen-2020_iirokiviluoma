@@ -5,7 +5,10 @@ import PropTypes from 'prop-types'
 
 const BlogTableItem = ({ blog }) => (
   <tr>
-    <td><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></td>
+    <td>
+      <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+      <i style={{marginLeft: '15px'}}>(Likes: {blog.likes})</i>
+    </td>
   </tr>
 )
 

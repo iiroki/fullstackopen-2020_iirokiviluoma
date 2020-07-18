@@ -6,12 +6,9 @@ import { setNotification, notificationTypes } from '../reducers/notificationRedu
 const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-
   const dispatch = useDispatch()
-  // Tila asetetaan oletustilaan uuden renderöinnin yhteydessä!
-  // Eli uudestaan kirjautumissivulle saavuttaessa.
 
-  const createLogin = async (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
 
     const success = await dispatch(logIn({
@@ -26,7 +23,7 @@ const LoginForm = () => {
 
   return (
     <div style={{paddingTop: '15px'}}>
-      <form onSubmit={createLogin}>
+      <form onSubmit={handleLogin}>
         <table style={{textAlign: 'center'}}>
           <tbody>
 
