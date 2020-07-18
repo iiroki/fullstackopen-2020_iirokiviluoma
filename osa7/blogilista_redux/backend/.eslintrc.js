@@ -16,7 +16,7 @@ module.exports = {
       'error', 'unix'
     ],
     'quotes': [
-      'off'  // Single- ja backtickejä sekaisin
+      'off'  // Single- and backticks
     ],
     'semi': [
       'error', 'never'
@@ -30,10 +30,10 @@ module.exports = {
       'error', { 'before': true, 'after': true }
     ],
     'no-unused-vars': [
-      'error', { 'args': 'none' }  // Express APIn parametrit
+      'error', { 'args': 'none' }  // Express API parameters
     ],
     'no-undef': [
-      'off'  // Jestin/supertestin globaalit funktiot
+      'off'  // Jest/supertest global functions
     ],
     'no-console': 0
   }

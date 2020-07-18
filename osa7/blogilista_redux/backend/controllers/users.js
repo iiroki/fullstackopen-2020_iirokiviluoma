@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 
 const User = require('../models/user')
 
-// Haetaan kaikki käyttäjät
+// Fetching all users
 usersRouter.get('/', async (request, response) => {
   // Piilotetaan käyttäjä ja tykkäykset
   const users = await User
@@ -12,7 +12,7 @@ usersRouter.get('/', async (request, response) => {
   return response.json(users)
 })
 
-// Lisätään käyttäjä
+// Adding a new user
 usersRouter.post('/', async (request, response, next) => {
   const reqBody = request.body
 

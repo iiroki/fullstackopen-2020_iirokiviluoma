@@ -15,7 +15,7 @@ mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
 const url = config.MONGODB_URL
 
-// Yhdistetään MongoDB-tietokantaan
+// Connecting to MongoDB
 logger.info(`Connecting to MongoDB: ${url}`)
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -30,7 +30,7 @@ app.use(express.json())
 app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
 
-// Käytetään omia reittien käsittelijöitä
+// Own route handlers
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)

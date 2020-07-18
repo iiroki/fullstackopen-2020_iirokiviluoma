@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 
-// Blogin attribuutit
 const blogSchema = mongoose.Schema({
   title: {
     type: String,
@@ -27,11 +26,11 @@ const blogSchema = mongoose.Schema({
   }]
 })
 
-// Muutetaan Mongoose-oliot käytännöllisempään muotoon
+// Transforming Mongoose-object to better form
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
-    // Näillä tiedoilla ei tehdä sovelluksen kannalta mitään
+    // Not needed in JSON-form
     delete returnedObject._id
     delete returnedObject.__v
   }

@@ -8,7 +8,7 @@ const requestLogger = (request, response, next) => {
   next()
 }
 
-// Virheidenkäsittelijä
+// Own error handler
 const errorHandler = (error, request, respone, next) => {
   logger.error(error.message)
 
@@ -23,14 +23,14 @@ const errorHandler = (error, request, respone, next) => {
   }
 
   logger.error(error.message)
-  next(error)  // Expressis virheenkäsittelijä
+  next(error)  // Express' error handler
 }
 
 const unknownEndpoint = (request, response) => {
   response.status(404).json({ error: 'Unknown endpoint' })
 }
 
-// Eristetään pyynnön mukana tullut token request.tokeniin
+// Extracting token from request
 const tokenExtractor = (request, response, next) => {
   const auth = request.get('authorization')
   if (auth && auth.toLowerCase().startsWith('bearer ')) {

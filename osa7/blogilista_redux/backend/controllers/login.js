@@ -5,12 +5,12 @@ const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 const User = require('../models/user')
 
-// Kirjautumisyritys
+// Login attempt
 loginRouter.post('/', async (request, response, next) => {
   const reqBody = request.body
   const user = await User.findOne({ username: reqBody.username })
 
-  // Tarkastetaan salasanojen yhteneväisyys
+  // Check if password matches
   const passwordCorrect = user === null
     ? false
     : await bcrypt.compare(reqBody.password, user.passwordHash)
@@ -19,7 +19,6 @@ loginRouter.post('/', async (request, response, next) => {
     return response.status(401).json({ error: 'Invalid username or password.' })
   }
 
-  // Käyttäjä kivaan muotoon tokenia varten
   const userForToken = {
     username: user.username,
     id: user._id
