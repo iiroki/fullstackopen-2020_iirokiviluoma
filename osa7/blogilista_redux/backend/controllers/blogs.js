@@ -104,8 +104,14 @@ blogsRouter.post('/:id/comments', async (request, response, next) => {
   const reqBody = request.body
 
   const blog = await Blog.findById(request.params.id)
+
+  if (!blog) {
+    return response.status(404).end()
+  }
+
   blog.comments = blog.comments.concat(reqBody.comment)
   const commentedBlog = await blog.save()
+  await commentedBlog.populate('user', { blogs : 0 }).execPopulate()
   response.json(commentedBlog)
 })
 

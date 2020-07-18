@@ -13,6 +13,11 @@ const Blog = ({ id }) => {
   const dispatch = useDispatch()
   const history = useHistory()
 
+  if (currentUser && blog) {
+    console.log('USER:', currentUser)
+  console.log('ADDED BY:', blog.user.username)
+  }
+
   if (!blog) return null
 
   // Muutetaan blogin data oikeaan muotoon tykkäyksen lisäystä varten
@@ -54,19 +59,20 @@ const Blog = ({ id }) => {
     <div className='blog'>
       <h3><b><i>{blog.title}</i></b></h3>
 
-      <span id='likes'>
+      <div id='likes'>
         {'Likes: '}
         <span id='likesAmount'>
           <i>{blog.likes}</i>
         </span>
-      </span>
 
-      <button
-        className='btn btn-outline-primary'
-        style={margin}
-        onClick={() => handleLikeBlog(blog)}>
+        <button
+          className='btn btn-outline-primary'
+          style={margin}
+          onClick={() => handleLikeBlog(blog)}
+        >
           Like
-      </button><br/>
+        </button>
+      </div>
 
       <span id='author'>
         Author: {blog.author}
@@ -88,7 +94,7 @@ const Blog = ({ id }) => {
         : null}
       
       <div>
-        Comments:
+        <h4 style={{marginTop: '20px'}}>Comments:</h4>
 
         <CommentForm blogId={blog.id} />
       

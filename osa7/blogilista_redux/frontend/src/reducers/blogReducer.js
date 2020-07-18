@@ -95,6 +95,7 @@ export const commentBlog = (id, commentObject) => (
   async thunk => {
     try {
       const commentedBlog = await blogService.commentBlog(id, commentObject)
+      console.log(commentedBlog)
 
       thunk({
         type: 'COMMENT_BLOG',

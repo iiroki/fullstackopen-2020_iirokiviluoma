@@ -29,8 +29,9 @@ const NewBlogForm = ({ handleHide }) => {
     if (success) {
       dispatch(setNotification(`A new blog added: ${newBlogTitle} - ${newBlogAuthor}`,
         notificationTypes.GOOD))
-      handleHide()
+
       resetFields()
+      handleHide()
     } else {
       dispatch(setNotification(`Incomplete form values`,
         notificationTypes.ERROR))
