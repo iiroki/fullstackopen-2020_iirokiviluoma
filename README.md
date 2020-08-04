@@ -26,4 +26,6 @@ osa7
     country hook
     ultimate hooks
     blogilista redux (frontend + backend)
+osa8
+    kirjasto backend
 ```

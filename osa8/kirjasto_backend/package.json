@@ -1,0 +1,14 @@
+{
+  "name": "kirjasto_backend",
+  "description": "Full Stack Open 2020 osa8: kirjasto backend",
+  "author": "Iiro Kiviluoma",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "apollo-server": "^2.16.1",
+    "graphql": "^15.3.0"
+  }
+}
