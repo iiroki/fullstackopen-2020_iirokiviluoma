@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import Select from 'react-select'
 import { useMutation } from '@apollo/client'
 
 import { EDIT_AUTHOR, ALL_AUTHORS } from '../queries'
 
-const EditAuthor = () => {
+const EditAuthor = ({ authors }) => {
   const [author, setAuthor] = useState('')
   const [year, setYear] = useState('')
 
@@ -28,7 +29,7 @@ const EditAuthor = () => {
       born: Number(year)
     }})
 
-    setAuthor('')
+    //setAuthor('')
     setYear('')
   }
 
@@ -38,9 +39,10 @@ const EditAuthor = () => {
 
       <form onSubmit={submit}>
         author name
-        <input
-          value={author}
-          onChange={({ target }) => setAuthor(target.value)}
+        <Select
+          value={author.value}
+          onChange={(selectedOption) => setAuthor(selectedOption.value)}
+          options={authors.map(a => ({ value: a.name, label: a.name }))}
         />
         <br/>
         born
