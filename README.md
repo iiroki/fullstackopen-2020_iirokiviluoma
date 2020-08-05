@@ -27,5 +27,5 @@ osa7
     ultimate hooks
     blogilista redux (frontend + backend)
 osa8
-    kirjasto backend
+    kirjasto
 ```
