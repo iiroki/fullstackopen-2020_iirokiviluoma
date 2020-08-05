@@ -2,6 +2,7 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
 
+import EditAuthor from './EditAuthor'
 import { ALL_AUTHORS } from '../queries'
 
 const Authors = (props) => {
@@ -42,6 +43,8 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
+
+      <EditAuthor />
 
     </div>
   )
