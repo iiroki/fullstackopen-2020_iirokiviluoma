@@ -65,8 +65,29 @@ const resolvers = {
     bookCount: (root) => Book.collection.countDocuments({ author: root._id })
   },
   Mutation: {
-    addBook: (root, args) => {
-      // TBD
+    addBook: async (root, args) => {
+      let author = await Author.findOne({ name: args.author })
+
+      if (!author) {
+        const newAuthor = new Author({
+          name: args.author
+        })
+
+        author = await newAuthor.save()
+      }
+
+      console.log(author)
+
+      const newBook = new Book({
+        title: args.title,
+        author: author._id.toString(),
+        published: args.published,
+        genres: args.genres
+      })
+
+      const book = await newBook.save()
+      console.log(book)
+      return book
     },
 
     editAuthor: (root, args) => {
