@@ -4,8 +4,10 @@ import React, { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import Login from './components/Login'
 
 const App = () => {
+  const [login, setLogin] = useState(null)
   const [page, setPage] = useState('authors')
   
   return (
@@ -14,6 +16,7 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
+        <button onClick={() => setPage('login')}>login</button>
       </div>
 
       <Authors
@@ -26,6 +29,10 @@ const App = () => {
 
       <NewBook
         show={page === 'add'}
+      />
+
+      <Login
+        show={page === 'login'}
       />
 
     </div>
