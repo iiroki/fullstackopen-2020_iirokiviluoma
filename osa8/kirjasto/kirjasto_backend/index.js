@@ -1,4 +1,4 @@
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer, UserInputError, gql } = require('apollo-server')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
@@ -66,26 +66,33 @@ const resolvers = {
     addBook: async (root, args) => {
       let author = await Author.findOne({ name: args.author })
 
-      if (!author) {
-        const newAuthor = new Author({
-          name: args.author
+      try {
+        // Creating new author if the author does not exist yet
+        if (!author) {
+          const newAuthor = new Author({
+            name: args.author
+          })
+
+          author = await newAuthor.save()
+        }
+
+        console.log(author)
+
+        const newBook = new Book({
+          title: args.title,
+          author: author._id.toString(),
+          published: args.published,
+          genres: args.genres
         })
 
-        author = await newAuthor.save()
+        const book = await newBook.save()
+        console.log(book)
+        return book
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
       }
-
-      console.log(author)
-
-      const newBook = new Book({
-        title: args.title,
-        author: author._id.toString(),
-        published: args.published,
-        genres: args.genres
-      })
-
-      const book = await newBook.save()
-      console.log(book)
-      return book
     },
 
     editAuthor: async (root, args) => {
@@ -95,12 +102,18 @@ const resolvers = {
         return null
       }
 
-      const updatedAuthor = await Author.findOneAndUpdate({ name: author.name }, {
-        name: args.name,
-        born: args.born
-      }, { new: true })
+      try {
+        const updatedAuthor = await Author.findOneAndUpdate({ name: author.name }, {
+          name: args.name,
+          born: args.born
+        }, { new: true })
 
-      return updatedAuthor
+        return updatedAuthor
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
+      }
     }
   }
 }
