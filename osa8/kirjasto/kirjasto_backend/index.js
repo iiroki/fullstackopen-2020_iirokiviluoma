@@ -85,7 +85,7 @@ const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: () => Book.find({}),
+    allBooks: () => Book.find({}).populate('author'),
     allAuthors: () => Author.find({}),
     me: (root, args, context) => context.currentUser
   },
