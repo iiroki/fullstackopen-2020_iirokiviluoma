@@ -7,7 +7,7 @@ import NewBook from './components/NewBook'
 import Login from './components/Login'
 
 const App = () => {
-  const [login, setLogin] = useState(null)
+  const [token, setToken] = useState(null)
   const [page, setPage] = useState('authors')
   
   return (
@@ -33,6 +33,7 @@ const App = () => {
 
       <Login
         show={page === 'login'}
+        setToken={setToken}
       />
 
     </div>

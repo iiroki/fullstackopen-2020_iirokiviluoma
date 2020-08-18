@@ -1,8 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useMutation } from '@apollo/client'
+import { LOGIN } from '../queries'
 
 const Login = props => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
+  const [login, result] = useMutation(LOGIN)
+
+  useEffect(() => {
+    if (result.data && result.data.login) {
+      props.setToken(result.data.login.value)
+    } else {
+      console.log('Login failed')
+    }
+  }, [result.data])
 
   if (!props.show) {
     return null
@@ -10,6 +22,15 @@ const Login = props => {
 
   const handleSubmit = async event => {
     event.preventDefault()
+    
+    login({ variables: {
+        username,
+        password: 'pw'
+      }}
+    )
+
+    setUsername('')
+    setPassword('')
   }
 
   return(
