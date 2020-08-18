@@ -1,6 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server')
 const mongoose = require('mongoose')
-const { v1: uuidv1 } = require('uuid')
 require('dotenv').config()
 
 const Author = require('./models/author')
@@ -9,7 +8,8 @@ const Book = require('./models/book')
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true
+  useCreateIndex: true,
+  useFindAndModify: false
 })
 .then(() => {
   console.log('Connected to MongoDB.')
@@ -21,7 +21,6 @@ const typeDefs = gql`
   type Author {
     name: String!
     born: Int
-    id: ID!
     bookCount: Int
   }
 
@@ -30,7 +29,6 @@ const typeDefs = gql`
     author: Author!
     published: Int!
     genres: [String!]
-    id: ID!
   }
 
   type Query {
@@ -90,8 +88,19 @@ const resolvers = {
       return book
     },
 
-    editAuthor: (root, args) => {
-      // TBD
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({ name: args.name })
+
+      if (!author) {
+        return null
+      }
+
+      const updatedAuthor = await Author.findOneAndUpdate({ name: author.name }, {
+        name: args.name,
+        born: args.born
+      }, { new: true })
+
+      return updatedAuthor
     }
   }
 }
