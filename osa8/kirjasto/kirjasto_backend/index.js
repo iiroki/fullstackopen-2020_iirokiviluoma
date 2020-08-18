@@ -1,9 +1,12 @@
 const { ApolloServer, UserInputError, gql } = require('apollo-server')
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 require('dotenv').config()
+const JWT_SECRET = 'sAlAiSuUs'
 
 const Author = require('./models/author')
 const Book = require('./models/book')
+const User = require('./models/user')
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -22,6 +25,7 @@ const typeDefs = gql`
     name: String!
     born: Int
     bookCount: Int
+    id: ID!
   }
 
   type Book {
@@ -29,6 +33,17 @@ const typeDefs = gql`
     author: Author!
     published: Int!
     genres: [String!]
+    id: ID!
+  }
+
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
   }
 
   type Query {
@@ -36,6 +51,7 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    me: User
   }
 
   type Mutation {
@@ -49,6 +65,14 @@ const typeDefs = gql`
       name: String!
       born: Int!
     ): Author
+    createUser(
+      username: String!
+      favoriteGenre: String!
+    ): User
+    login(
+      username: String!
+      password: String!
+    ): Token
   }
 `
 
@@ -114,6 +138,36 @@ const resolvers = {
           invalidArgs: args
         })
       }
+    },
+
+    createUser: async (root, args) => {
+      const user = new User({
+        username: args.username,
+        favoriteGenre: args.favoriteGenre
+      })
+
+      try {
+        return user.save()
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
+      }
+    },
+
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username })
+
+      if (!user || args.password !== 'pw') {
+        throw new UserInputError('Invalid login credentials')
+      }
+
+      const userForToken = {
+        username: user.username,
+        id: user._id
+      }
+
+      return { value: jwt.sign(userForToken, JWT_SECRET) }
     }
   }
 }
