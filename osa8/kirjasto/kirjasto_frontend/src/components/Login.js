@@ -10,6 +10,7 @@ const Login = props => {
 
   useEffect(() => {
     if (result.data && result.data.login) {
+      props.setLogin(true)
       props.setToken(result.data.login.value)
     } else {
       console.log('Login failed')
@@ -23,14 +24,20 @@ const Login = props => {
   const handleSubmit = async event => {
     event.preventDefault()
     
-    login({ variables: {
-        username,
-        password: 'pw'
-      }}
-    )
+    try {
+      await login({ variables: {
+          username,
+          password: 'pw'
+        }}
+      )
 
-    setUsername('')
-    setPassword('')
+      setUsername('')
+      setPassword('')
+      props.setPage('authors')
+    } catch (error) {
+      console.log(error)
+    }
+    
   }
 
   return(
