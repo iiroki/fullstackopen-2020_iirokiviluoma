@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import Recommendations from './components/Recommendations'
 import Login from './components/Login'
 
 const App = () => {
@@ -26,6 +27,15 @@ const App = () => {
     }
   }
   
+  const loggedInButtons = () => (
+    <div style={{ display: 'inline' }}>
+      <button onClick={() => setPage('add')}>add book</button>
+      <button onClick={() => setPage('recommendations')}>
+        recommendations
+      </button>
+    </div>
+  )
+
   return (
     <div>
       <div>
@@ -33,7 +43,7 @@ const App = () => {
         <button onClick={() => setPage('books')}>books</button>
         {
           login
-            ? <button onClick={() => setPage('add')}>add book</button>
+            ? loggedInButtons()
             : null
         }
         
@@ -57,6 +67,10 @@ const App = () => {
 
       <NewBook
         show={page === 'add'}
+      />
+
+      <Recommendations
+        show={page === 'recommendations'}
       />
 
       <Login
